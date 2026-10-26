@@ -1,0 +1,121 @@
+\documentclass[9pt,a4paper]{extarticle}
+
+\usepackage[a4paper,top=0.62cm,bottom=0.62cm,left=0.95cm,right=0.95cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{0E7490}
+\definecolor{rulegray}{HTML}{B8C4CE}
+\definecolor{sectionbg}{HTML}{EAF3F6}
+\definecolor{muted}{HTML}{536575}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=accent,
+    urlcolor=accent
+}
+
+\pagenumbering{gobble}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{0.92}
+\setlist[itemize]{leftmargin=1.2em,itemsep=1pt,topsep=1pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.35em,itemsep=1.5pt,topsep=1pt,parsep=0pt}
+\setlength{\emergencystretch}{1.5em}
+\raggedbottom
+
+\titleformat{\section}
+  {\bfseries\color{ink}\fontsize{9.2pt}{10pt}\selectfont}
+  {}{0pt}
+  {}
+\titlespacing*{\section}{0pt}{2pt}{1pt}
+
+\newcolumntype{L}{>{\raggedright\arraybackslash\bfseries\color{ink}\fontsize{7.8pt}{8.5pt}\selectfont}p{2.65cm}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\proposalTable}[1]{%
+    \renewcommand{\arraystretch}{0.94}%
+    \begin{tabularx}{\textwidth}{@{}L Y@{}}
+    \toprule[0.7pt]
+    \textcolor{muted}{Field} & \textcolor{muted}{Content}\\
+    \midrule
+    #1
+    \bottomrule[0.7pt]
+    \end{tabularx}%
+}
+
+\begin{document}
+\fontsize{8.4pt}{9.6pt}\selectfont
+
+\begin{center}
+    {\color{ink}\fontsize{12.5pt}{14pt}\selectfont\bfseries
+    Deep Learning --- UAS Session 16: Group Project Proposal}\\[-1pt]
+    {\color{accent}\fontsize{8.7pt}{10pt}\selectfont\bfseries
+    Group Project Proposal Template --- Track A: Vision Classification with Transfer Learning}
+\end{center}
+\vspace{1pt}
+\hrule height 0.8pt
+\vspace{2pt}
+
+\section*{1. Identification}
+\proposalTable{%
+    Group number & Kelompok 5\\
+    Members & Tita Noviana, Titanio Yudista, Suci Fransisca Sisilia R., Fajar Dwiharjo\\
+    Track & A (Vision classification with transfer learning)\\
+    Proposed title & Evaluasi \textit{From-Scratch CNN} dan \textit{Fine-Tuned EfficientNet-B0} untuk \textit{Fine-Grained Classification} Motif Batik Semarang pada Kondisi Deformasi Kain\\
+}
+
+\section*{2. Problem Statement}
+\begin{itemize}
+    \item \textbf{Supported decision/prediction:} Mengklasifikasikan 10 motif batik Semarang untuk kurasi museum, pengarsipan warisan budaya, dan verifikasi katalog \textit{e-commerce}.
+    \item \textbf{End users and failure cost:} Kurator, peneliti tekstil, dan pengelola \textit{platform} kriya. Prediksi keliru dapat mencemari arsip, salah memberi label produk, dan menurunkan kepercayaan pengguna.
+    \item \textbf{Appropriateness of deep learning:} Citra menghadapi deformasi \textit{non-rigid}, lipatan, perubahan skala dan pencahayaan, serta kemiripan \textit{inter-class} pada \textit{isen-isen}; pola ini sulit ditangkap fitur manual seperti SIFT/HOG.
+\end{itemize}
+
+\section*{3. Data}
+\proposalTable{%
+    Dataset name & Semarang Batik Dataset\\
+    Source URL & \url{https://www.kaggle.com/datasets/edywinarno/semarang-batik-dataset} (Winarno et al., ACM ICACS 2017)\\
+    Licence or terms of use & Lisensi penggunaan publik dan akademik sesuai ketentuan Kaggle (\textit{Academic Research Use})\\
+    Size and number of classes & $\sim 3.000$ citra RGB ($224\times224$) dalam 10 kelas motif Semarang\\
+    Class balance & Relatif seimbang ($\sim 300$ citra/kelas); diverifikasi melalui \textit{EDA}\\
+    Known missing or corrupted data & Skrip Python (PIL/OpenCV) memfilter \textit{corrupted headers} dan \textit{invalid color channels} sebelum \textit{splitting}\\
+    Split procedure (train / validation / test) & \textit{Stratified split} 70\% / 15\% / 15\% dengan \textit{fixed random seed} (\texttt{seed=42})\\
+    Leakage risks and how to check them & \textit{Exact/near-duplicates} diperiksa dengan \textit{pHash} sebelum \textit{splitting}; \textit{augmentation} hanya \textit{on-the-fly} pada \textit{training set}.\\
+}
+
+\section*{4. Baseline and Metric}
+\proposalTable{%
+    Baseline method & Arsitektur \textit{Custom 4-Block CNN} (\texttt{Conv2D + BatchNorm + ReLU + MaxPool + AdaptiveAvgPool + Linear head}) yang dilatih \textit{from-scratch}\\
+    Why this baseline is a fair comparison & \textit{Data split}, resolusi, \textit{optimizer} (\texttt{AdamW}), dan \textit{epoch budget} identik; perbedaan utama hanya \textit{pretrained representations}.\\
+    Primary metric & \textit{Macro F1-Score} untuk menilai 10 kelas secara seimbang\\
+    Secondary metric & \textit{Top-1 Accuracy}, \textit{Top-3 Accuracy}, serta \textit{training time/cost per run}\\
+    Success threshold & Model \textit{transfer learning} mencapai $\ge 85\%$ \textit{Macro F1-Score} dan mengungguli \textit{baseline CNN from-scratch} minimal $+10\%$ \textit{Macro F1} pada \textit{test set}\\
+    Cost of false positive vs false negative & \textit{False Positive} mencemari arsip; \textit{False Negative} membuat motif asli terlewat dan memerlukan verifikasi manual.\\
+}
+
+\section*{5. Planned Comparison and Ablation}
+\begin{enumerate}
+    \item \textbf{Model comparison:} \textit{Custom 4-Layer CNN (From-Scratch)} vs \textit{Pretrained EfficientNet-B0 / ResNet-50}. \textit{Hierarchical features} ImageNet diharapkan lebih baik menangkap tekstur \textit{fine-grained}.
+    \item \textbf{Ablation:} Membandingkan \textit{Geometric \& Photometric Data Augmentation (On vs Off)}---rotasi, \textit{affine transform}, dan \textit{color jitter}---dengan arsitektur dan \textit{hyperparameter} tetap.
+    \item \textbf{Training implementation:} \textit{Custom PyTorch loop} untuk CNN \textit{from-scratch} dan \textit{two-stage fine-tuning} EfficientNet-B0: \textit{linear probing} lalu \textit{unfreezing top blocks} dengan \texttt{CosineAnnealingLR} dan \texttt{AdamW}.
+\end{enumerate}
+
+\section*{6. Compute Plan}
+\noindent\textbf{Hardware:} Google Colab Free Tier GPU Tesla T4 (16GB VRAM). \textbf{Time:} $\sim 8$--$12$ menit per \textit{run} (30 \textit{epochs}, batch size 32, resolusi $224\times224$). \textbf{Runs:} 12 \textit{runs} (3 konfigurasi utama $\times$ 3 \textit{random seeds} + 3 \textit{sanity checks}). \textbf{Storage:} $\sim 600$ MB untuk \textit{checkpoints}, \textit{logs}, dan \textit{confusion matrix}. Rencana sesuai \textit{RPS compute policy}; jika terbatas, \textit{ablation} dipangkas menjadi 1 \textit{fixed seed} (\texttt{seed=42}).
+
+\section*{7. AI Use Plan}
+\noindent\textbf{Assistant tools:} Google Gemini dan GitHub Copilot. \textbf{Allowed:} \textit{debugging data loader}, kode \textit{boilerplate plotting}, dan perapian LaTeX. \textbf{Off-limits:} angka metrik fiktif atau analisis kausal \textit{error analysis} tanpa inspeksi visual citra kegagalan \textit{test set}. \textbf{Verification:} seluruh skrip dijalankan deterministik melalui satu \textit{single command} ber-\textit{fixed seed}; metrik divalidasi terhadap \textit{raw evaluation log}.
+
+\end{document}
