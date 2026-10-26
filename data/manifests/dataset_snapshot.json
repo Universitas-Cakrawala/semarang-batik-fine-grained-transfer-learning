@@ -1,0 +1,9 @@
+{
+  "kaggle_ref": "edywinarno/semarang-batik-dataset",
+  "kaggle_version": 2,
+  "archive": "semarang-batik-dataset.zip",
+  "archive_bytes": 12922229647,
+  "archive_sha256": "65710841c5038fed6f302de2d9ed04e75b72ae5606efb79e2546227874fba93c",
+  "license": "CC BY-NC-SA 4.0",
+  "citation": "Winarno, E., Septiarini, A., Hadikurniawati, W., & Hamdani, H. (2024). The Hybrid Features and Supervised Learning for Batik Pattern Classification. ACM Journal on Computing and Cultural Heritage, 17(2). https://doi.org/10.1145/3631131"
+}

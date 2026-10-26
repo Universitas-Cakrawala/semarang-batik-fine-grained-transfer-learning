@@ -1,0 +1,5 @@
+extends: base.yaml
+group: SANITY
+description: Overfit-a-tiny-subset check (not a reported result)
+augmentation: {enabled: false}
+train: {epochs: 40, batch_size: 16, lr: 1.0e-3, weight_decay: 0.0, num_workers: 0}

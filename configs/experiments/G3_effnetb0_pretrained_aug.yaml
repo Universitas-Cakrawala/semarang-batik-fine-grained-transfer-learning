@@ -1,0 +1,5 @@
+extends: ../base.yaml
+group: G3
+description: M3 EfficientNet-B0, ImageNet init, augmentation ON (headline transfer model)
+model: {name: efficientnet_b0, pretrained: true, dropout: 0.2}
+augmentation: {enabled: true}
