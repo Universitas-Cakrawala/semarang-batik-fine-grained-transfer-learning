@@ -1,0 +1,5 @@
+extends: ../base.yaml
+group: G4
+description: M3 EfficientNet-B0, ImageNet init, augmentation OFF (ablation of G3)
+model: {name: efficientnet_b0, pretrained: true, dropout: 0.2}
+augmentation: {enabled: false}

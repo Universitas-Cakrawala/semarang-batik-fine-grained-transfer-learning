@@ -1,0 +1,7 @@
+extends: G1_custom_cnn_scratch_aug.yaml
+group: G1g
+description: >-
+  Shortcut-controlled protocol of G1: identical to G1 except that every image
+  (train and eval) is converted to grayscale and histogram-equalised, removing the
+  per-cloth colour/brightness shortcut (colour-histogram baseline = 100% Macro F1).
+preprocess: {grayscale_equalize: true}

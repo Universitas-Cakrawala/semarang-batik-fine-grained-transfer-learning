@@ -1,0 +1,7 @@
+extends: G3_effnetb0_pretrained_aug.yaml
+group: G3g
+description: >-
+  Shortcut-controlled protocol of G3: identical to G3 except that every image
+  (train and eval) is converted to grayscale and histogram-equalised, removing the
+  per-cloth colour/brightness shortcut (colour-histogram baseline = 100% Macro F1).
+preprocess: {grayscale_equalize: true}

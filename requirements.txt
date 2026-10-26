@@ -1,0 +1,16 @@
+# Pinned versions used for the reported results (local CPU environment).
+# Install torch/torchvision first from the matching index, e.g.:
+#   CPU : pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cpu
+#   CUDA: pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu121
+torch==2.5.1
+torchvision==0.20.1
+numpy==2.5.2
+pandas==3.1.0
+pillow==12.3.0
+imagehash==4.3.2
+scikit-learn==1.9.1
+scipy==1.18.1
+matplotlib==3.11.2
+pyyaml==6.0.3
+tqdm==4.70.1
+pytest==9.1.1

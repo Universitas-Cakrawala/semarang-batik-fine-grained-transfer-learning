@@ -1,0 +1,104 @@
+{
+  "split_csv_sha256": "32a0d9e2c40f0bc555f87a86a86b011b02967c0ff5c334dfeccd44b87e7e6a12",
+  "seed": 42,
+  "n_folds": 20,
+  "fractions_target": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "n_images": 2993,
+  "split_counts": {
+    "train": 2090,
+    "val": 453,
+    "test": 450
+  },
+  "split_fractions": {
+    "train": 0.6983,
+    "val": 0.1514,
+    "test": 0.1504
+  },
+  "per_class_split_counts": {
+    "Asem Arang": {
+      "train": 212,
+      "val": 48,
+      "test": 40
+    },
+    "Asem Sinom": {
+      "train": 208,
+      "val": 44,
+      "test": 44
+    },
+    "Asem Warak": {
+      "train": 220,
+      "val": 48,
+      "test": 40
+    },
+    "Blekok": {
+      "train": 215,
+      "val": 36,
+      "test": 44
+    },
+    "Blekok Warak": {
+      "train": 208,
+      "val": 48,
+      "test": 44
+    },
+    "Gambang Semarangan": {
+      "train": 206,
+      "val": 43,
+      "test": 55
+    },
+    "Kembang Sepatu": {
+      "train": 203,
+      "val": 48,
+      "test": 48
+    },
+    "Semarangan": {
+      "train": 212,
+      "val": 43,
+      "test": 44
+    },
+    "Tugu Muda": {
+      "train": 204,
+      "val": 47,
+      "test": 44
+    },
+    "Warak Beras Utah": {
+      "train": 202,
+      "val": 48,
+      "test": 47
+    }
+  },
+  "grouping": {
+    "phash_max_distance": 8,
+    "embed_min_cosine": 0.95,
+    "group_same_timestamp": true,
+    "edge_reasons": {
+      "same_timestamp+phash_d8": 3883,
+      "same_timestamp+phash_d8+embedding": 1296,
+      "embedding": 129,
+      "phash_d8": 126,
+      "phash_d8+embedding": 24,
+      "same_timestamp": 16
+    },
+    "n_edges": 5474,
+    "n_groups": 668,
+    "n_singletons": 2,
+    "largest_group": 28,
+    "images_in_multi_image_groups": 2991
+  },
+  "leakage_check": {
+    "n_eval_images": 903,
+    "min_phash_d8_dist_to_train": 10,
+    "n_phash_d8_dist_le_8": 0,
+    "n_same_timestamp_in_train": 0,
+    "nn_cosine_quantiles": {
+      "0.5": 0.866,
+      "0.9": 0.9276,
+      "0.99": 0.946,
+      "1.0": 0.9494
+    },
+    "nn_same_class_rate": 1.0
+  }
+}
