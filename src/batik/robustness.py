@@ -8,6 +8,7 @@ listed transformations -- not a general "fabric deformation" claim.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import numpy as np
@@ -91,7 +92,7 @@ class CorruptedDataset(Dataset):
         return self.tf(img), int(self.base.frame.at[i, "label"]), i
 
 
-def evaluate_run(run_dir: Path, cfg: dict, device: str | None = None, num_workers: int = 4) -> pd.DataFrame:
+def evaluate_run(run_dir: Path, cfg: dict, device: str | None = None, num_workers: int = min(4, os.cpu_count() or 1)) -> pd.DataFrame:
     dev = pick_device(device)
     classes = load_labels(cfg)
     state = torch.load(run_dir / "best.pt", map_location=dev, weights_only=False)

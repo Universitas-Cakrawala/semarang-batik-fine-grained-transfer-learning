@@ -164,7 +164,7 @@ def cmd_robustness(a):
 def cmd_errors(a):
     """Error-analysis evidence for the final model. The brief needs >= 3 concrete test
     failures; the RGB model may be (near) perfect because of the colour shortcut, so we
-    fall back to the final runs of G3g and then G1 until at least 3 failures are covered."""
+    fall back to the final runs of G3g, G1, G1g and G2g until at least 3 failures are covered."""
     import pandas as pd
 
     from .analysis import load_runs, select_final_run
@@ -177,7 +177,7 @@ def cmd_errors(a):
     runs_dir = resolve(cfg["paths"]["runs_dir"])
     available = set(load_runs(runs_dir).group)
     covered = 0
-    for group in ("G3", "G3g", "G1"):
+    for group in ("G3", "G3g", "G1", "G1g", "G2g"):
         if group not in available:
             continue
         run_id = select_final_run(cfg, group)
@@ -189,7 +189,7 @@ def cmd_errors(a):
         if covered >= 3:
             break
     if covered < 3:
-        print(f"[errors] WARNING: only {covered} test failures exist across G3/G3g/G1; "
+        print(f"[errors] WARNING: only {covered} test failures exist across G3/G3g/G1/G1g/G2g; "
               "use robustness failures (batik robustness) as additional evidence")
 
 
