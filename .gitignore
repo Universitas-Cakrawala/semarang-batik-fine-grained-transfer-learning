@@ -14,3 +14,13 @@ artifacts/cache/
 
 # Partial CPU run stopped before switching to GPU (kept locally for reference)
 artifacts/archive_cpu_partial/
+
+# Training logs, downloaded result archives, local editor/OS/Jupyter files
+logs/
+*.log
+*.zip
+*.tgz
+.ipynb_checkpoints/
+.vscode/
+.DS_Store
+.env

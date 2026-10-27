@@ -1,0 +1,357 @@
+{
+  "headline": {
+    "description": "G3 EfficientNet-B0 ImageNet + aug ON, test Macro F1 (mean \u00b1 std over seeds)",
+    "test_macro_f1_mean": 1.0,
+    "test_macro_f1_std": 0.0,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "per_seed": {
+      "42": 1.0,
+      "43": 1.0,
+      "44": 1.0
+    },
+    "target_macro_f1_ge_0.85": true,
+    "gain_over_baseline_pp": 0.0,
+    "target_gain_ge_10pp": false
+  },
+  "comparisons": [
+    {
+      "a": "G3",
+      "b": "G1",
+      "question": "Transfer learning vs from-scratch baseline (headline)",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": 0.0,
+      "std_diff_pp": 0.0,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": false
+    },
+    {
+      "a": "G2",
+      "b": "G1",
+      "question": "Architecture effect (both random init)",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": 0.0,
+      "std_diff_pp": 0.0,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": false
+    },
+    {
+      "a": "G3",
+      "b": "G2",
+      "question": "Pretrained-initialisation effect (same architecture)",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": 0.0,
+      "std_diff_pp": 0.0,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": false
+    },
+    {
+      "a": "G3",
+      "b": "G4",
+      "question": "Ablation: augmentation ON vs OFF",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": 0.0,
+      "std_diff_pp": 0.0,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": false
+    },
+    {
+      "a": "G5",
+      "b": "G3",
+      "question": "Training strategy: two-stage vs full fine-tuning (suppl.)",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": 0.0,
+      "std_diff_pp": 0.0,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": false
+    },
+    {
+      "a": "G3g",
+      "b": "G1g",
+      "question": "Grayscale protocol: transfer learning vs from-scratch baseline",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": 15.593711200476534,
+      "std_diff_pp": 1.4530975593093183,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": 0.14509014305688128,
+          "ci95_low": 0.11511417156793,
+          "ci95_high": 0.17760745016542948,
+          "p_diff_le_0": 0.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.17244692590597044,
+          "ci95_low": 0.13856700735094557,
+          "ci95_high": 0.21077398094584107,
+          "p_diff_le_0": 0.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.1502742670514443,
+          "ci95_low": 0.12167458789062384,
+          "ci95_high": 0.18053859534036684,
+          "p_diff_le_0": 0.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": true
+    },
+    {
+      "a": "G2g",
+      "b": "G1g",
+      "question": "Grayscale protocol: architecture effect",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": -8.74791678023582,
+      "std_diff_pp": 2.7798449524797832,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": -0.11916044974727324,
+          "ci95_low": -0.16045658122249745,
+          "ci95_high": -0.07709369109134714,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": -0.07610798728143542,
+          "ci95_low": -0.11870802081420967,
+          "ci95_high": -0.03204372260995354,
+          "p_diff_le_0": 0.9995,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": -0.06716906637836595,
+          "ci95_low": -0.10694438439160607,
+          "ci95_high": -0.028555564409847203,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": true
+    },
+    {
+      "a": "G3g",
+      "b": "G2g",
+      "question": "Grayscale protocol: pretrained-initialisation effect",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": 24.341627980712353,
+      "std_diff_pp": 2.3822973099447484,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": 0.2642505928041545,
+          "ci95_low": 0.2331369722026422,
+          "ci95_high": 0.2977218694737797,
+          "p_diff_le_0": 0.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.24855491318740586,
+          "ci95_low": 0.21688961320546313,
+          "ci95_high": 0.2851064794937853,
+          "p_diff_le_0": 0.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.21744333342981026,
+          "ci95_low": 0.18501654492409084,
+          "ci95_high": 0.2523492283814335,
+          "p_diff_le_0": 0.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": true
+    },
+    {
+      "a": "G3",
+      "b": "G3g",
+      "question": "Cost of removing colour for the transfer model",
+      "paired_seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean_diff_pp": 0.0,
+      "std_diff_pp": 0.0,
+      "per_seed_bootstrap": [
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        },
+        {
+          "observed_diff": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0,
+          "p_diff_le_0": 1.0,
+          "n_boot": 2000
+        }
+      ],
+      "all_seed_ci_exclude_zero": false
+    }
+  ],
+  "n_runs": 24,
+  "groups": {
+    "G1": 3,
+    "G1g": 3,
+    "G2": 3,
+    "G2g": 3,
+    "G3": 3,
+    "G3g": 3,
+    "G4": 3,
+    "G5": 3
+  }
+}
