@@ -1,0 +1,30 @@
+{
+  "run_id": "G2_effb0-scratch_augon_s44",
+  "group": "G2",
+  "seed": 44,
+  "model": "efficientnet_b0",
+  "pretrained": false,
+  "augmentation": true,
+  "strategy": "single_stage",
+  "config_source": "configs/base.yaml",
+  "subset": null,
+  "git_commit": "d4f6709",
+  "device": "Tesla T4",
+  "params_total": 4020358,
+  "counts": {
+    "train": 2090,
+    "val": 453,
+    "test": 450
+  },
+  "best_epoch": 28,
+  "best_val_macro_f1": 1.0,
+  "val_macro_f1": 1.0,
+  "test_macro_f1": 1.0,
+  "test_accuracy": 1.0,
+  "test_top3_accuracy": 1.0,
+  "test_nll": 0.0007464966038241982,
+  "train_seconds": 817.945324420929,
+  "seconds_per_epoch": 27.264844147364297,
+  "peak_memory_mb": 1506.92626953125,
+  "checkpoint": "artifacts/runs/G2_effb0-scratch_augon_s44/best.pt"
+}

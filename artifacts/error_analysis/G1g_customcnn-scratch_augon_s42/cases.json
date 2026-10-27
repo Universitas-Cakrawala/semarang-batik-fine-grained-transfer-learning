@@ -1,0 +1,570 @@
+{
+  "run_id": "G1g_customcnn-scratch_augon_s42",
+  "n_test_errors": 64,
+  "n_test": 450,
+  "confusion_pairs": {
+    "Asem Warak -> Kembang Sepatu": 23,
+    "Gambang Semarangan -> Asem Arang": 11,
+    "Kembang Sepatu -> Asem Arang": 8,
+    "Blekok -> Kembang Sepatu": 4,
+    "Asem Sinom -> Warak Beras Utah": 4,
+    "Asem Sinom -> Kembang Sepatu": 4,
+    "Blekok -> Asem Sinom": 4,
+    "Tugu Muda -> Warak Beras Utah": 2,
+    "Tugu Muda -> Semarangan": 2,
+    "Asem Sinom -> Asem Arang": 1,
+    "Gambang Semarangan -> Semarangan": 1
+  },
+  "cases": [
+    {
+      "case": 1,
+      "image_id": "b644baccd85e",
+      "relpath": "Batik Cap Asem Warak/asem warak (61).JPG",
+      "true_class": "Asem Warak",
+      "pred_class": "Kembang Sepatu",
+      "confidence": 0.9432433,
+      "p_true": 0.046188124,
+      "top3": "Kembang Sepatu|Asem Warak|Blekok",
+      "top3_probs": "0.9432|0.0462|0.0064",
+      "confusion_pair_count_in_test": 23,
+      "nn_true_sim": 0.9966869950294495,
+      "nn_pred_sim": 0.902329683303833,
+      "nn_true": [
+        "Batik Cap Asem Warak/asem warak (133).JPG",
+        "Batik Cap Asem Warak/asem warak (136).JPG",
+        "Batik Cap Asem Warak/asem warak (44).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (217).JPG",
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (218).JPG",
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (220).JPG"
+      ],
+      "brightness": 131.57313537597656,
+      "class_median_brightness": 134.07559204101562,
+      "sharpness": 3868.3232421875,
+      "class_median_sharpness": 3454.802490234375,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.1884191781282425,
+          "fixed": false
+        },
+        "grayscale": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.04594019800424576,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.17480413615703583,
+          "fixed": false
+        },
+        "brightness_norm": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.04486735910177231,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.052150972187519073,
+          "fixed": false
+        }
+      }
+    },
+    {
+      "case": 2,
+      "image_id": "bc25e13e5449",
+      "relpath": "Batik Cap Gambang Semarangan/Gambang Semarangan  (123).JPG",
+      "true_class": "Gambang Semarangan",
+      "pred_class": "Asem Arang",
+      "confidence": 0.8308438,
+      "p_true": 0.037810925,
+      "top3": "Asem Arang|Semarangan|Gambang Semarangan",
+      "top3_probs": "0.8308|0.1225|0.0378",
+      "confusion_pair_count_in_test": 11,
+      "nn_true_sim": 0.992466926574707,
+      "nn_pred_sim": 0.9556294679641724,
+      "nn_true": [
+        "Batik Cap Gambang Semarangan/Gambang Semarangan  (115).JPG",
+        "Batik Cap Gambang Semarangan/Gambang Semarangan  (116).JPG",
+        "Batik Cap Gambang Semarangan/Gambang Semarangan  (114).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Asem Arang/asem arang (150).JPG",
+        "Batik Cap Asem Arang/asem arang (199).JPG",
+        "Batik Cap Asem Arang/asem arang (146).JPG"
+      ],
+      "brightness": 84.8310317993164,
+      "class_median_brightness": 88.80922317504883,
+      "sharpness": 14092.2373046875,
+      "class_median_sharpness": 21261.4091796875,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.2047935277223587,
+          "fixed": false
+        },
+        "grayscale": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.03779454529285431,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.06266282498836517,
+          "fixed": false
+        },
+        "brightness_norm": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.022335655987262726,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.05410667508840561,
+          "fixed": false
+        }
+      }
+    },
+    {
+      "case": 3,
+      "image_id": "f385fd9928e2",
+      "relpath": "Batik Cap Kembang Sepatu/Kembang Sepatu (99).JPG",
+      "true_class": "Kembang Sepatu",
+      "pred_class": "Asem Arang",
+      "confidence": 0.6680597,
+      "p_true": 0.3268606,
+      "top3": "Asem Arang|Kembang Sepatu|Semarangan",
+      "top3_probs": "0.6681|0.3269|0.0031",
+      "confusion_pair_count_in_test": 8,
+      "nn_true_sim": 0.996288537979126,
+      "nn_pred_sim": 0.9602190256118774,
+      "nn_true": [
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (79).JPG",
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (78).JPG",
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (77).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Asem Arang/asem arang (79).JPG",
+        "Batik Cap Asem Arang/asem arang (77).JPG",
+        "Batik Cap Asem Arang/asem arang (80).JPG"
+      ],
+      "brightness": 92.47959899902344,
+      "class_median_brightness": 89.3609848022461,
+      "sharpness": 5389.205078125,
+      "class_median_sharpness": 8483.6298828125,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.9928521513938904,
+          "fixed": true
+        },
+        "grayscale": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.32748693227767944,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.4183121621608734,
+          "fixed": false
+        },
+        "brightness_norm": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.3235408663749695,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.6011537909507751,
+          "fixed": true
+        }
+      }
+    },
+    {
+      "case": 4,
+      "image_id": "5df181d8259e",
+      "relpath": "Batik Cap Blekok/blekok (274).JPG",
+      "true_class": "Blekok",
+      "pred_class": "Asem Sinom",
+      "confidence": 0.64973384,
+      "p_true": 0.26328644,
+      "top3": "Asem Sinom|Blekok|Asem Warak",
+      "top3_probs": "0.6497|0.2633|0.0466",
+      "confusion_pair_count_in_test": 4,
+      "nn_true_sim": 0.9568865895271301,
+      "nn_pred_sim": 0.9317229986190796,
+      "nn_true": [
+        "Batik Cap Blekok/blekok (269).JPG",
+        "Batik Cap Blekok/blekok (271).JPG",
+        "Batik Cap Blekok/blekok (272).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Asem Sinom/Asem Sinom (249).JPG",
+        "Batik Cap Asem Sinom/Asem Sinom (250).JPG",
+        "Batik Cap Asem Sinom/Asem Sinom (252).JPG"
+      ],
+      "brightness": 135.52386474609375,
+      "class_median_brightness": 118.63370513916016,
+      "sharpness": 1761.2713623046875,
+      "class_median_sharpness": 6130.40234375,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.21077193319797516,
+          "fixed": false
+        },
+        "grayscale": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.26439186930656433,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.40658122301101685,
+          "fixed": false
+        },
+        "brightness_norm": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.24571290612220764,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.34261080622673035,
+          "fixed": false
+        }
+      }
+    },
+    {
+      "case": 5,
+      "image_id": "8d80e5553c49",
+      "relpath": "Batik Cap Asem Sinom/Asem Sinom (82).JPG",
+      "true_class": "Asem Sinom",
+      "pred_class": "Warak Beras Utah",
+      "confidence": 0.5959142,
+      "p_true": 0.34287378,
+      "top3": "Warak Beras Utah|Asem Sinom|Blekok Warak",
+      "top3_probs": "0.5959|0.3429|0.0330",
+      "confusion_pair_count_in_test": 4,
+      "nn_true_sim": 0.9978958964347839,
+      "nn_pred_sim": 0.9556624889373779,
+      "nn_true": [
+        "Batik Cap Asem Sinom/Asem Sinom (78).JPG",
+        "Batik Cap Asem Sinom/Asem Sinom (79).JPG",
+        "Batik Cap Asem Sinom/Asem Sinom (87).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Warak Beras Utah/Warak Beras Utah (247).JPG",
+        "Batik Cap Warak Beras Utah/Warak Beras Utah (246).JPG",
+        "Batik Cap Warak Beras Utah/Warak Beras Utah (228).JPG"
+      ],
+      "brightness": 106.5335922241211,
+      "class_median_brightness": 105.98641967773438,
+      "sharpness": 1318.5169677734375,
+      "class_median_sharpness": 967.078857421875,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.3970131278038025,
+          "fixed": false
+        },
+        "grayscale": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.34265395998954773,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.4487279951572418,
+          "fixed": true
+        },
+        "brightness_norm": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.3986673355102539,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.3741578757762909,
+          "fixed": false
+        }
+      }
+    },
+    {
+      "case": 6,
+      "image_id": "885a637e41a4",
+      "relpath": "Batik Cap Blekok/blekok (258).JPG",
+      "true_class": "Blekok",
+      "pred_class": "Kembang Sepatu",
+      "confidence": 0.58913016,
+      "p_true": 0.112767346,
+      "top3": "Kembang Sepatu|Asem Warak|Blekok",
+      "top3_probs": "0.5891|0.2816|0.1128",
+      "confusion_pair_count_in_test": 4,
+      "nn_true_sim": 0.9723352789878845,
+      "nn_pred_sim": 0.8963390588760376,
+      "nn_true": [
+        "Batik Cap Blekok/blekok (246).JPG",
+        "Batik Cap Blekok/blekok (247).JPG",
+        "Batik Cap Blekok/blekok (245).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (221).JPG",
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (224).JPG",
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (218).JPG"
+      ],
+      "brightness": 115.02383422851562,
+      "class_median_brightness": 118.63370513916016,
+      "sharpness": 1810.4744873046875,
+      "class_median_sharpness": 6130.40234375,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Blekok",
+          "p_true": 0.5562868118286133,
+          "fixed": true
+        },
+        "grayscale": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.11347360163927078,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.1408553421497345,
+          "fixed": false
+        },
+        "brightness_norm": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.10735543072223663,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.3472488820552826,
+          "fixed": false
+        }
+      }
+    },
+    {
+      "case": 7,
+      "image_id": "ff56d6f90893",
+      "relpath": "Batik Cap Asem Sinom/Asem Sinom (149).JPG",
+      "true_class": "Asem Sinom",
+      "pred_class": "Kembang Sepatu",
+      "confidence": 0.5286413,
+      "p_true": 0.22471689,
+      "top3": "Kembang Sepatu|Asem Sinom|Blekok",
+      "top3_probs": "0.5286|0.2247|0.0995",
+      "confusion_pair_count_in_test": 4,
+      "nn_true_sim": 0.9945951700210571,
+      "nn_pred_sim": 0.8918299674987793,
+      "nn_true": [
+        "Batik Cap Asem Sinom/Asem Sinom (240).JPG",
+        "Batik Cap Asem Sinom/Asem Sinom (237).JPG",
+        "Batik Cap Asem Sinom/Asem Sinom (239).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (64).JPG",
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (224).JPG",
+        "Batik Cap Kembang Sepatu/Kembang Sepatu (221).JPG"
+      ],
+      "brightness": 104.61943817138672,
+      "class_median_brightness": 105.98641967773438,
+      "sharpness": 618.3942260742188,
+      "class_median_sharpness": 967.078857421875,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.7122901082038879,
+          "fixed": true
+        },
+        "grayscale": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.22423680126667023,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.23351289331912994,
+          "fixed": false
+        },
+        "brightness_norm": {
+          "pred_class": "Kembang Sepatu",
+          "p_true": 0.22448262572288513,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.37056559324264526,
+          "fixed": true
+        }
+      }
+    },
+    {
+      "case": 8,
+      "image_id": "ce6a3c8bed44",
+      "relpath": "Batik Cap Tugu Muda/Tugu Muda (122).JPG",
+      "true_class": "Tugu Muda",
+      "pred_class": "Warak Beras Utah",
+      "confidence": 0.3540539,
+      "p_true": 0.23378694,
+      "top3": "Warak Beras Utah|Tugu Muda|Semarangan",
+      "top3_probs": "0.3541|0.2338|0.2268",
+      "confusion_pair_count_in_test": 2,
+      "nn_true_sim": 0.9860203862190247,
+      "nn_pred_sim": 0.9221318960189819,
+      "nn_true": [
+        "Batik Cap Tugu Muda/Tugu Muda (126).JPG",
+        "Batik Cap Tugu Muda/Tugu Muda (106).JPG",
+        "Batik Cap Tugu Muda/Tugu Muda (116).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Warak Beras Utah/Warak Beras Utah (197).JPG",
+        "Batik Cap Warak Beras Utah/Warak Beras Utah (200).JPG",
+        "Batik Cap Warak Beras Utah/Warak Beras Utah (198).JPG"
+      ],
+      "brightness": 113.9285659790039,
+      "class_median_brightness": 109.9017448425293,
+      "sharpness": 7090.64404296875,
+      "class_median_sharpness": 15873.93212890625,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Tugu Muda",
+          "p_true": 0.585564136505127,
+          "fixed": true
+        },
+        "grayscale": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.23486417531967163,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Semarangan",
+          "p_true": 0.27683860063552856,
+          "fixed": false
+        },
+        "brightness_norm": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.23487085103988647,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.2670382857322693,
+          "fixed": false
+        }
+      }
+    },
+    {
+      "case": 9,
+      "image_id": "59fa522fe025",
+      "relpath": "Batik Cap Tugu Muda/Tugu Muda (123).JPG",
+      "true_class": "Tugu Muda",
+      "pred_class": "Semarangan",
+      "confidence": 0.3082356,
+      "p_true": 0.23170476,
+      "top3": "Semarangan|Warak Beras Utah|Tugu Muda",
+      "top3_probs": "0.3082|0.2568|0.2317",
+      "confusion_pair_count_in_test": 2,
+      "nn_true_sim": 0.9895079135894775,
+      "nn_pred_sim": 0.9137616753578186,
+      "nn_true": [
+        "Batik Cap Tugu Muda/Tugu Muda (126).JPG",
+        "Batik Cap Tugu Muda/Tugu Muda (128).JPG",
+        "Batik Cap Tugu Muda/Tugu Muda (125).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Semarangan/Semarangan (192).JPG",
+        "Batik Cap Semarangan/Semarangan (191).JPG",
+        "Batik Cap Semarangan/Semarangan (190).JPG"
+      ],
+      "brightness": 113.92916107177734,
+      "class_median_brightness": 109.9017448425293,
+      "sharpness": 7090.5078125,
+      "class_median_sharpness": 15873.93212890625,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Tugu Muda",
+          "p_true": 0.4023246765136719,
+          "fixed": true
+        },
+        "grayscale": {
+          "pred_class": "Semarangan",
+          "p_true": 0.23279327154159546,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.21370753645896912,
+          "fixed": false
+        },
+        "brightness_norm": {
+          "pred_class": "Semarangan",
+          "p_true": 0.23905637860298157,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Warak Beras Utah",
+          "p_true": 0.24728643894195557,
+          "fixed": false
+        }
+      }
+    },
+    {
+      "case": 10,
+      "image_id": "8a028ef55a18",
+      "relpath": "Batik Cap Asem Sinom/Asem Sinom (272).JPG",
+      "true_class": "Asem Sinom",
+      "pred_class": "Asem Arang",
+      "confidence": 0.48454925,
+      "p_true": 0.35312176,
+      "top3": "Asem Arang|Asem Sinom|Warak Beras Utah",
+      "top3_probs": "0.4845|0.3531|0.0597",
+      "confusion_pair_count_in_test": 1,
+      "nn_true_sim": 0.9931300282478333,
+      "nn_pred_sim": 0.8598531484603882,
+      "nn_true": [
+        "Batik Cap Asem Sinom/Asem Sinom (165).JPG",
+        "Batik Cap Asem Sinom/Asem Sinom (166).JPG",
+        "Batik Cap Asem Sinom/Asem Sinom (167).JPG"
+      ],
+      "nn_pred": [
+        "Batik Cap Asem Arang/asem arang (83).JPG",
+        "Batik Cap Asem Arang/asem arang (84).JPG",
+        "Batik Cap Asem Arang/asem arang (81).JPG"
+      ],
+      "brightness": 106.60163879394533,
+      "class_median_brightness": 105.98641967773438,
+      "sharpness": 669.4884033203125,
+      "class_median_sharpness": 967.078857421875,
+      "interventions": {
+        "full_frame": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.38772812485694885,
+          "fixed": true
+        },
+        "grayscale": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.3539229929447174,
+          "fixed": false
+        },
+        "hflip": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.46966439485549927,
+          "fixed": true
+        },
+        "brightness_norm": {
+          "pred_class": "Asem Arang",
+          "p_true": 0.3813123404979706,
+          "fixed": false
+        },
+        "five_crop": {
+          "pred_class": "Asem Sinom",
+          "p_true": 0.42447441816329956,
+          "fixed": true
+        }
+      }
+    }
+  ]
+}

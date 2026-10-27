@@ -83,7 +83,37 @@ Shared protocol for all runs:
 
 ## Results
 
-_Filled in from `artifacts/metrics/tables.md` once the matrix completes._
+Test Macro F1 on the frozen 450-image test split, mean ± std over seeds 42/43/44
+(`artifacts/metrics/tables.md`). Trained on a Colab Tesla T4.
+
+| Group | Model | Input | Test Macro F1 (%) |
+|---|---|---|---:|
+| G1 | Custom CNN, scratch (baseline) | RGB | 100.00 ± 0.00 |
+| G2 | EfficientNet-B0, scratch | RGB | 100.00 ± 0.00 |
+| **G3** | **EfficientNet-B0, ImageNet (headline)** | RGB | **100.00 ± 0.00** |
+| G4 | EfficientNet-B0, ImageNet, aug OFF | RGB | 100.00 ± 0.00 |
+| G5 | EfficientNet-B0, ImageNet, two-stage | RGB | 100.00 ± 0.00 |
+| G1g | Custom CNN, scratch | grayscale-eq | 84.41 ± 1.45 |
+| G2g | EfficientNet-B0, scratch | grayscale-eq | 75.66 ± 2.38 |
+| G3g | EfficientNet-B0, ImageNet | grayscale-eq | 100.00 ± 0.00 |
+
+- **RGB is at the ceiling.** Every RGB model, including the 0.39 M-parameter
+  baseline, scores 100%, as does a colour histogram with logistic regression. The
+  proposal's +10 pp target for G3 over G1 is therefore **not met** (+0.00 pp).
+- **Without colour, transfer learning wins.** G3g vs G1g is **+15.59 ± 1.45 pp**
+  (paired bootstrap 95% CI excludes 0 for every seed). The whole gain comes from
+  ImageNet initialisation: G3g vs G2g is +24.34 pp, and EfficientNet-B0 from scratch
+  is 8.75 pp *worse* than the small CNN.
+- **Augmentation only shows under shift.** G3 and G4 tie on the clean test set,
+  but at the strongest occlusion G3 keeps 100.00% while G4 drops to 56.34%
+  (`artifacts/metrics/robustness.md`).
+- **Colour dependence.** A grayscale probe drops G1 from 100% to 7.3% and G3 to
+  67.4%.
+
+Error analysis (`artifacts/error_analysis/`): the final G3, G3g and G1 models make no
+test errors, so the analysis uses the final G1g model (64 errors out of 450). Six of
+its ten analysed failures are corrected by showing the full frame instead of the
+centre crop.
 
 ## Deviations from the proposal
 
@@ -98,7 +128,8 @@ _Filled in from `artifacts/metrics/tables.md` once the matrix completes._
 | Runs | 3 configs × 3 seeds + 3 sanity checks | G1–G4 × 3 seeds, plus G1g–G3g and G5; sanity checks reported separately | The ablation also needs several seeds |
 | Success threshold | "+10% Macro F1" | +10 percentage points over the baseline (mean of 3 seeds) | "10%" was ambiguous between relative and absolute |
 | Colour shortcut | Not anticipated | Grayscale + histogram-equalisation protocol and colour probes at evaluation | A colour histogram alone reaches 100% test Macro F1 |
-| Compute | Colab T4, ~8–12 min per run (estimate) | Measured runtime per run (`summary.json`) on a local CPU; Colab notebook provided | Reports actual training cost |
+| Compute | Colab T4, ~8–12 min per run (estimate) | Colab Tesla T4: 24 runs, 5.76 GPU-hours, 9.2–23.1 min per run (`all_runs.csv`) | Measured, not estimated |
+| Environment | Pinned PyTorch 2.5.1 | Training ran on Colab's PyTorch 2.11.0+cu130 / Python 3.13 (`artifacts/runs/*/env.json`). Re-aggregating those runs locally on PyTorch 2.5.1 gives byte-identical tables | Colab's preinstalled torch was used |
 
 
 ## Saved model

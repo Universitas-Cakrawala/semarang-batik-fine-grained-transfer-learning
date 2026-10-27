@@ -1,0 +1,82 @@
+paths:
+  raw_dir: data/raw/semarang-batik
+  processed_dir: data/processed/short320
+  manifests_dir: data/manifests
+  runs_dir: artifacts/runs
+  metrics_dir: artifacts/metrics
+data:
+  kaggle_ref: edywinarno/semarang-batik-dataset
+  kaggle_version: 2
+  expected_images: 3020
+  cache_short_side: 320
+  split:
+    seed: 42
+    fractions:
+      train: 0.7
+      val: 0.15
+      test: 0.15
+    n_folds: 20
+  leakage:
+    phash_max_distance: 8
+    group_same_timestamp: true
+    embed_min_cosine: 0.95
+preprocess:
+  resize_short: 256
+  crop: 224
+  mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  std:
+  - 0.229
+  - 0.224
+  - 0.225
+augmentation:
+  enabled: true
+  random_resized_crop:
+    scale:
+    - 0.8
+    - 1.0
+    ratio:
+    - 0.75
+    - 1.3333
+  hflip_p: 0.5
+  affine:
+    degrees: 15
+    translate: 0.05
+    scale:
+    - 0.9
+    - 1.1
+    shear: 5
+  color_jitter:
+    brightness: 0.2
+    contrast: 0.2
+    saturation: 0.2
+    hue: 0.02
+model:
+  name: efficientnet_b0
+  pretrained: false
+  dropout: 0.2
+train:
+  strategy: single_stage
+  epochs: 30
+  batch_size: 32
+  optimizer: adamw
+  lr: 0.0003
+  weight_decay: 0.0001
+  scheduler: cosine
+  label_smoothing: 0.0
+  amp: auto
+  num_workers: 2
+  early_stopping: false
+  selection_metric: val_macro_f1
+seeds:
+- 42
+- 43
+- 44
+_source: configs/base.yaml
+group: G2
+description: M2 EfficientNet-B0, random init, augmentation ON (architecture control)
+seed: 43
+run_id: G2_effb0-scratch_augon_s43
+subset: null
