@@ -108,8 +108,11 @@ def analyse(cfg: dict, run_id: str, max_cases: int = 10, k_neighbours: int = 3) 
     wrong = preds[~preds.correct].sort_values("confidence", ascending=False)
     pair_counts = wrong.groupby(["true_class", "pred_class"]).size().rename("pair_count")
     wrong = wrong.join(pair_counts, on=["true_class", "pred_class"])
-    # Prefer variety: frequent confusion pairs first, then high-confidence errors.
-    wrong = wrong.sort_values(["pair_count", "confidence"], ascending=False).head(max_cases)
+    # Prefer variety: round-robin over confusion pairs (most confident case of each pair first),
+    # frequent pairs first within a round.
+    wrong["pair_rank"] = wrong.groupby(["true_class", "pred_class"]).cumcount()
+    wrong = wrong.sort_values(["pair_rank", "pair_count", "confidence"],
+                              ascending=[True, False, False]).head(max_cases)
 
     cases = []
     test_ds = BatikDataset(test, root, None)
