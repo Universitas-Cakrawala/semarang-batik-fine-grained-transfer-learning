@@ -3,17 +3,28 @@
 PY ?= .venv/bin/python
 RUN = PYTHONPATH= $(PY) -m batik
 
-.PHONY: setup data sanity matrix analyse reproduce reproduce-retrain test demo
+# Released checkpoints (24 x best.pt + final model), GitHub Release v1.0
+CKPT_URL ?= https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/download/v1.0/batik_checkpoints_v1.0.tar.gz
+CKPT_SHA256 = c4898ab993d7e877e2b9ebaa403c781161dbb57402ed12f8489ec9b90e9d7350
+CKPT_TGZ = artifacts/batik_checkpoints_v1.0.tar.gz
+
+.PHONY: setup data checkpoints sanity matrix analyse reproduce reproduce-retrain test demo
 
 setup:            ## create .venv with pinned CPU wheels
 	uv venv --python 3.12 .venv
 	uv pip install --python $(PY) torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cpu
 	uv pip install --python $(PY) -r requirements.txt -e .
 
-data:             ## download (~13 GB), audit + cache, leakage-aware split
+data:             ## download (~13 GB), audit + cache, verify the frozen split (new split: batik split --force)
 	$(RUN) download
 	$(RUN) audit
-	$(RUN) split
+	$(RUN) verify-split
+
+checkpoints:      ## download + verify released checkpoints into artifacts/runs/*/best.pt and artifacts/release/
+	curl -fL --retry 5 -o $(CKPT_TGZ) $(CKPT_URL)
+	$(PY) -c "import hashlib,sys; d=hashlib.sha256(open('$(CKPT_TGZ)','rb').read()).hexdigest(); sys.exit(0 if d=='$(CKPT_SHA256)' else 'checkpoint archive checksum mismatch: '+d)"
+	tar xzf $(CKPT_TGZ) -C artifacts
+	rm $(CKPT_TGZ)
 
 sanity:           ## Phase 2 pipeline checks
 	$(RUN) sanity

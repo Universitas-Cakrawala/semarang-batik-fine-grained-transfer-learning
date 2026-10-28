@@ -40,13 +40,15 @@ Python 3.12, PyTorch 2.5.1, and torchvision 0.20.1. On machines where a system
 
 ```bash
 make data               # download Kaggle v2 (~13 GB, no credentials needed), audit + cache, verify split
+make checkpoints        # download + SHA-256-verify the released checkpoints (GitHub Release v1.0, 283 MB)
 make reproduce          # HEADLINE: evaluate the released G3 checkpoints on the frozen test split
 make reproduce-retrain  # same headline, retraining G3 x 3 seeds from scratch
 ```
 
 `make reproduce` checks the SHA-256 of `data/manifests/split.csv` and refuses to
-report a number if the split differs. Checkpoints go in
+report a number if the split differs. `make checkpoints` places the checkpoints in
 `artifacts/runs/<run_id>/best.pt` (see [Saved model](#saved-model)).
+Expected output: `HEADLINE  G3 EfficientNet-B0 (ImageNet, aug ON) test Macro F1 = 100.00 ± 0.00 %`.
 
 Full pipeline, step by step (each step writes auditable artefacts):
 
@@ -137,8 +139,16 @@ centre crop.
 The final model is the G3 run with the best **validation** Macro F1
 (`artifacts/metrics/final_model.json`). `python -m batik release` copies it to
 `artifacts/release/batik_effb0_final.pt` (with `release.json`). That file and the
-per-run `best.pt` checkpoints are published as GitHub Release assets.
-It is not committed, because of its size and the dataset licence. Usage:
+per-run `best.pt` checkpoints are published as assets of
+[GitHub Release v1.0](https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0):
+
+| Asset | Contents | SHA-256 |
+|---|---|---|
+| `batik_checkpoints_v1.0.tar.gz` (283 MB) | `runs/<run_id>/best.pt` for all 24 runs + `release/batik_effb0_final.pt`; extract into `artifacts/` (`make checkpoints` does this) | `c4898ab9…94e7350` |
+| `batik_effb0_final.pt` (16 MB) | Final model only, for `predict` and the demo | `8df9c65e…6133d8d1` |
+
+They are not committed, because of their size and the dataset licence (weights
+trained on CC BY-NC-SA data: non-commercial use only). Usage:
 
 ```bash
 python -m batik predict path/to/photo.jpg --checkpoint artifacts/release/batik_effb0_final.pt
