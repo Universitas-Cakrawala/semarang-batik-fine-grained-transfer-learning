@@ -29,7 +29,7 @@ checkpoints:      ## download + verify released checkpoints into artifacts/runs/
 sanity:           ## Phase 2 pipeline checks
 	$(RUN) sanity
 
-matrix:           ## G1-G4 x 3 seeds (+ G5 supplementary), resumable
+matrix:           ## G1-G4, G1g-G3g x 3 seeds, then G5 (supplementary); resumable
 	$(RUN) matrix
 
 analyse:          ## tables, figures, robustness, error-analysis evidence, release final model
