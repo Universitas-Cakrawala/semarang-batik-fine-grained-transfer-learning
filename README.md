@@ -16,7 +16,8 @@ batik motifs. It also includes:
 Deviations from the approved proposal are listed in
 [Deviations from the proposal](#deviations-from-the-proposal).
 
-> **Headline number:** see [Results](#results). Reproduce it with **`make reproduce`**.
+> **Headline number:** see [Results](#results). Reproduce it with
+> **`make setup && make data && make checkpoints && make reproduce`** (see [Reproduce](#reproduce)).
 
 ## Key findings about the data (read before the results)
 
@@ -57,6 +58,7 @@ Full pipeline, step by step (each step writes auditable artefacts):
 | Download + checksum | `python -m batik download` | `data/raw/`, `data/manifests/dataset_snapshot.json` |
 | Audit + cache + EDA | `python -m batik audit` | `inventory.csv`, `exclusions.csv`, `audit_summary.json`, `figures/` |
 | Leakage-aware split | `python -m batik split` (refuses to overwrite) | `split.csv`, `split_meta.json`, `near_duplicate_edges.csv`, `cross_split_nearest_train.csv` |
+| Verify frozen split | `python -m batik verify-split` (run by `make data` and `make reproduce`) | checksum OK / refuses |
 | Dataset diagnostics | `python -m batik diagnostics` | `artifacts/metrics/dataset_diagnostics.json` |
 | Sanity checks | `python -m batik sanity` | `artifacts/sanity/sanity_report.json`, `figures/augmentation_grid.png` |
 | Experiment matrix | `python -m batik matrix` (resumable) | `artifacts/runs/<run_id>/` |
@@ -64,7 +66,8 @@ Full pipeline, step by step (each step writes auditable artefacts):
 | Robustness | `python -m batik robustness` | `artifacts/metrics/robustness.{csv,md}` |
 | Error analysis | `python -m batik errors` | `artifacts/error_analysis/<run_id>/`, `figures/errors/<run_id>/` |
 | Release final model | `python -m batik release` | `artifacts/release/batik_effb0_final.pt`, `release.json` |
-| GPU (Colab) | `notebooks/colab_runner.ipynb` | same, on a T4 |
+| All analysis steps above | `make analyse` | aggregate → robustness → errors → release |
+| GPU (Colab) | `notebooks/colab_runner.ipynb` (clones `main`, runs and stores runs on Google Drive) | same, on a T4 |
 
 ## Experiment matrix
 
@@ -108,7 +111,7 @@ Test Macro F1 on the frozen 450-image test split, mean ± std over seeds 42/43/4
   is 8.75 pp *worse* than the small CNN.
 - **Augmentation only shows under shift.** G3 and G4 tie on the clean test set,
   but at the strongest occlusion G3 keeps 100.00% while G4 drops to 56.34%
-  (`artifacts/metrics/robustness.md`).
+  (`artifacts/metrics/robustness.md`; one final run per group, so no seed CI).
 - **Colour dependence.** A grayscale probe drops G1 from 100% to 7.3% and G3 to
   67.4%.
 
@@ -152,11 +155,13 @@ trained on CC BY-NC-SA data: non-commercial use only). Usage:
 
 ```bash
 python -m batik predict path/to/photo.jpg --checkpoint artifacts/release/batik_effb0_final.pt
-python demo/app.py      # Gradio demo (pip install gradio)
+pip install -e ".[demo]" && make demo   # Gradio demo at http://127.0.0.1:7860
 ```
 
 The model is a closed-set classifier over 10 motifs. It always returns one of
-them, so curators must verify every prediction. It is not intended for deployment in museum or e-commerce systems.
+them, even for non-batik images, and a high confidence does not mean the image is
+in scope (a chart image was labelled Asem Sinom with 0.81). Curators must verify
+every prediction. It is not intended for deployment in museum or e-commerce systems.
 
 ## Data and licence
 
@@ -177,7 +182,8 @@ tests/              protocol unit tests (pytest)
 notebooks/          Colab runner
 data/manifests/     inventory, exclusions, split, leakage reports (committed; no pixels)
 data/raw|processed/ dataset and resized cache (not committed)
-artifacts/          runs/<run_id>/ (config, env, history, metrics, predictions), metrics/, sanity/, error_analysis/
+artifacts/          runs/<run_id>/ (config, env, history, metrics, predictions, robustness), metrics/, sanity/,
+                    error_analysis/, release/release.json (checkpoints: GitHub Release v1.0)
 figures/            EDA, augmentation grid, curves, confusion matrix, error cases
 reports/            report, contribution statement, AI-use declaration
 demo/app.py         Gradio demo
