@@ -37,7 +37,8 @@ def main():
         inputs=gr.Image(type="pil", label="Foto kain batik"),
         outputs=gr.Label(num_top_classes=3, label="Prediksi motif"),
         title="Klasifikasi Motif Batik Semarang (EfficientNet-B0, fine-tuned)",
-        description="Closed-set 10 motif. Prediksi wajib diverifikasi kurator; confidence rendah = periksa manual.",
+        description="Model hanya mengenal 10 motif dan selalu memilih salah satunya, bahkan untuk gambar non-batik "
+                    "(confidence tinggi pun tidak menjamin gambar sesuai cakupan). Setiap prediksi wajib diverifikasi kurator.",
     ).launch(share=a.share)
 
 
