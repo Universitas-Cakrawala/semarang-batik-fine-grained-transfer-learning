@@ -312,11 +312,18 @@ ada di representasi dan kesalahan terjadi di classifier head. Indikasi ini belum
 diuji pada seluruh test set (misalnya dengan k-NN di ruang embedding), dan
 kedekatan tersebut dapat dipengaruhi oleh view lain dari kain yang sama.
 
-> **[VERIFIKASI ANGGOTA]** Bagian ini ditulis dari data intervensi di
-> `cases.json`. Sebelum laporan final, anggota yang memegang error analysis wajib
-> memeriksa `figures/errors/G1g_customcnn-scratch_augon_s42/case_*.png` (Grad-CAM
-> dan nearest neighbour), memastikan penjelasan di atas sesuai dengan yang terlihat,
-> lalu menulis ulang dengan kata-kata sendiri.
+> **[VERIFIKASI ANGGOTA — pre-check selesai, tulis ulang masih diperlukan]**
+> Bagian ini ditulis dari data intervensi di `cases.json`. Cross-check otomatis
+> terhadap seluruh 10 gambar di
+> `figures/errors/G1g_customcnn-scratch_augon_s42/case_01–10.png` (Grad-CAM dan
+> nearest neighbour) sudah dilakukan: semua klaim numerik dan "fixed by" di atas
+> cocok dengan yang terlihat pada gambar, termasuk bahwa kasus 8 dan 9 memang foto
+> identik dari jepretan yang sama dengan dua prediksi salah yang berbeda. Yang
+> **masih wajib** dilakukan anggota yang memegang error analysis sebelum laporan
+> final: melihat sendiri kesepuluh gambar tersebut dan menulis ulang interpretasi
+> di atas dengan kata-kata sendiri (lihat `reports/ai_use_declaration.md` — aturan
+> proyek mewajibkan penjelasan kausal ditulis anggota setelah inspeksi visual,
+> bukan disalin dari draf ini).
 
 ## 7. Limitations, failure modes, dan 10× compute
 
