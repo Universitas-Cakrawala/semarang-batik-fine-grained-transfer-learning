@@ -1,0 +1,47 @@
+{
+  "naive_split_leakage": {
+    "procedure": "sklearn stratified 85/15 split, random_state=42 (proposal's plain split)",
+    "n_test": 449,
+    "test_with_rotated_or_flipped_copy_in_train": 444,
+    "test_with_same_capture_second_in_train": 444,
+    "test_whose_near_duplicate_group_is_in_train": 444,
+    "fraction_leaked": 0.9889
+  },
+  "handcrafted_baselines": {
+    "hsv_colour_histogram": {
+      "input": "RGB",
+      "C": 0.1,
+      "val_macro_f1": 0.9746031746031747,
+      "test_macro_f1": 1.0,
+      "test_accuracy": 1.0
+    },
+    "gray_intensity_histogram": {
+      "input": "RGB",
+      "C": 0.1,
+      "val_macro_f1": 0.9906775067750677,
+      "test_macro_f1": 0.9908902691511386,
+      "test_accuracy": 0.9911111111111112
+    },
+    "lbp_texture": {
+      "input": "RGB",
+      "C": 1.0,
+      "val_macro_f1": 0.9153628330936965,
+      "test_macro_f1": 0.9671867688356605,
+      "test_accuracy": 0.9666666666666667
+    },
+    "gray_eq_intensity_histogram": {
+      "input": "GRAY_EQ",
+      "C": 10.0,
+      "val_macro_f1": 0.5524294854082088,
+      "test_macro_f1": 0.5573519236015322,
+      "test_accuracy": 0.5577777777777778
+    },
+    "gray_eq_lbp_texture": {
+      "input": "GRAY_EQ",
+      "C": 0.1,
+      "val_macro_f1": 0.9075910399346437,
+      "test_macro_f1": 0.962646118706106,
+      "test_accuracy": 0.9622222222222222
+    }
+  }
+}

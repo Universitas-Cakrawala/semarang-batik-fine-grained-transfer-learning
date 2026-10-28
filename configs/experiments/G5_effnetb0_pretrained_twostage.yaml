@@ -1,0 +1,15 @@
+extends: ../base.yaml
+group: G5
+description: >-
+  Supplementary training-strategy experiment promised in proposal Section 5.3:
+  linear probing, then unfreezing the top blocks. Same 30-epoch budget as G3.
+  Not part of the headline comparison.
+model: {name: efficientnet_b0, pretrained: true, dropout: 0.2}
+augmentation: {enabled: true}
+train:
+  strategy: two_stage
+  two_stage:
+    probe_epochs: 5          # stage 1: backbone frozen (BN in eval), head only
+    probe_lr: 1.0e-3
+    finetune_lr: 1.0e-4      # stage 2: features[unfreeze_from:] + head, cosine over remaining epochs
+    unfreeze_from: 5         # torchvision features index; 5..8 = top MBConv stages + head conv

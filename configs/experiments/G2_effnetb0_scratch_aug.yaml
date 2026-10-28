@@ -1,0 +1,5 @@
+extends: ../base.yaml
+group: G2
+description: M2 EfficientNet-B0, random init, augmentation ON (architecture control)
+model: {name: efficientnet_b0, pretrained: false, dropout: 0.2}
+augmentation: {enabled: true}

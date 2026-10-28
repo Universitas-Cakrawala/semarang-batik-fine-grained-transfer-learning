@@ -1,0 +1,30 @@
+{
+  "run_id": "G1g_customcnn-scratch_augon_s44",
+  "group": "G1g",
+  "seed": 44,
+  "model": "custom_cnn",
+  "pretrained": false,
+  "augmentation": true,
+  "strategy": "single_stage",
+  "config_source": "configs/base.yaml",
+  "subset": null,
+  "git_commit": "d4f6709",
+  "device": "Tesla T4",
+  "params_total": 391466,
+  "counts": {
+    "train": 2090,
+    "val": 453,
+    "test": 450
+  },
+  "best_epoch": 23,
+  "best_val_macro_f1": 0.8779071518329052,
+  "val_macro_f1": 0.8779071518329052,
+  "test_macro_f1": 0.8497257329485557,
+  "test_accuracy": 0.8577777777777778,
+  "test_top3_accuracy": 0.9911111111111112,
+  "test_nll": 0.4366796314716339,
+  "train_seconds": 649.8835136890411,
+  "seconds_per_epoch": 21.662783789634705,
+  "peak_memory_mb": 712.87646484375,
+  "checkpoint": "artifacts/runs/G1g_customcnn-scratch_augon_s44/best.pt"
+}

@@ -1,0 +1,17 @@
+{
+  "final_run": "G3_effb0-pt_augon_s42",
+  "rule": "G3 run with highest validation Macro F1",
+  "test_macro_f1": 1.0,
+  "per_class_f1": {
+    "Asem Arang": 1.0,
+    "Asem Sinom": 1.0,
+    "Asem Warak": 1.0,
+    "Blekok": 1.0,
+    "Blekok Warak": 1.0,
+    "Gambang Semarangan": 1.0,
+    "Kembang Sepatu": 1.0,
+    "Semarangan": 1.0,
+    "Tugu Muda": 1.0,
+    "Warak Beras Utah": 1.0
+  }
+}
