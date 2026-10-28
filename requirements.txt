@@ -1,4 +1,5 @@
-# Pinned versions used for the reported results (local CPU environment).
+# Pinned reference environment (local CPU): sanity checks, re-aggregation and `make reproduce`.
+# The reported runs were trained on Colab's preinstalled PyTorch 2.11 (see artifacts/runs/*/env.json).
 # Install torch/torchvision first from the matching index, e.g.:
 #   CPU : pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cpu
 #   CUDA: pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu121

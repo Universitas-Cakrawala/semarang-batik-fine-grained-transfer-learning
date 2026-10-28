@@ -246,7 +246,7 @@ def cmd_reproduce(a):
             continue
         ckpt = rdir / "best.pt"
         if not ckpt.exists():
-            sys.exit(f"missing {ckpt}: download the released checkpoints (README) or pass --retrain")
+            sys.exit(f"missing {ckpt}: run `make checkpoints` (GitHub Release v1.0) or pass --retrain")
         state = torch.load(ckpt, map_location=dev, weights_only=False)
         model = build_model(state["config"], len(classes)).to(dev)
         model.load_state_dict(state["model"])

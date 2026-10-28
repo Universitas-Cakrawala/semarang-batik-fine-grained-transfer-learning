@@ -368,8 +368,8 @@ kedekatan tersebut dapat dipengaruhi oleh view lain dari kain yang sama.
 | Runtime | Total 5,76 jam GPU untuk 24 run. Per run 9,2–23,1 menit (±26–30 detik/epoch untuk EfficientNet-B0 dengan augmentation). G1 s42 tercatat 31,0 menit karena epoch pertama membaca cache gambar dari Google Drive (1.102 detik). Peak memory GPU: 0,7 GB (Custom CNN), 1,5 GB (EfficientNet-B0) (`all_runs.csv`) |
 | Verifikasi lintas lingkungan | `batik aggregate` yang dijalankan ulang di laptop (CPU, PyTorch 2.5.1) dari run Colab menghasilkan `tables.md`, `all_runs.csv`, `group_summary.csv`, `summary.json`, dan `final_model.json` yang identik byte per byte |
 | Sanity check | Lulus semua di lingkungan pin (`artifacts/sanity/sanity_report.json`). Di Colab, dua pemeriksaan gagal: `split_reproducible` (membuat ulang split dengan versi library berbeda memberi hasil berbeda; training tetap memakai `split.csv` beku yang checksum-nya cocok) dan `overfit_efficientnet_b0` (akurasi 0,875 < 0,95 pada 32 gambar; training penuh G2 tetap mencapai 100%) |
-| Command headline | `make data && make reproduce` (evaluasi checkpoint rilis); `make reproduce-retrain` (training ulang G3 × 3 seed) |
-| Model artefact | `artifacts/release/batik_effb0_final.pt` (GitHub Release) |
+| Command headline | `make setup && make data && make checkpoints && make reproduce` (evaluasi checkpoint rilis; diuji dari clone bersih: 100,00 ± 0,00%); `make reproduce-retrain` (training ulang G3 × 3 seed) |
+| Model artefact | `artifacts/release/batik_effb0_final.pt` dan 24 `best.pt` di [GitHub Release v1.0](https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0); diunduh dan diverifikasi SHA-256 oleh `make checkpoints` |
 
 ## 9. Individual contribution statement
 

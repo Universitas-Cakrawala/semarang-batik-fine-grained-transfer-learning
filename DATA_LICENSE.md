@@ -28,7 +28,7 @@
 | Raw images (`data/raw/`, ~13 GB) | **No** | Size; redistribution is governed by CC BY-NC-SA. Fetch with `batik download` |
 | Resized cache (`data/processed/`) | **No** | Derivative of the dataset (ShareAlike); rebuilt deterministically by `batik audit` |
 | Manifests (`data/manifests/*.csv/json`) | Yes | File names, hashes, labels, and split assignment only (no pixels). Needed to reproduce the exact split |
-| Trained weights (`best.pt`) | Release asset | Model weights trained on NC data. Use is limited to non-commercial purposes, consistent with the dataset licence |
+| Trained weights (`best.pt`) | [GitHub Release v1.0](https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0) asset | Model weights trained on NC data. Use is limited to non-commercial purposes, consistent with the dataset licence |
 
 Every use of the dataset or of the models trained here must be **non-commercial**,
 must credit the authors above, and must share derivatives under the same licence.

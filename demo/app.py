@@ -24,7 +24,7 @@ def main():
     ckpt = Path(a.checkpoint)
     ckpt = ckpt if ckpt.is_absolute() else Path(__file__).resolve().parents[1] / ckpt
     if not ckpt.exists():
-        sys.exit(f"{ckpt} not found: run `python -m batik release` after training (or download the release asset)")
+        sys.exit(f"{ckpt} not found: run `make checkpoints` (GitHub Release v1.0) or `python -m batik release` after training")
     predictor = Predictor(ckpt)
 
     def classify(img):
