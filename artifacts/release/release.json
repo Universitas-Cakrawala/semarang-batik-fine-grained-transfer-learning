@@ -1,0 +1,7 @@
+{
+  "run_id": "G3_effb0-pt_augon_s42",
+  "selection_rule": "G3 run with highest validation Macro F1",
+  "test_macro_f1": 1.0,
+  "best_epoch": 26,
+  "file": "batik_effb0_final.pt"
+}

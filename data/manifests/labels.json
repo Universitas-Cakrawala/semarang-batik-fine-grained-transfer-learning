@@ -1,0 +1,26 @@
+{
+  "classes": [
+    "Asem Arang",
+    "Asem Sinom",
+    "Asem Warak",
+    "Blekok",
+    "Blekok Warak",
+    "Gambang Semarangan",
+    "Kembang Sepatu",
+    "Semarangan",
+    "Tugu Muda",
+    "Warak Beras Utah"
+  ],
+  "label_of": {
+    "Asem Arang": 0,
+    "Asem Sinom": 1,
+    "Asem Warak": 2,
+    "Blekok": 3,
+    "Blekok Warak": 4,
+    "Gambang Semarangan": 5,
+    "Kembang Sepatu": 6,
+    "Semarangan": 7,
+    "Tugu Muda": 8,
+    "Warak Beras Utah": 9
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "run_id": "G5_effb0-pt-2stage_augon_s42",
+  "group": "G5",
+  "seed": 42,
+  "model": "efficientnet_b0",
+  "pretrained": true,
+  "augmentation": true,
+  "strategy": "two_stage",
+  "config_source": "configs/base.yaml",
+  "subset": null,
+  "git_commit": "d4f6709",
+  "device": "Tesla T4",
+  "params_total": 4020358,
+  "counts": {
+    "train": 2090,
+    "val": 453,
+    "test": 450
+  },
+  "best_epoch": 26,
+  "best_val_macro_f1": 1.0,
+  "val_macro_f1": 1.0,
+  "test_macro_f1": 1.0,
+  "test_accuracy": 1.0,
+  "test_top3_accuracy": 1.0,
+  "test_nll": 0.00031479072640649974,
+  "train_seconds": 794.7008922100067,
+  "seconds_per_epoch": 26.490029740333558,
+  "peak_memory_mb": 452.3837890625,
+  "checkpoint": "artifacts/runs/G5_effb0-pt-2stage_augon_s42/best.pt"
+}

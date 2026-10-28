@@ -1,1 +1,27 @@
 sandbox/
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+
+# Raw/processed dataset: CC BY-NC-SA 4.0, ~13 GB -> never committed (see DATA_LICENSE.md)
+data/raw/
+data/processed/
+
+# Large binaries: checkpoints are published separately (see README "Saved model")
+artifacts/**/*.pt
+artifacts/cache/
+
+# Partial CPU run stopped before switching to GPU (kept locally for reference)
+artifacts/archive_cpu_partial/
+
+# Training logs, downloaded result archives, local editor/OS/Jupyter files
+logs/
+*.log
+*.zip
+*.tgz
+*.tar.gz
+.ipynb_checkpoints/
+.vscode/
+.DS_Store
+.env

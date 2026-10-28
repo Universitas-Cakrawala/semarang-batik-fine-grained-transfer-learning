@@ -1,0 +1,5 @@
+extends: ../base.yaml
+group: G1
+description: M1 Custom 4-block CNN, random init, augmentation ON (from-scratch baseline)
+model: {name: custom_cnn, pretrained: false, dropout: 0.3}
+augmentation: {enabled: true}

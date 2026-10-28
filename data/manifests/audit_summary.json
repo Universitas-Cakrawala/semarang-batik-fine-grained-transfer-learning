@@ -1,0 +1,104 @@
+{
+  "n_files": 3020,
+  "n_included": 2993,
+  "n_excluded": 27,
+  "exclusion_reasons": {
+    "exact_duplicate_of": 27
+  },
+  "per_class_raw": {
+    "Asem Arang": 300,
+    "Asem Sinom": 300,
+    "Asem Warak": 308,
+    "Blekok": 300,
+    "Blekok Warak": 300,
+    "Gambang Semarangan": 308,
+    "Kembang Sepatu": 300,
+    "Semarangan": 304,
+    "Tugu Muda": 300,
+    "Warak Beras Utah": 300
+  },
+  "per_class_included": {
+    "Asem Arang": 300,
+    "Asem Sinom": 296,
+    "Asem Warak": 308,
+    "Blekok": 295,
+    "Blekok Warak": 300,
+    "Gambang Semarangan": 304,
+    "Kembang Sepatu": 299,
+    "Semarangan": 299,
+    "Tugu Muda": 295,
+    "Warak Beras Utah": 297
+  },
+  "class_balance": {
+    "min": 295,
+    "max": 308,
+    "imbalance_ratio": 1.0441
+  },
+  "extensions": {
+    ".jpg": 3020
+  },
+  "formats": {
+    "JPEG": 2993
+  },
+  "modes": {
+    "RGB": 2993
+  },
+  "exif_orientation": {
+    "1": 2343,
+    "6": 578,
+    "8": 72
+  },
+  "cameras": {
+    "Apple iPhone 6s": 2993
+  },
+  "has_datetime_original": 2993,
+  "native_size_top10": {
+    "3024x4032": 2605,
+    "4032x3024": 250,
+    "3489x2969": 8,
+    "2565x2449": 4,
+    "2665x2773": 4,
+    "2541x2873": 4,
+    "2993x3237": 4,
+    "1913x2305": 4,
+    "2601x4031": 4,
+    "2873x2541": 4
+  },
+  "native_short_side": {
+    "mean": 2999.75,
+    "std": 137.89,
+    "min": 1617.0,
+    "5%": 3024.0,
+    "50%": 3024.0,
+    "95%": 3024.0,
+    "max": 3024.0
+  },
+  "native_long_side": {
+    "mean": 3974.4,
+    "std": 281.84,
+    "min": 1829.0,
+    "5%": 4032.0,
+    "50%": 4032.0,
+    "95%": 4032.0,
+    "max": 4032.0
+  },
+  "megabytes_total": 12373.7,
+  "sharpness": {
+    "mean": 10268.93,
+    "std": 7762.52,
+    "min": 142.29,
+    "5%": 949.14,
+    "50%": 8471.17,
+    "95%": 24872.25,
+    "max": 40020.6
+  },
+  "brightness": {
+    "mean": 105.16,
+    "std": 17.8,
+    "min": 57.02,
+    "5%": 73.21,
+    "50%": 106.18,
+    "95%": 134.08,
+    "max": 161.23
+  }
+}

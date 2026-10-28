@@ -1,0 +1,82 @@
+{
+  "labels": {
+    "label_mapping_consistent": true,
+    "all_classes_in_every_split": {
+      "train": true,
+      "val": true,
+      "test": true
+    },
+    "passed": true
+  },
+  "loader": {
+    "batch_shape": [
+      10,
+      3,
+      224,
+      224
+    ],
+    "labels": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "finite": true,
+    "mean": -0.07341336458921432,
+    "std": 1.0036202669143677,
+    "passed": true
+  },
+  "split_reproducible": {
+    "resplit_identical": true,
+    "manifest_checksum_ok": true,
+    "groups_spanning_splits": 0,
+    "passed": true
+  },
+  "transforms": {
+    "eval_deterministic": true,
+    "train_random": null,
+    "passed": true
+  },
+  "checkpoint_roundtrip": {
+    "custom_cnn": true,
+    "efficientnet_b0": true,
+    "passed": true
+  },
+  "overfit_custom_cnn": {
+    "model": "custom_cnn",
+    "pretrained": false,
+    "n_images": 32,
+    "epochs_used": 19,
+    "final_train_acc": 1.0,
+    "first_loss": 1.398305892944336,
+    "last_loss": 0.050179656594991684,
+    "passed": true
+  },
+  "overfit_efficientnet_b0": {
+    "model": "efficientnet_b0",
+    "pretrained": false,
+    "n_images": 32,
+    "epochs_used": 40,
+    "final_train_acc": 0.96875,
+    "first_loss": 2.2243752479553223,
+    "last_loss": 0.23626765608787537,
+    "passed": true
+  },
+  "overfit_efficientnet_b0_pretrained": {
+    "model": "efficientnet_b0",
+    "pretrained": true,
+    "n_images": 32,
+    "epochs_used": 2,
+    "final_train_acc": 1.0,
+    "first_loss": 1.856412410736084,
+    "last_loss": 0.7375836372375488,
+    "passed": true
+  },
+  "all_passed": true
+}
