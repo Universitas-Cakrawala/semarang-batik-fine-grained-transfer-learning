@@ -158,6 +158,9 @@ python -m batik predict path/to/photo.jpg --checkpoint artifacts/release/batik_e
 pip install -e ".[demo]" && make demo   # Gradio demo at http://127.0.0.1:7860
 ```
 
+Online demo (same model, non-commercial):
+[Hugging Face Space `atsiduy/vision-classification-batik`](https://huggingface.co/spaces/atsiduy/vision-classification-batik).
+
 The model is a closed-set classifier over 10 motifs. It always returns one of
 them, even for non-batik images, and a high confidence does not mean the image is
 in scope (a chart image was labelled Asem Sinom with 0.81). Curators must verify
