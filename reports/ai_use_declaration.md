@@ -14,7 +14,7 @@ Rules kept throughout (proposal Section 7):
 
 | Member | Tools used | What for | How the output was verified |
 |---|---|---|---|
-| Tita Noviana | | | |
+| Tita Noviana | Claude Code (Anthropic) | Asked it to check `reports/report_draft.md` §1–8 for traceability to `artifacts/`, and to cross-check §6 error-analysis claims (confidence, top-3, intervention results, sharpness) against `artifacts/error_analysis/G1g_customcnn-scratch_augon_s42/cases.json` and the 10 case images in `figures/errors/`; also used it to draft this AI-use entry and my contribution-statement row | I opened all 10 case images in `figures/errors/G1g_customcnn-scratch_augon_s42/` myself on 2026-10-28 and confirmed Claude's reading matched what I saw (crops cutting off the motif in cases 3/6/7, cases 8/9 being the same photo with two different wrong guesses, etc.) |
 | Titanio Yudista | | | |
 | Suci Fransisca Sisilia R. | | | |
 | Fajar Dwiharjo | | | |
