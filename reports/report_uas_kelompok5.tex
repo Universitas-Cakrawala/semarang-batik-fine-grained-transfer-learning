@@ -316,6 +316,8 @@ G5 & EfficientNet-B0: linear probe 5 epoch (lr 1e-3), lalu unfreeze \texttt{feat
 \begin{itemize}
 \tightlist
 \item
+  G1, G2, G1g, dan G2g dilatih from scratch (inisialisasi acak, tanpa bobot pretrained). G3, G3g, dan G4 di-fine-tune penuh dari bobot ImageNet: semua layer ikut dilatih sejak epoch pertama. G5 di-fine-tune dua tahap (hanya head, lalu \texttt{features{[}5:{]}} dan head).
+\item
   G1 adalah baseline sederhana yang mudah dijelaskan.
 \item
   G2 memisahkan efek arsitektur dari efek pretraining. Tanpa G2, selisih G1 dan G3 mencampur kedua efek itu.

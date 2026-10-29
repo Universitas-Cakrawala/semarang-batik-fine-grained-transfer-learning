@@ -101,6 +101,7 @@ Untuk menutup shortcut ini, selain protokol RGB dari proposal kami juga menjalan
 | G5 | EfficientNet-B0: linear probe 5 epoch (lr 1e-3), lalu unfreeze `features[5:]` 25 epoch (lr 1e-4) | | ImageNet | RGB | ON | Strategi training (suplemen) |
 
 **Alasan pemilihan.**
+- G1, G2, G1g, dan G2g dilatih from scratch (inisialisasi acak, tanpa bobot pretrained). G3, G3g, dan G4 di-fine-tune penuh dari bobot ImageNet: semua layer ikut dilatih sejak epoch pertama. G5 di-fine-tune dua tahap (hanya head, lalu `features[5:]` dan head).
 - G1 adalah baseline sederhana yang mudah dijelaskan.
 - G2 memisahkan efek arsitektur dari efek pretraining. Tanpa G2, selisih G1 dan G3 mencampur kedua efek itu.
 - G4 hanya berbeda dari G3 pada augmentation; unit test di `tests/test_core.py` memeriksa bahwa konfigurasi lainnya identik.
