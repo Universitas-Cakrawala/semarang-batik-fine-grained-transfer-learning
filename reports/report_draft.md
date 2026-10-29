@@ -3,7 +3,8 @@
 **Kelompok 5, Track A** · Tita Noviana, Titanio Yudista, Suci Fransisca Sisilia R., Fajar Dwiharjo
 
 Repository: <https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning> · Model: [GitHub Release v1.0](https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0) ·
-Demo: [Hugging Face Space](https://huggingface.co/spaces/atsiduy/vision-classification-batik)
+Demo: [Hugging Face Space](https://huggingface.co/spaces/atsiduy/vision-classification-batik) ·
+Slide presentasi: <https://batik-vision-deck.netlify.app/s/semarang-batik-results>
 
 Semua angka dalam laporan ini berasal dari file di `artifacts/` dan `data/manifests/` di repository.
 
