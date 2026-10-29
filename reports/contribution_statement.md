@@ -21,4 +21,4 @@ Ownership changes (date, what moved, why):
 
 We confirm the statement above is accurate.
 
-Tita Noviana: Tita Noviana  Titanio Yudista: ____________ Suci Fransisca Sisilia R.: Suci Fransisca Sisilia R. Fajar Dwiharjo: Fajar Dwiharjo
+Tita Noviana: Tita Noviana  Titanio Yudista: Titanio Yudista Suci Fransisca Sisilia R.: Suci Fransisca Sisilia R. Fajar Dwiharjo: Fajar Dwiharjo
