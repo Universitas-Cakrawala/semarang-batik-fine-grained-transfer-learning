@@ -4,9 +4,9 @@
 
 > **Revisi 2026-10-29:** koreksi terhadap artefak dicatat di `CORRECTIONS.md`.
 >
-> **Status draf.** Semua bagian sudah diisi dari artefak di `artifacts/`. Sebelum
-> final: bagian bertanda **[VERIFIKASI ANGGOTA]** diperiksa dan ditulis ulang oleh
-> anggota, lalu draf dipadatkan ke 8–12 halaman. Setiap angka harus tetap dapat
+> **Status draf.** Semua bagian sudah diisi dari artefak di `artifacts/`, dan §6 sudah
+> dicocokkan dengan gambar `figures/errors/`. Sebelum final: draf dipadatkan ke 8–12
+> halaman. Setiap angka harus tetap dapat
 > ditelusuri ke `artifacts/metrics/*` atau `artifacts/runs/*`.
 
 ---
@@ -260,9 +260,10 @@ Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus yang diperi
    sehingga Grad-CAM aktif pada gurat lipatan tengah dan menebak Kembang Sepatu
    (conf. 0,59; pulih ke Blekok dengan `p_true=0,56` pada *full frame*). Pola serupa
    terjadi pada **kasus 3** (`Kembang Sepatu (99).JPG`, `p_true` melonjak dari 0,33 ke
-   0,99 pada *full frame* karena mahkota bunga sepatu utuh di sudut foto kembali
-   terlihat) dan **kasus 7** (`Asem Sinom (149).JPG`, `p_true` naik dari 0,22 ke 0,71
-   ketika pola sebaran ranting asam tidak lagi terpotong lipatan horizontal di tengah).
+   0,99 pada *full frame*; *center crop* memuat pita gelap lipatan kain di bagian bawah
+   dan membuang sisi kiri-kanan foto yang berisi bunga lain) dan **kasus 7** (`Asem Sinom (149).JPG`, `p_true` naik dari 0,22 ke 0,71
+   pada *full frame*: lipatan horizontal tetap ada, tetapi tidak lagi mendominasi bingkai
+   dan lebih banyak buah asam merah ikut terlihat).
    Dengan demikian, kegagalan kelompok ini bersumber dari protokol *single center crop*
    saat inferensi, bukan ketiadaan fitur pada model.
 
@@ -273,7 +274,8 @@ Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus yang diperi
    model dingin (biru) tepat di atas instrumen gambang di tengah, tetapi menyala kuat
    (merah-kuning) pada taburan *isen-isen* sulur rapat di latar kanan-atas dan bawah
    yang secara visual menyerupai sebaran motif Asem Arang (`nn_pred` cos 0,96). Pada
-   kasus 1, kontras warna oranye-hijau hilang akibat protokol *grayscale-equalized*,
+   kasus 1, kontras antara kain oranye dan figur warak kecil berwarna biru-ungu hilang akibat
+   protokol *grayscale-equalized*,
    sehingga Grad-CAM merespons lengkungan garis lipatan diagonal dan siluet warak kecil
    sebagai kelopak Kembang Sepatu (`nn_pred` cos 0,90). Sementara itu, **kasus 4**
    (`blekok (274).JPG`) hanya memuat pita pinggiran geometris (*tumpal* kotak bunga)
@@ -294,7 +296,11 @@ Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus yang diperi
    hanya ~29% dari ketajaman normal kelasnya, serta **kasus 8 dan 9** (7.091 vs median
    Tugu Muda 15.874). Temuan mikro ini sejalan dengan eksperimen *robustness* Bagian 5,
    di mana *Gaussian blur* tingkat 1 langsung menjatuhkan Macro F1 G1g dari 85,49% ke
-   26,09%.
+   26,09%. **Catatan inspeksi visual:** kasus 4 dan 6 tidak tampak buram; sebagian besar
+   bingkainya adalah kain hijau polos, dan area polos memang menghasilkan nilai
+   *sharpness* Laplacian rendah. Jadi pada kedua kasus ini angka *sharpness* lebih
+   mencerminkan sedikitnya motif di dalam bingkai (mekanisme 1) daripada blur, dan
+   mekanisme ini sebaiknya dianggap bukti pendukung yang lemah, bukan penyebab utama.
 
 4. **Ketidakstabilan terhadap orientasi rotasi/refleksi** (kasus 5, 8, 9, 10).
    Pada **kasus 5** (`Asem Sinom (82).JPG`), kuncup daun asam tersusun miring sejajar
