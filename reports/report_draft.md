@@ -248,23 +248,76 @@ Pada model G1g, intervensi grayscale tidak berpengaruh karena input sudah graysc
 
 Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus yang diperiksa. Jadi, berdasarkan intervensi ini, pencahayaan tidak didukung sebagai penyebab utama error pada kasus-kasus tersebut.
 
-**Mekanisme kegagalan yang didukung intervensi:**
+**Analisis kausal berdasarkan intervensi input dan inspeksi visual Grad-CAM (`case_01–10.png`):**
 
-1. **Konteks hilang akibat center crop** (kasus 3, 6, 7, 8, 9, 10). Pada enam kasus ini, prediksi menjadi benar ketika model diberi seluruh foto (*full frame*) atau beberapa potongan gambar (*5-crop*). Pada kasus 3, probabilitas untuk kelas yang benar meningkat dari 0,33 menjadi 0,99. Ini menunjukkan bahwa proses CenterCrop 224 dari sisi pendek 256 kemungkinan membuang bagian tepi yang memuat ciri pembeda motif. Jadi, masalahnya berkaitan dengan cara gambar diproses saat evaluasi, bukan semata-mata dengan bobot model.
-2. **Tekstur mirip tanpa warna, tidak dapat diperbaiki input** (kasus 1, 2, 4). Tidak ada intervensi yang berhasil membalik prediksi pada ketiga kasus ini, meskipun confidence model cukup tinggi (0,65–0,94). Kasus 1 termasuk pasangan kesalahan yang paling sering muncul, dengan 23 error. Informasi pembeda masih terlihat pada gambar grayscale karena G3g berhasil mengklasifikasikan seluruh test set dengan benar. Hasil ini mengarah pada kemungkinan bahwa fitur yang dipelajari G1g dari awal, menggunakan 2.090 gambar train, belum cukup untuk membedakan isen-isen pada kedua motif.
-3. **Foto kurang tajam.** Delapan dari sepuluh kasus memiliki nilai sharpness di bawah median kelasnya. Pada kasus 4 dan 6, nilainya hanya sekitar 29% dari median. Temuan ini sejalan dengan uji robustness, ketika blur tingkat 1 menurunkan skor G1g dari 85,5% menjadi 26,1%.
-4. **Sensitivitas orientasi** (kasus 5 dan 10 membaik setelah flip; kasus 8 dan 9 juga menunjukkan masalah terkait orientasi). Kasus 8 dan 9 berasal dari jepretan yang sama. Nilai brightness dan sharpness keduanya berbeda kurang dari 0,01%, dan pHash dihedral bernilai 0 pada salah satu transformasi. Artinya, keduanya merupakan salinan yang diputar atau di-flip, bukan file yang identik secara byte. Keduanya juga berada dalam grup split yang sama, tetapi model menghasilkan dua prediksi salah yang **berbeda**. Ini menunjukkan bahwa fitur G1g belum cukup konsisten terhadap perubahan orientasi yang tidak mengubah identitas motif.
+1. **Terpotongnya motif utama akibat *center crop* evaluasi** (kasus 3, 6, 7, 8, 9, 10).
+   Pada enam dari sepuluh kasus, prediksi langsung berbalik menjadi benar saat model
+   diberi foto utuh (*full frame*) atau rata-rata *5-crop*. Bukti visual paling jelas
+   terlihat pada **kasus 6** (`blekok (258).JPG`): pada panel *full image*, siluet
+   burung blekok berada di tepi kiri-atas dan kanan-bawah kain, sedangkan bagian
+   tengah kain hampir seluruhnya polos. *CenterCrop* 224×224 memotong habis badan
+   burung tersebut dan hanya menyisakan lipatan kain tengah serta sedikit ujung sayap,
+   sehingga Grad-CAM aktif pada gurat lipatan tengah dan menebak Kembang Sepatu
+   (conf. 0,59; pulih ke Blekok dengan `p_true=0,56` pada *full frame*). Pola serupa
+   terjadi pada **kasus 3** (`Kembang Sepatu (99).JPG`, `p_true` melonjak dari 0,33 ke
+   0,99 pada *full frame* karena mahkota bunga sepatu utuh di sudut foto kembali
+   terlihat) dan **kasus 7** (`Asem Sinom (149).JPG`, `p_true` naik dari 0,22 ke 0,71
+   ketika pola sebaran ranting asam tidak lagi terpotong lipatan horizontal di tengah).
+   Dengan demikian, kegagalan kelompok ini bersumber dari protokol *single center crop*
+   saat inferensi, bukan ketiadaan fitur pada model.
 
-Catatan: Pada kesepuluh kasus yang diperiksa, tetangga terdekat di ruang embedding G1g berasal dari kelas yang benar (cosine 0,957–0,998). Nilainya lebih dekat dibandingkan tetangga dari kelas yang diprediksi model (0,860–0,960). Temuan ini memberi petunjuk bahwa informasi untuk membedakan kelas mungkin masih tersimpan dalam representasi model, sementara kesalahannya muncul pada classifier head. Namun, pola tersebut belum diuji pada seluruh test set, misalnya dengan k-NN di ruang embedding. Kedekatan ini juga bisa dipengaruhi oleh foto lain dari kain yang sama.
+2. **Ambiguitas tekstur *isen-isen* dan elemen pinggiran ketika warna dihilangkan**
+   (kasus 1, 2, 4, 10). Pada **kasus 1** (`asem warak (61).JPG`, conf. 0,94) dan
+   **kasus 2** (`Gambang Semarangan (123).JPG`, conf. 0,83), kelima intervensi gagal
+   mengubah prediksi. Inspeksi Grad-CAM pada kasus 2 menunjukkan bahwa aktivasi
+   model dingin (biru) tepat di atas instrumen gambang di tengah, tetapi menyala kuat
+   (merah-kuning) pada taburan *isen-isen* sulur rapat di latar kanan-atas dan bawah
+   yang secara visual menyerupai sebaran motif Asem Arang (`nn_pred` cos 0,96). Pada
+   kasus 1, kontras warna oranye-hijau hilang akibat protokol *grayscale-equalized*,
+   sehingga Grad-CAM merespons lengkungan garis lipatan diagonal dan siluet warak kecil
+   sebagai kelopak Kembang Sepatu (`nn_pred` cos 0,90). Sementara itu, **kasus 4**
+   (`blekok (274).JPG`) hanya memuat pita pinggiran geometris (*tumpal* kotak bunga)
+   tanpa satu pun figur burung blekok di dalam bingkai foto; Grad-CAM mengikuti pita
+   diagonal tersebut dan menyamakannya dengan deretan daun Asem Sinom (`nn_pred` cos
+   0,93). Pada **kasus 10** (`Asem Sinom (272).JPG`), sudut kanan-atas *crop* didominasi
+   garis-garis paralel pinggiran kain yang memicu aktivasi Grad-CAM ke arah Asem Arang
+   (ketiga *nearest neighbour* Asem Arang di `nn_pred` juga memiliki pita pinggiran
+   serupa), namun berhasil dikoreksi oleh *full frame*, *hflip*, maupun *5-crop*.
+   Mengingat G3g mampu mengklasifikasikan seluruh gambar ini dengan benar (100%),
+   kegagalan G1g menunjukkan bahwa representasi *from-scratch* dari 2.090 gambar belum
+   mampu memisahkan struktur motif utama dari tekstur latar/*isen-isen* tanpa bantuan
+   warna.
 
-> **[VERIFIKASI ANGGOTA — belum selesai]**
-> Angka pada bagian ini sudah dicek ulang terhadap `cases.json` pada 2026-10-29:
-> confidence, top-3, sharpness, median kelas, dan hasil intervensi cocok dengan file.
-> Dari sepuluh citra kasus, hanya kasus 3 dan 8 yang sudah dilihat dalam pemeriksaan
-> ini. Anggota yang memegang error analysis wajib melihat kesepuluh gambar di
-> `figures/errors/G1g_customcnn-scratch_augon_s42/case_01–10.png` dan menulis ulang
-> interpretasi kausal dengan kata-kata sendiri (proposal Bagian 7 melarang analisis
-> kausal tanpa inspeksi visual).
+3. **Degradasi ketajaman citra (*motion/defocus blur*)** (8 dari 10 kasus memiliki
+   *sharpness* Laplacian di bawah median kelasnya). Efek ini paling ekstrem pada
+   **kasus 4** (1.761 vs median Blekok 6.130) dan **kasus 6** (1.811 vs 6.130), yakni
+   hanya ~29% dari ketajaman normal kelasnya, serta **kasus 8 dan 9** (7.091 vs median
+   Tugu Muda 15.874). Temuan mikro ini sejalan dengan eksperimen *robustness* Bagian 5,
+   di mana *Gaussian blur* tingkat 1 langsung menjatuhkan Macro F1 G1g dari 85,49% ke
+   26,09%.
+
+4. **Ketidakstabilan terhadap orientasi rotasi/refleksi** (kasus 5, 8, 9, 10).
+   Pada **kasus 5** (`Asem Sinom (82).JPG`), kuncup daun asam tersusun miring sejajar
+   lipatan diagonal kain dan mengaktifkan Grad-CAM sebagai deretan bulir Warak Beras
+   Utah (`nn_pred` cos 0,96); sekadar membalik citra secara horizontal (*hflip*)
+   mengembalikan prediksi ke Asem Sinom (`p_true=0,45`). Bukti paling kuat terlihat
+   saat membandingkan panel visual **kasus 8** (`Tugu Muda (122).JPG`) dan **kasus 9**
+   (`Tugu Muda (123).JPG`): keduanya berasal dari jepretan yang sama (nilai *brightness*
+   113,93 dan *sharpness* 7.091 berbeda <0,01%, dengan jarak pHash dihedral 0) yang
+   tersimpan sebagai salinan rotasi 180° di dalam grup split yang sama. Ketika siluet
+   tugu terpotong di tepi *center crop*, rotasi tersebut menggeser fokus Grad-CAM dari
+   sudut kiri-atas (kasus 8, ditebak Warak Beras Utah, conf. 0,35) ke figur burung di
+   tengah (kasus 9, ditebak Semarangan, conf. 0,31). Kedua kasus ini langsung teratasi
+   ketika *full frame* menampilkan struktur Tugu Muda secara utuh (`p_true` 0,59 dan
+   0,40).
+
+Catatan representasi: pada kesepuluh kasus di atas, *nearest neighbour* data latih di
+ruang *embedding* G1g selalu berasal dari kelas yang benar (cosine 0,957–0,998),
+mengungguli kemiripan ke kelas prediksi yang salah (0,860–0,960). Hal ini menunjukkan
+bahwa kemiripan tingkat fitur sebenarnya masih terjaga, tetapi batas keputusan pada
+*linear classifier head* G1g mudah terdorong oleh gangguan *crop*, orientasi, dan
+*isen-isen* latar (meskipun pola ini belum diuji dengan k-NN pada seluruh test set dan
+kedekatan *embedding* dapat dipengaruhi oleh view lain dari lembar kain yang sama).
 
 ## 7. Limitations, failure modes, dan 10× compute
 
