@@ -2,10 +2,10 @@
 % Body converted from reports/report_draft.md with pandoc 3.9; text, numbers and tables are
 % identical to the draft. Later edits can be made directly in this file.
 % Compile from the reports/ folder (figures are referenced as ../figures/...):
-%   cd reports && pdflatex report_kelompok5.tex && pdflatex report_kelompok5.tex
+%   cd reports && pdflatex report_uas_kelompok5.tex && pdflatex report_uas_kelompok5.tex
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[a4paper,top=1.8cm,bottom=1.8cm,left=1.9cm,right=1.9cm]{geometry}
+\usepackage[a4paper,top=2.0cm,bottom=2.0cm,left=2.0cm,right=2.0cm,headsep=0.8cm,footskip=1cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{mathptmx}
@@ -14,6 +14,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{newunicodechar}
 \usepackage{microtype}
+\usepackage{setspace}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{calc}
@@ -21,11 +22,22 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{etoolbox}
-\usepackage[font=small,labelfont=bf,skip=4pt]{caption}
+\usepackage[table]{xcolor}
+\usepackage[font=small,labelfont={bf,color=ink},skip=6pt]{caption}
 \usepackage{enumitem}
 \usepackage{titlesec}
-\usepackage{xcolor}
-\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+
+% Colours
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{0E7490}
+\definecolor{rulegray}{HTML}{B8C4CE}
+\definecolor{muted}{HTML}{536575}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent,
+  pdftitle={Evaluasi From-Scratch CNN dan Fine-Tuned EfficientNet-B0 untuk Klasifikasi Motif Batik Semarang},
+  pdfauthor={Kelompok 5: Tita Noviana, Titanio Yudista, Suci Fransisca Sisilia R., Fajar Dwiharjo}}
 
 % Symbols used in the draft that utf8/T1 does not map on its own
 \newunicodechar{→}{\ensuremath{\rightarrow}}
@@ -42,7 +54,7 @@
 \renewcommand{\tablename}{Tabel}
 
 % Macros emitted by pandoc
-\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
 \makeatletter
 \newsavebox\pandoc@box
 \newcommand*\pandocbounded[1]{%
@@ -55,36 +67,72 @@
 \makeatother
 \newcounter{none} % pandoc: unnumbered longtables
 
-% Compact layout so the report stays within the 8-12 page limit
+% Text spacing: a little more air between lines, paragraphs and list items
+\setstretch{1.08}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{4pt}
-\setlist{itemsep=1pt,topsep=2pt,parsep=3pt}
-\titleformat{\section}{\large\bfseries\color[HTML]{17324D}}{\thesection.}{0.5em}{}
-\titlespacing*{\section}{0pt}{10pt}{4pt}
-\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.08}}
-\setlength{\LTpre}{4pt}
-\setlength{\LTpost}{4pt}
-\setlength{\tabcolsep}{4pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlist{itemsep=3pt,topsep=4pt,parsep=4pt,partopsep=0pt}
+\setlist[itemize]{leftmargin=1.4em}
+\setlist[enumerate]{leftmargin=1.6em}
 \setlength{\emergencystretch}{2em}
 \urlstyle{same}
 
+% Section headings with a thin rule underneath
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection.}{0.5em}{}[{\color{rulegray}\titlerule[0.6pt]}]
+\titlespacing*{\section}{0pt}{18pt}{8pt}
+
+% Tables: readable row height, light rules, small but not tiny text
+\AtBeginEnvironment{longtable}{\footnotesize\setstretch{1.0}\renewcommand{\arraystretch}{1.35}}
+\setlength{\LTpre}{10pt}
+\setlength{\LTpost}{10pt}
+\setlength{\tabcolsep}{5pt}
+\setlength{\heavyrulewidth}{0.8pt}
+\setlength{\lightrulewidth}{0.4pt}
+
+% Figures: a bit of space around them
+\setlength{\intextsep}{12pt}
+\setlength{\textfloatsep}{14pt}
+
+% Running header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{muted}Klasifikasi Motif Batik Semarang: From-Scratch CNN vs Transfer Learning}
+\fancyhead[R]{\footnotesize\color{muted}Kelompok 5, Track A}
+\fancyfoot[C]{\footnotesize\color{muted}Halaman \thepage\ dari \pageref*{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{firstpage}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[C]{\footnotesize\color{muted}Halaman \thepage\ dari \pageref*{LastPage}}}
+
 \begin{document}
+\thispagestyle{firstpage}
 
 \begin{center}
-{\Large\bfseries Evaluasi From-Scratch CNN dan Fine-Tuned EfficientNet-B0 untuk\\[2pt]
-Fine-Grained Classification Motif Batik Semarang\par}
-\vspace{6pt}
-{\normalsize UAS Deep Learning, Kelompok 5, Track A\par}
+{\small\color{muted}LAPORAN AKHIR UAS DEEP LEARNING \textperiodcentered{} KELOMPOK 5 \textperiodcentered{} TRACK A\par}
+\vspace{10pt}
+{\LARGE\bfseries\color{ink}\setstretch{1.15}
+Evaluasi From-Scratch CNN dan Fine-Tuned EfficientNet-B0\\
+untuk Fine-Grained Classification Motif Batik Semarang\par}
+\vspace{14pt}
+{\normalsize\renewcommand{\arraystretch}{1.3}%
+\begin{tabular}{@{}l@{\hspace{1.5em}}l@{\hspace{4em}}l@{\hspace{1.5em}}l@{}}
+Tita Noviana (Ketua) & {\color{muted}NIM 24120500011} & Suci Fransisca Sisilia R. & {\color{muted}NIM 24120500008}\\
+Titanio Yudista & {\color{muted}NIM 24120500031} & Fajar Dwiharjo & {\color{muted}NIM 24130500010}\\
+\end{tabular}\par}
+\vspace{12pt}
+{\color{rulegray}\rule{\linewidth}{0.6pt}\par}
 \vspace{2pt}
-{\normalsize Tita Noviana \quad Titanio Yudista \quad Suci Fransisca Sisilia R. \quad Fajar Dwiharjo\par}
+{\small\renewcommand{\arraystretch}{1.25}%
+\begin{tabular}{@{}r@{\hspace{0.8em}}l@{}}
+\textbf{Repository} & \url{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning}\\
+\textbf{Model} & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0}{GitHub Release v1.0}\\
+\textbf{Demo} & \href{https://huggingface.co/spaces/atsiduy/vision-classification-batik}{Hugging Face Space \texttt{atsiduy/vision-classification-batik}}\\
+\end{tabular}\par}
 \vspace{4pt}
-{\small Repository: \url{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning}\\
-Model: \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0}{GitHub Release v1.0}
-\quad Demo: \href{https://huggingface.co/spaces/atsiduy/vision-classification-batik}{Hugging Face Space}\par}
+{\small\itshape\color{muted}Semua angka dalam laporan ini berasal dari file di \texttt{artifacts/} dan \texttt{data/manifests/} di repository.\par}
 \vspace{2pt}
-{\small Semua angka dalam laporan ini berasal dari file di \texttt{artifacts/} dan \texttt{data/manifests/} di repository.\par}
+{\color{rulegray}\rule{\linewidth}{0.6pt}\par}
 \end{center}
-\vspace{2pt}
+\vspace{4pt}
 
 \section{Problem statement dan kesesuaian deep learning}\label{problem-statement-dan-kesesuaian-deep-learning}
 
@@ -377,9 +425,9 @@ G3g & EfficientNet-B0, ImageNet, grayscale-eq & 4.020.358 & 100,00 ± 0,00 & 100
 
 Tabel per run ada di \texttt{tables.md}.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.36\linewidth,height=\textheight,keepaspectratio,alt={Confusion matrix test model final (G3 seed 42): seluruh 450 gambar test benar.}]{../figures/confusion_matrix_final.png}
+\includegraphics[width=0.32\linewidth,height=\textheight,keepaspectratio,alt={Confusion matrix test model final (G3 seed 42): seluruh 450 gambar test benar.}]{../figures/confusion_matrix_final.png}
 \caption{Confusion matrix test model final (G3 seed 42): seluruh 450 gambar test benar.}
 \end{figure}
 
@@ -400,15 +448,15 @@ Macro F1 ≥ 0,99, ketiga seed): G3 dan G3g pada epoch 1, G4 pada epoch 1--2, G5
 epoch 2, G1 (RGB) pada epoch 2--4, dan G2 pada epoch 6--7. G1g dan G2g tidak pernah
 mencapainya dalam 30 epoch.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\linewidth,height=\textheight,keepaspectratio,alt={Test Macro F1 per group: batang = rata-rata, titik = tiap seed; garis putus-putus = target 85\%.}]{../figures/group_macro_f1.png}
+\includegraphics[width=0.64\linewidth,height=\textheight,keepaspectratio,alt={Test Macro F1 per group: batang = rata-rata, titik = tiap seed; garis putus-putus = target 85\%.}]{../figures/group_macro_f1.png}
 \caption{Test Macro F1 per group: batang = rata-rata, titik = tiap seed; garis putus-putus = target 85\%.}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Kurva training semua run: loss (garis penuh = train, putus-putus = validation) dan validation Macro F1 per epoch.}]{../figures/training_curves.png}
+\includegraphics[width=0.94\linewidth,height=\textheight,keepaspectratio,alt={Kurva training semua run: loss (garis penuh = train, putus-putus = validation) dan validation Macro F1 per epoch.}]{../figures/training_curves.png}
 \caption{Kurva training semua run: loss (garis penuh = train, putus-putus = validation) dan validation Macro F1 per epoch.}
 \end{figure}
 
@@ -632,12 +680,17 @@ Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus, sehingga p
 
   Jadi kegagalan kelompok ini berasal dari protokol \emph{single center crop} saat inferensi,
   karena model yang sama memprediksi dengan benar ketika motifnya terlihat.
+\end{enumerate}
 
-  \begin{figure}[H]
-  \centering
-  \includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Kasus 6: foto utuh, input center crop, Grad-CAM, top-3, dan nearest neighbour train.}]{../figures/errors/G1g_customcnn-scratch_augon_s42/case_06.png}
-  \caption{Kasus 6: foto utuh, input center crop, Grad-CAM, top-3, dan nearest neighbour train.}
-  \end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio,alt={Kasus 6: foto utuh, input center crop, Grad-CAM, top-3, dan nearest neighbour train.}]{../figures/errors/G1g_customcnn-scratch_augon_s42/case_06.png}
+\caption{Kasus 6: foto utuh, input center crop, Grad-CAM, top-3, dan nearest neighbour train.}
+\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
 \item
   \textbf{Ambiguitas tekstur \emph{isen-isen} dan elemen pinggiran ketika warna dihilangkan}
   (kasus 1, 2, 4, 10). Pada kasus 1 (\texttt{asem\ warak\ (61).JPG}, conf. 0,94) dan kasus 2
@@ -664,12 +717,17 @@ Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus, sehingga p
   G3g mengklasifikasikan seluruh gambar ini dengan benar, jadi informasinya ada di input
   grayscale. Yang kurang adalah representasi \emph{from-scratch}: dari 2.090 gambar, G1g belum
   belajar memisahkan motif utama dari tekstur latar tanpa bantuan warna.
+\end{enumerate}
 
-  \begin{figure}[H]
-  \centering
-  \includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Kasus 2: Grad-CAM menyala pada isen-isen latar, bukan pada motif utama.}]{../figures/errors/G1g_customcnn-scratch_augon_s42/case_02.png}
-  \caption{Kasus 2: Grad-CAM menyala pada isen-isen latar, bukan pada motif utama.}
-  \end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio,alt={Kasus 2: Grad-CAM menyala pada isen-isen latar, bukan pada motif utama.}]{../figures/errors/G1g_customcnn-scratch_augon_s42/case_02.png}
+\caption{Kasus 2: Grad-CAM menyala pada isen-isen latar, bukan pada motif utama.}
+\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
 \item
   \textbf{Ketajaman rendah (bukti lemah).} Delapan dari sepuluh kasus memiliki \emph{sharpness}
   Laplacian di bawah median kelasnya, misalnya kasus 4 (1.761 vs median Blekok 6.130),
