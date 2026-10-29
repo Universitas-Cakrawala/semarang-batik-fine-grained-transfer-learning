@@ -7,15 +7,13 @@ Demo: [Hugging Face Space](https://huggingface.co/spaces/atsiduy/vision-classifi
 
 Semua angka dalam laporan ini berasal dari file di `artifacts/` dan `data/manifests/` di repository.
 
----
-
 ## 1. Problem statement dan kesesuaian deep learning
 
-**Keputusan yang didukung.** Model digunakan untuk mengenali foto kain dan mengelompokkannya ke dalam 10 motif batik Semarang: Asem Arang, Asem Sinom, Asem Warak, Blekok, Blekok Warak, Gambang Semarangan, Kembang Sepatu, Semarangan, Tugu Muda, dan Warak Beras Utah. Hasilnya ditujukan untuk membantu proses kurasi dan pengarsipan. Model hanya memberikan **saran top-3 yang perlu diperiksa kurator**. Keputusan akhir tetap berada di tangan kurator, bukan sistem otomatis.
+**Keputusan yang didukung.** Model mengklasifikasikan foto kain ke salah satu dari 10 motif batik Semarang: Asem Arang, Asem Sinom, Asem Warak, Blekok, Blekok Warak, Gambang Semarangan, Kembang Sepatu, Semarangan, Tugu Muda, dan Warak Beras Utah. Tujuannya membantu kurasi dan pengarsipan. Model memberi saran top-3, dan kurator yang memeriksa serta memutuskan label akhirnya.
 
-**Pengguna dan biaya kesalahan.** Sistem ini ditujukan bagi kurator, peneliti tekstil, dan pengelola platform kriya. Kesalahan klasifikasi punya dampak pada pekerjaan mereka. False positive dapat membuat arsip menyimpan label yang keliru, sedangkan false negative bisa menyebabkan motif yang sebenarnya ada justru terlewat dan harus diperiksa kembali secara manual. Kedua kesalahan sama-sama perlu diperhatikan. Karena itu, dengan distribusi kelas yang relatif seimbang, evaluasi menggunakan Macro F1 sebagai metrik utama.
+**Pengguna dan biaya kesalahan.** Penggunanya adalah kurator, peneliti tekstil, dan pengelola platform kriya. False positive membuat arsip menyimpan label yang keliru. False negative membuat motif yang sebenarnya ada terlewat dan harus diperiksa ulang secara manual. Karena kedua jenis kesalahan sama mahalnya dan distribusi kelas hampir seimbang, metrik utamanya adalah Macro F1.
 
-**Mengapa deep learning.** Foto kain tidak selalu terlihat sama. Kain bisa terlipat, ukuran motif dalam foto dapat berubah, sudut pengambilan gambar berbeda, dan pencahayaannya tidak selalu konsisten. Beberapa motif juga memiliki isen-isen yang mirip. Fitur manual seperti SIFT/HOG maupun fitur warna dan tekstur yang dibahas dalam paper dataset (Winarno dkk., 2024) perlu dirancang untuk menangani variasi tersebut. CNN menawarkan pendekatan berbeda karena dapat mempelajari fitur dari data secara langsung. Namun, keunggulan itu tidak langsung diasumsikan benar. Laporan ini mengujinya dengan membandingkan CNN dan baseline non-deep pada split data yang sama (Bagian 4).
+**Mengapa deep learning.** Kain dalam foto bisa terlipat, ukuran motifnya berubah, sudut pengambilannya berbeda, dan pencahayaannya tidak konsisten. Beberapa motif juga memiliki isen-isen yang mirip. Fitur manual seperti SIFT/HOG, atau fitur warna dan tekstur dalam paper dataset (Winarno dkk., 2024), harus dirancang ulang untuk setiap variasi itu, sedangkan CNN mempelajari fiturnya langsung dari data. Laporan ini menguji klaim tersebut dengan membandingkan CNN dan baseline non-deep pada split yang sama (Bagian 4).
 
 **Ruang lingkup.** Klasifikasi closed-set dengan 10 kelas. Tidak ada deployment produksi; yang
 tersedia hanya demo non-komersial (Gradio lokal dan Hugging Face Space).
@@ -25,7 +23,7 @@ tersedia hanya demo non-komersial (Gradio lokal dan Hugging Face Space).
 | Item | Nilai | Sumber artefak |
 |---|---|---|
 | Dataset | Semarang Batik Dataset, Kaggle `edywinarno/semarang-batik-dataset`, versi 2 (diperbarui 2023-10-16) | `data/manifests/dataset_snapshot.json` |
-| Lisensi | CC BY-NC-SA 4.0 (proposal keliru menulis “Academic Research Use”) | `DATA_LICENSE.md` |
+| Lisensi | CC BY-NC-SA 4.0 (proposal keliru menulis "Academic Research Use") | `DATA_LICENSE.md` |
 | Sitasi | Winarno, Septiarini, Hadikurniawati & Hamdani (2024), *ACM JOCCH* 17(2), doi:10.1145/3631131 | Metadata Kaggle |
 | Arsip | 12.922.229.647 byte, SHA-256 `65710841…4fba93c` | `dataset_snapshot.json` |
 | File | 3.020 JPEG, iPhone 6s, mayoritas 3024×4032; 650 file (21,7% dari 2.993 yang disertakan) memiliki rotasi EXIF | `audit_summary.json` |
@@ -35,8 +33,8 @@ tersedia hanya demo non-komersial (Gradio lokal dan Hugging Face Space).
 
 **Preprocessing.** Setiap foto dirotasi sesuai EXIF, diubah ke RGB, dan di-resize
 dengan LANCZOS hingga shorter side 320 px. Cache ini deterministik dan tidak
-bergantung pada label. Input model adalah 224×224: untuk evaluasi, Resize 256 lalu
-CenterCrop 224, kemudian normalisasi ImageNet.
+bergantung pada label. Input model berukuran 224×224. Untuk evaluasi, gambar di-resize ke 256,
+di-CenterCrop 224, lalu dinormalisasi dengan statistik ImageNet.
 
 **Leakage check eksplisit.** Audit menemukan dua sifat snapshot yang menentukan
 desain split:
@@ -44,7 +42,7 @@ desain split:
 1. **Setiap jepretan disimpan sebagai sekitar 4 file hasil rotasi/flip.** Rata-rata
    4,2 file per detik capture EXIF, maksimum 12 (`inventory.csv`). pHash biasa tidak
    mendeteksi pasangan ini (jarak rata-rata 31,4). pHash invarian terhadap 8 transformasi
-   dihedral mendeteksinya: dari 5.195 pasangan dalam satu detik capture, 5.058 berjarak 0
+   dihedral mendeteksinya. Dari 5.195 pasangan dalam satu detik capture, 5.058 berjarak 0
    dan 121 berjarak 2–4, sedangkan 16 pasangan berjarak 24–26 dan hanya tertangkap oleh
    aturan timestamp. Sebaliknya, dari seluruh 441.287 pasangan jepretan berbeda dalam
    kelas yang sama, persentil ke-5 jaraknya 20, dan hanya 150 pasangan berjarak ≤ 8;
@@ -53,7 +51,7 @@ desain split:
    tanggal dalam rentang 5,3–18,4 menit (`datetime_original` di `inventory.csv`), dan
    secara visual berasal dari satu lembar kain dengan satu kombinasi warna.
 
-Split dibuat per **grup foto sumber**. Dua gambar dalam kelas yang sama masuk grup
+Berdasarkan dua temuan ini, split dibuat per grup foto sumber. Dua gambar dalam kelas yang sama masuk grup
 yang sama jika memenuhi salah satu syarat berikut:
 - detik capture EXIF sama;
 - jarak pHash dihedral ≤ 8;
@@ -61,7 +59,7 @@ yang sama jika memenuhi salah satu syarat berikut:
 
 Threshold embedding dikalibrasi dengan menjalankan `build_groups` pada dua nilai. Pada
 0,90 terbentuk 424 grup dengan grup terbesar 156 gambar, karena 2.456 edge yang hanya
-berasal dari embedding membuat grup berantai. Pada 0,95 terbentuk 668 grup dengan grup
+berasal dari embedding membuat grup berantai. Dengan 0,95 terbentuk 668 grup dengan grup
 terbesar 28 gambar, dan hanya 129 edge yang lolos lewat embedding saja.
 
 Grup kemudian dibagi dengan StratifiedGroupKFold (20 fold: 14 train, 3 val, 3 test), sehingga
@@ -74,7 +72,7 @@ Verifikasi (`split_meta.json`, `cross_split_nearest_train.csv`):
 - cosine maksimum ke train adalah 0,949.
 
 Sebagai pembanding, split acak biasa seperti di proposal akan menempatkan salinan
-rotasi dari **98,9%** gambar test (444 dari 449) ke dalam train
+rotasi dari 98,9% gambar test (444 dari 449) ke dalam train
 (`dataset_diagnostics.json`).
 
 **Shortcut warna.** Karena satu kelas sama dengan satu kain, warna dan kecerahan
@@ -89,7 +87,7 @@ saja sudah memisahkan kelas. Tabel berikut menunjukkan baseline non-deep
 | Histogram intensitas | grayscale + equalization | 55,74% |
 | Histogram LBP | grayscale + equalization | 96,26% |
 
-Temuan ini menjadi alasan untuk menguji model dalam dua kondisi. Selain protokol RGB yang digunakan dalam proposal, kami menjalankan **protokol grayscale + histogram equalization** (G1g–G3g). Dengan cara ini, model tidak lagi bisa mengandalkan warna dan kecerahan global sebagai petunjuk utama. Informasi tekstur motif tetap dipertahankan agar kemampuan model dalam mengenali pola bisa dinilai dengan lebih jelas.
+Untuk menutup shortcut ini, selain protokol RGB dari proposal kami juga menjalankan protokol grayscale + histogram equalization (G1g–G3g). Protokol ini menghilangkan warna dan kecerahan global tanpa menghilangkan tekstur motif. Baseline intensitas jatuh ke 55,74% pada input ini, sedangkan baseline LBP tetap 96,26%.
 
 ## 3. Baseline dan pendekatan yang diusulkan
 
@@ -103,9 +101,9 @@ Temuan ini menjadi alasan untuk menguji model dalam dua kondisi. Selain protokol
 | G5 | EfficientNet-B0: linear probe 5 epoch (lr 1e-3), lalu unfreeze `features[5:]` 25 epoch (lr 1e-4) | | ImageNet | RGB | ON | Strategi training (suplemen) |
 
 **Alasan pemilihan.**
-- G1 menjadi pembanding awal yang sederhana dan relatif mudah dijelaskan.
-- G2 membantu membedakan pengaruh arsitektur dari pengaruh pretraining. Tanpa model ini, perbedaan hasil antara G1 dan G3 tidak bisa dikaitkan dengan salah satu faktor secara terpisah.
-- G4 digunakan untuk melihat pengaruh augmentation saja. Komponen lainnya dibuat identik dan kesamaan tersebut diperiksa melalui unit test.
+- G1 adalah baseline sederhana yang mudah dijelaskan.
+- G2 memisahkan efek arsitektur dari efek pretraining. Tanpa G2, selisih G1 dan G3 mencampur kedua efek itu.
+- G4 hanya berbeda dari G3 pada augmentation; unit test di `tests/test_core.py` memeriksa bahwa konfigurasi lainnya identik.
 
 **Konfigurasi training (identik untuk semua run kecuali G5):**
 - AdamW, lr 3e-4, weight decay 1e-4;
@@ -148,16 +146,15 @@ adalah Macro F1 pada test split beku (450 gambar), mean ± std dari seed 42/43/4
 | G2g | EfficientNet-B0, scratch, grayscale-eq | 4.020.358 | 75,66 ± 2,38 | 75,70 ± 1,67 | 98,30 ± 0,26 | 73,02 ± 4,39 | 14,1 |
 | G3g | EfficientNet-B0, ImageNet, grayscale-eq | 4.020.358 | 100,00 ± 0,00 | 100,00 ± 0,00 | 100,00 ± 0,00 | 100,00 ± 0,00 | 13,8 |
 
-Tabel per run ada di `tables.md`; kurva training di `figures/training_curves.png`
-dan ringkasan group di `figures/group_macro_f1.png`.
+Tabel per run ada di `tables.md`.
 
 ![Confusion matrix test model final (G3 seed 42): seluruh 450 gambar benar.](../figures/confusion_matrix_final.png)
 
-**Protokol RGB mencapai ceiling.** Semua model yang menggunakan RGB, termasuk Custom CNN dengan 0,39 M parameter, memperoleh Macro F1 100% pada ketiga seed. Hasil ini sejalan dengan pengujian baseline non-deep di Bagian 2, ketika histogram warna HSV saja juga mencapai 100%. Artinya, pada protokol RGB, model deep learning belum menunjukkan keunggulan dibandingkan logistic regression yang menggunakan histogram warna. Skor yang sama-sama sempurna membuat protokol ini belum cukup untuk membedakan kemampuan antarmodel.
+**Protokol RGB mencapai ceiling.** Semua model RGB, termasuk Custom CNN dengan 0,39 M parameter, memperoleh Macro F1 100% pada ketiga seed, sama dengan logistic regression di atas histogram warna HSV (Bagian 2). Di protokol ini model deep learning tidak lebih baik daripada baseline non-deep, dan skor yang sama-sama sempurna tidak bisa membedakan model.
 
-**Protokol grayscale membedakan model.** Ketika warna dan kecerahan global tidak lagi tersedia, perbedaan antarmodel mulai terlihat.
-- G3g (transfer) tetap mencapai 100,00%, lebih tinggi daripada baseline non-deep terbaik pada input yang sama, yaitu LBP + logistic regression (96,26%).
-- Sebaliknya, G1g (84,41%) dan G2g (75,66%) **masih berada di bawah** baseline LBP non-deep. Pada eksperimen ini, kedua model from-scratch belum mampu mempelajari tekstur motif sebaik fitur LBP yang dirancang secara manual dari 2.090 gambar train.
+**Protokol grayscale membedakan model.**
+- G3g (transfer) tetap 100,00%, lebih tinggi daripada baseline non-deep terbaik pada input yang sama (LBP + logistic regression, 96,26%).
+- G1g (84,41%) dan G2g (75,66%) berada di bawah baseline LBP itu. Dengan 2.090 gambar train, kedua model from-scratch tidak mempelajari tekstur motif sebaik fitur LBP rancangan manual.
 
 **Kecepatan konvergensi** (`artifacts/runs/*/history.csv`, epoch pertama dengan val
 Macro F1 ≥ 0,99, ketiga seed): G3 dan G3g pada epoch 1, G4 pada epoch 1–2, G5 pada
@@ -176,7 +173,7 @@ mencapainya dalam 30 epoch.
 | Gain G3 atas G1 ≥ +10 pp (RGB) | +0,00 pp | **Tidak tercapai** (kedua model di ceiling) |
 | Gain yang sama pada protokol grayscale (G3g vs G1g) | +15,59 ± 1,45 pp | Tercapai, CI semua seed > 0 |
 
-Pada protokol RGB, hipotesis proposal belum bisa diuji dengan baik karena semua model mencapai skor sempurna. Kondisi ini menimbulkan ceiling effect: perbedaan kemampuan model tidak lagi terlihat dari skor. Hasil pada protokol grayscale memberikan gambaran yang lebih informatif. Saat warna tidak bisa dijadikan petunjuk utama, model harus lebih mengandalkan tekstur motif, dan pada kondisi inilah keuntungan G3g terlihat.
+Karena ceiling effect, hipotesis proposal tidak dapat diuji pada protokol RGB. Hipotesis itu didukung pada protokol grayscale, ketika model harus mengandalkan tekstur motif.
 
 ## 5. Ablation
 
@@ -197,7 +194,7 @@ perbedaan.
 | G3g vs G2g | Efek pretraining (grayscale) | **+24,34 ± 2,38** | s42 [23,3; 29,8]; s43 [21,7; 28,5]; s44 [18,5; 25,2] | Efek terbesar; CI semua seed > 0 |
 | G3 vs G3g | Kontribusi warna untuk model transfer | 0,00 ± 0,00 | [0,0; 0,0] × 3 | Model transfer yang dilatih tanpa warna tetap 100%; warna tidak diperlukan jika fitur pretrained dipakai |
 
-**Interpretasi.** Hasil grayscale menunjukkan bahwa keunggulan G3g atas G1g (+15,6 pp) tidak cukup dijelaskan oleh arsitektur saja. Ketika EfficientNet-B0 dilatih dari awal dengan inisialisasi acak, skornya justru 8,8 pp lebih rendah daripada CNN yang lebih kecil. Log training menunjukkan gejala overfitting: pada epoch 30, akurasi train G2g 97,8–98,4% sementara akurasi validation hanya 65,1–72,2% (G1g: 97,7–98,2% vs 79,0–80,6%). Salah satu kemungkinan penyebabnya adalah jumlah parameternya yang mencapai 4,0 M, sementara data train hanya berisi 2.090 gambar; dugaan ini tidak diuji secara terpisah. Perbedaan paling besar muncul dari penggunaan bobot pretrained ImageNet, yang memberi peningkatan +24,3 pp dibandingkan G2g.
+**Interpretasi.** Keunggulan G3g atas G1g (+15,6 pp) tidak berasal dari arsitektur, karena dengan inisialisasi acak EfficientNet-B0 justru 8,8 pp di bawah CNN yang lebih kecil. Log training juga menunjukkan gejala overfitting. Di epoch 30, akurasi train G2g 97,8–98,4% sementara akurasi validation hanya 65,1–72,2% (G1g: 97,7–98,2% vs 79,0–80,6%). Salah satu kemungkinan penyebabnya adalah jumlah parameternya yang mencapai 4,0 M, sementara data train hanya berisi 2.090 gambar; dugaan ini tidak diuji secara terpisah. Selisih terbesar berasal dari bobot pretrained ImageNet, yang menambah 24,3 pp atas G2g.
 
 **Robustness** (`artifacts/metrics/robustness.md`; satu run per group, sehingga tanpa CI).
 Setiap kolom memakai run final group tersebut, dipilih oleh `select_final_run`
@@ -217,10 +214,10 @@ diuji robustness. Corruption hanya diterapkan saat evaluasi, dengan 3 tingkat se
 | Probe grayscale-eq | 5,96 | 12,38 | 32,87 | 31,90 | 85,49 | 77,97 | 100,00 |
 
 Temuan robustness:
-1. **Ketergantungan warna.** Saat gambar diubah menjadi grayscale untuk pengujian, skor G1 turun menjadi 7,3%, G2 menjadi 21,9%, dan G3 menjadi 67,4%. Padahal, ketiganya memperoleh 100% pada test set bersih. Penurunan ini menunjukkan bahwa model RGB banyak memanfaatkan informasi warna. G3 masih mempertahankan sebagian kemampuan mengenali tekstur, sedangkan dua model lainnya jauh lebih terdampak.
-2. **Augmentation berpengaruh di luar test bersih.** Pada test set bersih, G3 dan G4 sama-sama memperoleh 100%. Perbedaannya muncul ketika gambar mengalami gangguan. Pada occlusion s3, G3 tetap berada di 100,00%, sedangkan G4 turun ke 56,34%. Pola serupa terlihat pada blur s3 (98,63% dibandingkan 72,50%) dan contrast s3 (100,00% dibandingkan 90,82%). Dengan kata lain, dampak augmentation tidak terlihat pada data bersih, tetapi menjadi jelas ketika kondisi gambar berubah.
-3. **Model from-scratch sangat sensitif terhadap blur.** Bahkan blur tingkat 1 menurunkan skor G1g dari 85,5% menjadi 26,1%, sementara G2g turun dari 78,3% menjadi 35,1%. Hasil ini mengisyaratkan bahwa kedua model grayscale yang dilatih dari awal terlalu bergantung pada detail halus gambar dan belum cukup tangguh ketika detail tersebut hilang.
-4. Rotasi, perubahan perspektif, dan deformasi elastis hampir tidak mengubah hasil model RGB, termasuk G4 yang tidak menggunakan augmentation. Salah satu kemungkinan penjelasannya adalah data train sudah berisi salinan hasil rotasi atau flip dari setiap jepretan (Bagian 2).
+1. **Ketergantungan warna.** Ketiga model RGB memperoleh 100% pada test bersih, tetapi pada probe grayscale G1 turun ke 7,3%, G2 ke 21,9%, dan G3 ke 67,4%. Model RGB banyak memakai informasi warna; hanya G3 yang masih mengenali sebagian tekstur.
+2. **Augmentation berpengaruh di bawah gangguan.** G3 dan G4 sama-sama 100% pada test bersih. Pada occlusion s3, G3 tetap 100,00% sedangkan G4 turun ke 56,34%; pada blur s3 hasilnya 98,63% vs 72,50%, dan pada contrast s3 100,00% vs 90,82%.
+3. **Model from-scratch sangat sensitif terhadap blur.** Blur tingkat 1 saja menurunkan G1g dari 85,5% ke 26,1% dan G2g dari 78,3% ke 35,1%. Dugaan kami, kedua model grayscale from-scratch bergantung pada detail halus yang hilang saat gambar diburamkan.
+4. **Rotasi, perspektif, dan deformasi elastis** hampir tidak mengubah hasil model RGB, termasuk G4 yang dilatih tanpa augmentation. Hal ini mungkin terjadi karena data train sudah berisi salinan rotasi atau flip dari setiap jepretan (Bagian 2).
 
 ## 6. Error analysis
 
@@ -230,16 +227,16 @@ Sumber: `artifacts/error_analysis/G1g_customcnn-scratch_augon_s42/cases.json` da
 **Pemilihan model.** Model final G3, G3g, dan G1 tidak memiliki satu pun error pada
 test set. Aturan fallback awal (G3 → G3g → G1) karena itu tidak menghasilkan kasus.
 Setelah hasil ini terlihat, aturan diperluas ke G1g lalu G2g. Model yang dipakai
-adalah run final **G1g seed 42** (val Macro F1 tertinggi dalam G1g): **64 error
-dari 450 gambar**. Sepuluh kasus dipilih bergiliran per pasangan kebingungan (yang
+adalah run final G1g seed 42 (val Macro F1 tertinggi dalam G1g), dengan 64 error
+dari 450 gambar. Sepuluh kasus dipilih bergiliran per pasangan kebingungan (yang
 paling yakin dari setiap pasangan lebih dulu).
 
-**Distribusi error.** Kesalahan model paling sering muncul pada dua pasangan motif. Asem Warak keliru diprediksi sebagai Kembang Sepatu sebanyak 23 kali, atau 36% dari seluruh 64 error. Pasangan berikutnya adalah Gambang Semarangan yang diprediksi sebagai Asem Arang sebanyak 11 kali.
+**Distribusi error.** Error paling sering muncul pada dua pasangan. Asem Warak diprediksi sebagai Kembang Sepatu 23 kali (36% dari 64 error), dan Gambang Semarangan sebagai Asem Arang 11 kali.
 
 **Intervensi.** Setiap gambar yang salah diprediksi ulang dengan lima perubahan
 input: *full frame* (seluruh foto di-resize ke 224 tanpa crop), *grayscale*,
 *horizontal flip*, *normalisasi brightness* ke rata-rata train, dan *5-crop*.
-Pada model G1g, intervensi grayscale tidak berpengaruh karena input sudah grayscale.
+Intervensi grayscale tidak berpengaruh pada G1g karena inputnya sudah grayscale.
 
 | # | File | Label → Prediksi (conf.) | Top-3 | Diperbaiki oleh | Sharpness / median kelas |
 |---:|---|---|---|---|---:|
@@ -254,112 +251,116 @@ Pada model G1g, intervensi grayscale tidak berpengaruh karena input sudah graysc
 | 9 | `Tugu Muda (123).JPG` | Tugu Muda → Semarangan (0,31) | Semarangan, WBU, TM | full frame | 7.091 / 15.874 |
 | 10 | `Asem Sinom (272).JPG` | Asem Sinom → Asem Arang (0,48) | AA, AS, WBU | full frame, hflip, 5-crop | 670 / 967 |
 
-Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus yang diperiksa. Jadi, berdasarkan intervensi ini, pencahayaan tidak didukung sebagai penyebab utama error pada kasus-kasus tersebut.
+Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus, sehingga pencahayaan tidak didukung sebagai penyebab error.
 
 **Analisis kausal berdasarkan intervensi input dan inspeksi visual Grad-CAM (`case_01–10.png`):**
 
 1. **Terpotongnya motif utama akibat *center crop* evaluasi** (kasus 3, 6, 7, 8, 9, 10).
-   Pada enam dari sepuluh kasus, prediksi langsung berbalik menjadi benar saat model
-   diberi foto utuh (*full frame*) atau rata-rata *5-crop*. Bukti visual paling jelas
-   terlihat pada **kasus 6** (`blekok (258).JPG`): pada panel *full image*, siluet
-   burung blekok berada di tepi kiri-atas dan kanan-bawah kain, sedangkan bagian
-   tengah kain hampir seluruhnya polos. *CenterCrop* 224×224 memotong habis badan
-   burung tersebut dan hanya menyisakan lipatan kain tengah serta sedikit ujung sayap,
-   sehingga Grad-CAM aktif pada gurat lipatan tengah dan menebak Kembang Sepatu
-   (conf. 0,59; pulih ke Blekok dengan `p_true=0,56` pada *full frame*). Pola serupa
-   terjadi pada **kasus 3** (`Kembang Sepatu (99).JPG`, `p_true` melonjak dari 0,33 ke
-   0,99 pada *full frame*; *center crop* memuat pita gelap lipatan kain di bagian bawah
-   dan membuang sisi kiri-kanan foto yang berisi bunga lain) dan **kasus 7** (`Asem Sinom (149).JPG`, `p_true` naik dari 0,22 ke 0,71
-   pada *full frame*: lipatan horizontal tetap ada, tetapi tidak lagi mendominasi bingkai
-   dan lebih banyak buah asam merah ikut terlihat).
-   Dengan demikian, kegagalan kelompok ini bersumber dari protokol *single center crop*
-   saat inferensi, bukan ketiadaan fitur pada model.
+   Enam dari sepuluh kasus berbalik menjadi prediksi benar saat model diberi foto
+   utuh (*full frame*) atau rata-rata *5-crop*.
+
+   Bukti visual paling jelas ada pada kasus 6 (`blekok (258).JPG`). Di panel *full image*,
+   siluet burung blekok berada di tepi kiri-atas dan kanan-bawah kain, sedangkan bagian
+   tengahnya hampir seluruhnya polos. *CenterCrop* 224×224 memotong habis badan burung itu
+   dan hanya menyisakan lipatan kain tengah serta sedikit ujung sayap. Grad-CAM pun aktif
+   pada gurat lipatan, dan model menebak Kembang Sepatu (conf. 0,59). Dengan *full frame*,
+   prediksi kembali ke Blekok (`p_true=0,56`).
+
+   Kasus 3 (`Kembang Sepatu (99).JPG`) menunjukkan pola yang sama. *Center crop*-nya memuat
+   pita gelap lipatan kain di bagian bawah dan membuang sisi kiri-kanan foto yang berisi
+   bunga lain; dengan *full frame*, `p_true` melonjak dari 0,33 ke 0,99. Di kasus 7
+   (`Asem Sinom (149).JPG`), lipatan horizontal tetap ada di *full frame*, tetapi tidak lagi
+   mendominasi bingkai dan lebih banyak buah asam merah ikut terlihat, sehingga `p_true`
+   naik dari 0,22 ke 0,71.
+
+   Jadi kegagalan kelompok ini berasal dari protokol *single center crop* saat inferensi,
+   karena model yang sama memprediksi dengan benar ketika motifnya terlihat.
 
    ![Kasus 6: foto utuh, input center crop, Grad-CAM, top-3, dan nearest neighbour.](../figures/errors/G1g_customcnn-scratch_augon_s42/case_06.png)
 
 2. **Ambiguitas tekstur *isen-isen* dan elemen pinggiran ketika warna dihilangkan**
-   (kasus 1, 2, 4, 10). Pada **kasus 1** (`asem warak (61).JPG`, conf. 0,94) dan
-   **kasus 2** (`Gambang Semarangan (123).JPG`, conf. 0,83), kelima intervensi gagal
-   mengubah prediksi. Inspeksi Grad-CAM pada kasus 2 menunjukkan bahwa aktivasi
-   model dingin (biru) tepat di atas motif utama di tengah, tetapi menyala kuat
-   (merah-kuning) pada taburan *isen-isen* sulur rapat di latar kanan-atas dan bawah
-   yang secara visual menyerupai sebaran motif Asem Arang (`nn_pred` cos 0,96). Pada
-   kasus 1, kontras antara kain oranye dan figur kecil berwarna biru-ungu hilang akibat
-   protokol *grayscale-equalized*,
-   sehingga Grad-CAM merespons garis lipatan diagonal dan figur-figur kecil tersebut
-   sebagai pola Kembang Sepatu (`nn_pred` cos 0,90). Sementara itu, **kasus 4**
-   (`blekok (274).JPG`) hanya memuat pita geometris berisi kotak-kotak bermotif bunga
-   tanpa satu pun figur burung blekok di dalam bingkai foto; Grad-CAM mengikuti pita
-   diagonal tersebut dan menyamakannya dengan deretan daun Asem Sinom (`nn_pred` cos
-   0,93). Pada **kasus 10** (`Asem Sinom (272).JPG`), sudut kanan-atas *crop* didominasi
-   garis-garis paralel pinggiran kain yang memicu aktivasi Grad-CAM ke arah Asem Arang
-   (ketiga *nearest neighbour* Asem Arang di `nn_pred` juga memiliki pita pinggiran
-   serupa), namun berhasil dikoreksi oleh *full frame*, *hflip*, maupun *5-crop*.
-   Mengingat G3g mampu mengklasifikasikan seluruh gambar ini dengan benar (100%),
-   kegagalan G1g menunjukkan bahwa representasi *from-scratch* dari 2.090 gambar belum
-   mampu memisahkan struktur motif utama dari tekstur latar/*isen-isen* tanpa bantuan
-   warna.
+   (kasus 1, 2, 4, 10). Pada kasus 1 (`asem warak (61).JPG`, conf. 0,94) dan kasus 2
+   (`Gambang Semarangan (123).JPG`, conf. 0,83), tidak satu pun dari lima intervensi
+   mengubah prediksi.
+
+   Di kasus 2, Grad-CAM dingin (biru) tepat di atas motif utama di tengah, tetapi menyala
+   kuat (merah-kuning) pada taburan *isen-isen* sulur rapat di latar kanan-atas dan bawah.
+   Secara visual, latar itu menyerupai sebaran motif Asem Arang (`nn_pred` cos 0,96).
+
+   Di kasus 1, protokol *grayscale-equalized* menghilangkan kontras antara kain oranye dan
+   figur kecil berwarna biru-ungu. Grad-CAM lalu merespons garis lipatan diagonal dan
+   figur-figur kecil itu sebagai pola Kembang Sepatu (`nn_pred` cos 0,90).
+
+   Kasus 4 (`blekok (274).JPG`) hanya memuat pita geometris berisi kotak-kotak bermotif
+   bunga, tanpa satu pun figur burung blekok di dalam bingkai. Grad-CAM mengikuti pita
+   diagonal tersebut dan menyamakannya dengan deretan daun Asem Sinom (`nn_pred` cos 0,93).
+
+   Pada kasus 10 (`Asem Sinom (272).JPG`), sudut kanan-atas *crop* didominasi garis-garis
+   paralel pinggiran kain yang mendorong Grad-CAM ke arah Asem Arang. Ketiga *nearest
+   neighbour* Asem Arang di `nn_pred` juga memiliki pita pinggiran serupa. Berbeda dengan
+   tiga kasus lainnya, kasus ini terkoreksi oleh *full frame*, *hflip*, dan *5-crop*.
+
+   G3g mengklasifikasikan seluruh gambar ini dengan benar, jadi informasinya ada di input
+   grayscale. Yang kurang adalah representasi *from-scratch*: dari 2.090 gambar, G1g belum
+   belajar memisahkan motif utama dari tekstur latar tanpa bantuan warna.
 
    ![Kasus 2: Grad-CAM menyala pada isen-isen latar, bukan pada motif utama.](../figures/errors/G1g_customcnn-scratch_augon_s42/case_02.png)
 
-3. **Degradasi ketajaman citra (*motion/defocus blur*)** (8 dari 10 kasus memiliki
-   *sharpness* Laplacian di bawah median kelasnya). Efek ini paling ekstrem pada
-   **kasus 4** (1.761 vs median Blekok 6.130) dan **kasus 6** (1.811 vs 6.130), yakni
-   hanya ~29% dari ketajaman normal kelasnya, serta **kasus 8 dan 9** (7.091 vs median
-   Tugu Muda 15.874). Temuan mikro ini sejalan dengan eksperimen *robustness* Bagian 5,
-   di mana *Gaussian blur* tingkat 1 langsung menjatuhkan Macro F1 G1g dari 85,49% ke
-   26,09%. **Catatan inspeksi visual:** kasus 4 dan 6 tidak tampak buram; sebagian besar
-   bingkainya adalah kain hijau polos, dan area polos memang menghasilkan nilai
-   *sharpness* Laplacian rendah. Jadi pada kedua kasus ini angka *sharpness* lebih
-   mencerminkan sedikitnya motif di dalam bingkai (mekanisme 1) daripada blur, dan
-   mekanisme ini sebaiknya dianggap bukti pendukung yang lemah, bukan penyebab utama.
+3. **Ketajaman rendah (bukti lemah).** Delapan dari sepuluh kasus memiliki *sharpness*
+   Laplacian di bawah median kelasnya, misalnya kasus 4 (1.761 vs median Blekok 6.130),
+   kasus 6 (1.811 vs 6.130), serta kasus 8 dan 9 (7.091 vs median Tugu Muda 15.874). Hal ini
+   sejalan dengan uji robustness di Bagian 5, ketika *Gaussian blur* tingkat 1 menurunkan
+   G1g dari 85,49% ke 26,09%. Namun kasus 4 dan 6 tidak tampak buram. Sebagian besar
+   bingkainya berupa kain hijau polos, dan area polos memang menghasilkan *sharpness*
+   Laplacian rendah. Untuk kedua kasus itu, angka *sharpness* lebih mencerminkan sedikitnya motif di
+   dalam bingkai (mekanisme 1), sehingga ketajaman hanya bukti pendukung.
 
 4. **Ketidakstabilan terhadap orientasi rotasi/refleksi** (kasus 5, 8, 9, 10).
-   Pada **kasus 5** (`Asem Sinom (82).JPG`), kuncup daun asam tersusun miring sejajar
+   Di kasus 5 (`Asem Sinom (82).JPG`), kuncup daun asam tersusun miring sejajar
    lipatan diagonal kain dan mengaktifkan Grad-CAM sebagai deretan bulir Warak Beras
-   Utah (`nn_pred` cos 0,96); sekadar membalik citra secara horizontal (*hflip*)
-   mengembalikan prediksi ke Asem Sinom (`p_true=0,45`). Bukti paling kuat terlihat
-   saat membandingkan panel visual **kasus 8** (`Tugu Muda (122).JPG`) dan **kasus 9**
-   (`Tugu Muda (123).JPG`): keduanya berasal dari jepretan yang sama (nilai *brightness*
+   Utah (`nn_pred` cos 0,96); membalik citra secara horizontal (*hflip*) mengembalikan
+   prediksi ke Asem Sinom (`p_true=0,45`).
+
+   Bukti terkuat ada pada kasus 8 (`Tugu Muda (122).JPG`) dan kasus 9
+   (`Tugu Muda (123).JPG`). Keduanya berasal dari jepretan yang sama (nilai *brightness*
    113,93 dan *sharpness* 7.091 berbeda <0,01%, dengan jarak pHash dihedral 0) yang
    tersimpan sebagai salinan rotasi 180° di dalam grup split yang sama. Ketika siluet
    tugu terpotong di tepi *center crop*, rotasi tersebut menggeser fokus Grad-CAM dari
    latar flora yang tersebar (kasus 8, ditebak Warak Beras Utah, conf. 0,35) ke figur
-   hijau di tengah-kiri (kasus 9, ditebak Semarangan, conf. 0,31). Kedua kasus ini langsung teratasi
-   ketika *full frame* menampilkan struktur Tugu Muda secara utuh (`p_true` 0,59 dan
-   0,40).
+   hijau di tengah-kiri (kasus 9, ditebak Semarangan, conf. 0,31). Keduanya menjadi benar
+   ketika *full frame* menampilkan bentuk tugu secara utuh (`p_true` 0,59 dan 0,40).
 
 Catatan representasi: pada kesepuluh kasus di atas, *nearest neighbour* data latih di
 ruang *embedding* G1g selalu berasal dari kelas yang benar (cosine 0,957–0,998),
-mengungguli kemiripan ke kelas prediksi yang salah (0,860–0,960). Hal ini menunjukkan
-bahwa kemiripan tingkat fitur sebenarnya masih terjaga, tetapi batas keputusan pada
-*linear classifier head* G1g mudah terdorong oleh gangguan *crop*, orientasi, dan
-*isen-isen* latar (meskipun pola ini belum diuji dengan k-NN pada seluruh test set dan
-kedekatan *embedding* dapat dipengaruhi oleh view lain dari lembar kain yang sama).
+lebih tinggi daripada kemiripan ke kelas prediksi yang salah (0,860–0,960). Ini mengindikasikan
+bahwa representasi fitur masih memisahkan kelas, dan kesalahan terjadi di *linear classifier head*
+G1g, yang mudah terdorong oleh *crop*, orientasi, dan *isen-isen* latar. Pola ini belum diuji
+dengan k-NN pada seluruh test set, dan kedekatan *embedding* dapat dipengaruhi oleh view lain
+dari lembar kain yang sama.
 
 ## 7. Limitations, failure modes, dan 10× compute
 
-**Limitations (sudah pasti):**
-- Setiap kelas hanya diwakili satu kain yang difoto dalam satu sesi. Karena itu, hasil saat ini menunjukkan kemampuan model mengenali sudut pandang lain dari kain yang sama, belum kemampuan mengenali kain berbeda dengan motif serupa.
+**Limitations:**
+- Setiap kelas hanya diwakili satu kain yang difoto dalam satu sesi. Hasil ini mengukur kemampuan model mengenali sudut pandang lain dari kain yang sama; kemampuan mengenali kain lain dengan motif yang sama belum diuji.
 - Pada protokol RGB, model dapat mengandalkan warna sebagai shortcut yang sempurna.
 - Test set hanya berisi 450 gambar dari 97 grup foto sumber (train 470 grup, val 101 grup). Jumlah ini membatasi ketelitian estimasi.
 - `torch.use_deterministic_algorithms(True, warn_only=True)` hanya memberi peringatan untuk operasi CUDA yang tidak memiliki versi deterministik, sehingga determinisme di GPU tidak dijamin penuh.
 - Repository belum berjalan di Windows native: `import resource` di `src/batik/train.py` hanya tersedia di Unix, dan `Makefile` memakai `.venv/bin/python`. Temuan ini berasal dari code review; reproduksi dilakukan di Linux, WSL, dan Colab.
-- Pengujian robustness hanya memakai satu run final untuk setiap group. Karena itu, tabel robustness tidak memiliki CI antar-seed.
+- Robustness hanya diuji pada satu run final per group, sehingga tabelnya tidak memiliki CI antar seed.
 - Training dilakukan di Colab menggunakan torch 2.11 / Python 3.13, bukan versi yang dipatok di `requirements.txt` (lihat Bagian 8).
 
 **Failure modes:**
-- **Model RGB bergantung pada warna.** Jika kain dengan motif yang sama memiliki warna berbeda, model berisiko salah mengklasifikasikannya. Dalam probe grayscale, skor G1 turun dari 100% menjadi 7,3%, sedangkan G3 turun menjadi 67,4%.
-- **Foto buram.** Pada blur s3, skor G1 turun menjadi 61,1%. Model grayscale yang dilatih dari awal bahkan sudah terdampak berat oleh blur ringan, dengan G1g hanya mencapai 26,1% pada s1.
-- **Oklusi tanpa augmentation.** Ketika sebagian gambar tertutup pada tingkat occlusion s3, G4 turun menjadi 56,3%. G3 tetap memperoleh 100% pada kondisi yang sama.
-- **Crop yang memotong motif.** Enam dari sepuluh kesalahan G1g berubah menjadi prediksi benar ketika model menggunakan *full frame* atau 5-crop.
-- **Pasangan motif mirip** saat warna tidak tersedia, terutama Asem Warak ↔ Kembang Sepatu dan Gambang Semarangan ↔ Asem Arang.
+- Model RGB bergantung pada warna, sehingga kain dengan motif yang sama tetapi warna berbeda berisiko salah diklasifikasikan. Probe grayscale menurunkan G1 dari 100% ke 7,3% dan G3 ke 67,4%.
+- Foto buram menurunkan G1 ke 61,1% pada blur s3, dan model grayscale from-scratch sudah terdampak pada blur ringan (G1g 26,1% pada s1).
+- Tanpa augmentation, oklusi berat menjatuhkan G4 ke 56,3% pada occlusion s3, sedangkan G3 tetap 100%.
+- Center crop bisa memotong motif. Enam dari sepuluh kesalahan G1g menjadi benar ketika model memakai *full frame* atau 5-crop.
+- Saat warna tidak tersedia, pasangan motif yang mirip tertukar, terutama Asem Warak ↔ Kembang Sepatu dan Gambang Semarangan ↔ Asem Arang.
 
 **Dengan 10× compute/data:**
-- Langkah paling penting adalah mengumpulkan beberapa kain untuk setiap motif, termasuk kain dengan warna berbeda dari berbagai pengrajin. Evaluasi kemudian dilakukan dengan *leave-one-cloth-out* agar model diuji pada kain yang tidak pernah dilihat saat training.
-- Jalankan learning curve menggunakan 10%, 25%, 50%, dan 100% data train untuk melihat seberapa efisien transfer learning memanfaatkan data.
-- Bandingkan backbone lain, seperti ResNet-50, ConvNeXt-T, dan ViT-S. Resolusi yang lebih tinggi (384 px) juga layak diuji agar detail isen-isen yang halus tetap terlihat.
-- Uji model pada foto kain yang benar-benar dikenakan atau terlipat. Kondisi nyata ini penting untuk melengkapi pengujian corruption sintetis.
+- Kumpulkan beberapa kain untuk setiap motif, termasuk kain dengan warna berbeda dari pengrajin lain, lalu evaluasi dengan *leave-one-cloth-out* sehingga model diuji pada kain yang tidak pernah dilihat saat training. Ini perbaikan terpenting.
+- Jalankan learning curve dengan 10%, 25%, 50%, dan 100% data train untuk mengukur efisiensi data transfer learning.
+- Bandingkan backbone lain (ResNet-50, ConvNeXt-T, ViT-S) dan resolusi yang lebih tinggi (384 px) agar isen-isen yang halus tetap terlihat.
+- Uji model pada foto kain yang benar-benar dikenakan atau terlipat, bukan hanya corruption sintetis.
 
 ## 8. Reproducibility statement
 
@@ -377,8 +378,7 @@ kedekatan *embedding* dapat dipengaruhi oleh view lain dari lembar kain yang sam
 
 ## 9. Individual contribution statement
 
-Disalin dari `reports/contribution_statement.md`. Setiap anggota menyatakan bagiannya sendiri
-dan menandatangani pernyataan ini.
+Sumber: `reports/contribution_statement.md`. Setiap anggota menulis dan menandatangani barisnya sendiri.
 
 | Member | Ownership | Evidence in repository | Code reviewed for (≥1 other member) | Reproduced end-to-end (yes/no + date) | Signature |
 |---|---|---|---|---|---|
@@ -400,9 +400,9 @@ Tita Noviana: Tita Noviana  Titanio Yudista: Titanio Yudista Suci Fransisca Sisi
 
 ## 10. AI use declaration
 
-Disalin dari `reports/ai_use_declaration.md`. Proposal merencanakan Google Gemini dan GitHub
-Copilot; implementasi pipeline juga dibantu Claude Code (Anthropic). Setiap anggota menyatakan
-tool yang benar-benar dipakai.
+Sumber: `reports/ai_use_declaration.md`. Proposal merencanakan Google Gemini dan GitHub Copilot;
+implementasi pipeline juga dibantu Claude Code (Anthropic). Setiap anggota menyatakan tool yang
+benar-benar dipakainya.
 
 Rules kept throughout (proposal Section 7):
 - No metric is typed by hand or produced by an assistant. Every number traces to a
