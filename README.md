@@ -133,7 +133,7 @@ centre crop.
 | Runs | 3 configs × 3 seeds + 3 sanity checks | G1–G4 × 3 seeds, plus G1g–G3g and G5; sanity checks reported separately | The ablation also needs several seeds |
 | Success threshold | "+10% Macro F1" | +10 percentage points over the baseline (mean of 3 seeds) | "10%" was ambiguous between relative and absolute |
 | Colour shortcut | Not anticipated | Grayscale + histogram-equalisation protocol and colour probes at evaluation | A colour histogram alone reaches 100% test Macro F1 |
-| Compute | Colab T4, ~8–12 min per run (estimate) | Colab Tesla T4: 24 runs, 5.76 GPU-hours, 9.2–23.1 min per run (`all_runs.csv`) | Measured, not estimated |
+| Compute | Colab T4, ~8–12 min per run (estimate) | Colab Tesla T4: 24 runs, 5.76 h of training, 9.2–31.0 min per run (`all_runs.csv`) | Measured, not estimated |
 | Environment | Pinned PyTorch 2.5.1 | Training ran on Colab's PyTorch 2.11.0+cu130 / Python 3.13 (`artifacts/runs/*/env.json`). Re-aggregating those runs locally on PyTorch 2.5.1 gives byte-identical tables | Colab's preinstalled torch was used |
 
 
