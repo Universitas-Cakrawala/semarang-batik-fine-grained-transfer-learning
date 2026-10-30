@@ -174,7 +174,8 @@ trained on CC BY-NC-SA data: non-commercial use only). Usage:
 
 ```bash
 python -m batik predict path/to/photo.jpg --checkpoint artifacts/release/batik_effb0_final.pt
-pip install -e ".[demo]" && make demo   # Gradio demo at http://127.0.0.1:7860
+uv pip install --python .venv/bin/python -e ".[demo]"   # gradio is an optional extra, not installed by make setup
+make demo                                               # Gradio demo at http://127.0.0.1:7860
 ```
 
 Online demo (same model, non-commercial):
