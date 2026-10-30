@@ -107,6 +107,8 @@
 \thispagestyle{firstpage}
 
 \begin{center}
+{\large\bfseries\color{ink}Cakrawala University\par}
+\vspace{4pt}
 {\small\color{muted}LAPORAN AKHIR UAS DEEP LEARNING \textperiodcentered{} KELOMPOK 5 \textperiodcentered{} TRACK A\par}
 \vspace{10pt}
 {\LARGE\bfseries\color{ink}\setstretch{1.15}
@@ -129,7 +131,7 @@ Titanio Yudista & {\color{muted}NIM 24120500031} & Fajar Dwiharjo & {\color{mute
 \textbf{Slide} & \url{https://batik-vision-deck.netlify.app/s/semarang-batik-results}\\
 \end{tabular}\par}
 \vspace{4pt}
-{\small\itshape\color{muted}Semua angka dalam laporan ini berasal dari file di \texttt{artifacts/} dan \texttt{data/manifests/} di repository.\par}
+{\small\itshape\color{muted}Semua angka dalam laporan ini berasal dari file di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts}{\texttt{artifacts/}} dan \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/data/manifests}{\texttt{data/manifests/}} di repository.\par}
 \vspace{2pt}
 {\color{rulegray}\rule{\linewidth}{0.6pt}\par}
 \end{center}
@@ -137,14 +139,13 @@ Titanio Yudista & {\color{muted}NIM 24120500031} & Fajar Dwiharjo & {\color{mute
 
 \section{Problem statement dan kesesuaian deep learning}\label{problem-statement-dan-kesesuaian-deep-learning}
 
-\textbf{Keputusan yang didukung.} Model mengklasifikasikan foto kain ke salah satu dari 10 motif batik Semarang: Asem Arang, Asem Sinom, Asem Warak, Blekok, Blekok Warak, Gambang Semarangan, Kembang Sepatu, Semarangan, Tugu Muda, dan Warak Beras Utah. Tujuannya membantu kurasi dan pengarsipan. Model memberi saran top-3, dan kurator yang memeriksa serta memutuskan label akhirnya.
+\textbf{Keputusan yang didukung.} Kami membangun model yang menerima foto kain lalu menebak motifnya dari 10 motif batik Semarang: Asem Arang, Asem Sinom, Asem Warak, Blekok, Blekok Warak, Gambang Semarangan, Kembang Sepatu, Semarangan, Tugu Muda, dan Warak Beras Utah. Model ini dimaksudkan untuk membantu kurasi dan pengarsipan. Model hanya memberi tiga saran teratas (top-3); label akhirnya tetap diputuskan kurator setelah memeriksa sendiri.
 
-\textbf{Pengguna dan biaya kesalahan.} Penggunanya adalah kurator, peneliti tekstil, dan pengelola platform kriya. False positive membuat arsip menyimpan label yang keliru. False negative membuat motif yang sebenarnya ada terlewat dan harus diperiksa ulang secara manual. Karena kedua jenis kesalahan sama mahalnya dan distribusi kelas hampir seimbang, metrik utamanya adalah Macro F1.
+\textbf{Pengguna dan biaya kesalahan.} Pengguna yang kami bayangkan adalah kurator, peneliti tekstil, dan pengelola platform kriya. Kalau model salah memberi label (false positive), arsip menyimpan label yang keliru. Kalau model melewatkan motif yang sebenarnya ada (false negative), foto itu harus diperiksa ulang secara manual. Menurut kami kedua kesalahan ini sama merugikannya, dan jumlah gambar per kelas juga hampir seimbang, jadi kami memakai Macro F1 sebagai metrik utama.
 
-\textbf{Mengapa deep learning.} Kain dalam foto bisa terlipat, ukuran motifnya berubah, sudut pengambilannya berbeda, dan pencahayaannya tidak konsisten. Beberapa motif juga memiliki isen-isen yang mirip. Fitur manual seperti SIFT/HOG, atau fitur warna dan tekstur dalam paper dataset (Winarno dkk., 2024), harus dirancang ulang untuk setiap variasi itu, sedangkan CNN mempelajari fiturnya langsung dari data. Laporan ini menguji klaim tersebut dengan membandingkan CNN dan baseline non-deep pada split yang sama (Bagian 4).
+\textbf{Mengapa deep learning.} Foto kain jarang rapi. Kainnya bisa terlipat, ukuran motifnya berubah-ubah, sudut pengambilannya berbeda, dan pencahayaannya tidak konsisten. Beberapa motif juga punya isen-isen yang mirip satu sama lain. Dengan fitur manual seperti SIFT/HOG, atau fitur warna dan tekstur seperti di paper dataset (Winarno dkk., 2024), fiturnya harus dirancang ulang untuk setiap variasi itu, sedangkan CNN mempelajari fiturnya langsung dari data. Klaim ini tidak kami terima begitu saja: di Bagian 4 kami membandingkan CNN dengan baseline non-deep pada split yang sama.
 
-\textbf{Ruang lingkup.} Klasifikasi closed-set dengan 10 kelas. Tidak ada deployment produksi; yang
-tersedia hanya demo non-komersial (Gradio lokal dan Hugging Face Space).
+\textbf{Ruang lingkup.} Tugasnya klasifikasi closed-set dengan 10 kelas. Kami tidak membuat deployment produksi; yang ada hanya demo non-komersial, yaitu Gradio lokal dan Hugging Face Space.
 
 \section{Data}\label{data}
 
@@ -165,45 +166,31 @@ Sumber artefak
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Dataset & Semarang Batik Dataset, Kaggle \texttt{edywinarno/\allowbreak{}semarang-\allowbreak{}batik-\allowbreak{}dataset}, versi 2 (diperbarui 2023-10-16) & \texttt{data/\allowbreak{}manifests/\allowbreak{}dataset\_\allowbreak{}snapshot.json} \\
-Lisensi & CC BY-NC-SA 4.0 (proposal keliru menulis ``Academic Research Use'') & \texttt{DATA\_\allowbreak{}LICENSE.md} \\
+Dataset & Semarang Batik Dataset, Kaggle \texttt{edywinarno/\allowbreak{}semarang-\allowbreak{}batik-\allowbreak{}dataset}, versi 2 (diperbarui 2023-10-16) & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/dataset_snapshot.json}{\texttt{data/\allowbreak{}manifests/\allowbreak{}dataset\_\allowbreak{}snapshot.json}} \\
+Lisensi & CC BY-NC-SA 4.0 (proposal keliru menulis ``Academic Research Use'') & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/DATA_LICENSE.md}{\texttt{DATA\_\allowbreak{}LICENSE.md}} \\
 Sitasi & Winarno, Septiarini, Hadikurniawati \& Hamdani (2024), \emph{ACM JOCCH} 17(2), doi:10.1145/3631131 & Metadata Kaggle \\
-Arsip & 12.922.229.647 byte, SHA-256 \texttt{65710841…4fba93c} & \texttt{dataset\_\allowbreak{}snapshot.json} \\
-File & 3.020 JPEG, iPhone 6s, mayoritas 3024×4032; 650 file (21,7\% dari 2.993 yang disertakan) memiliki rotasi EXIF & \texttt{audit\_\allowbreak{}summary.json} \\
-Setelah audit & \textbf{2.993} gambar: 0 corrupt dan 27 exact duplicate dikeluarkan & \texttt{exclusions.csv} \\
-Class balance & 295--308 per kelas, rasio imbalance 1,04 & \texttt{audit\_\allowbreak{}summary.json}, \texttt{figures/\allowbreak{}class\_\allowbreak{}distribution.png} \\
-Split & 2.090 / 453 / 450 (69,8 / 15,1 / 15,0\%), seed 42 & \texttt{split.csv}, \texttt{split\_\allowbreak{}meta.json} (SHA-256 \texttt{32a0d9e2…}) \\
+Arsip & 12.922.229.647 byte, SHA-256 \texttt{65710841…4fba93c} & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/dataset_snapshot.json}{\texttt{dataset\_\allowbreak{}snapshot.json}} \\
+File & 3.020 JPEG, iPhone 6s, mayoritas 3024×4032; 650 file (21,7\% dari 2.993 yang disertakan) memiliki rotasi EXIF & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/audit_summary.json}{\texttt{audit\_\allowbreak{}summary.json}} \\
+Setelah audit & \textbf{2.993} gambar: 0 corrupt dan 27 exact duplicate dikeluarkan & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/exclusions.csv}{\texttt{exclusions.csv}} \\
+Class balance & 295--308 per kelas, rasio imbalance 1,04 & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/audit_summary.json}{\texttt{audit\_\allowbreak{}summary.json}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/figures/class_distribution.png}{\texttt{figures/\allowbreak{}class\_\allowbreak{}distribution.png}} \\
+Split & 2.090 / 453 / 450 (69,8 / 15,1 / 15,0\%), seed 42 & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/split.csv}{\texttt{split.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/split_meta.json}{\texttt{split\_\allowbreak{}meta.json}} (SHA-256 \texttt{32a0d9e2…}) \\
 \end{longtable}
 }
 
-\textbf{Preprocessing.} Setiap foto dirotasi sesuai EXIF, diubah ke RGB, dan di-resize
-dengan LANCZOS hingga shorter side 320 px. Cache ini deterministik dan tidak
-bergantung pada label. Input model berukuran 224×224. Untuk evaluasi, gambar di-resize ke 256,
-di-CenterCrop 224, lalu dinormalisasi dengan statistik ImageNet.
+\textbf{Preprocessing.} Setiap foto kami rotasi dulu sesuai tag EXIF, diubah ke RGB, lalu di-resize dengan LANCZOS sampai sisi terpendeknya 320 px. Hasilnya disimpan sebagai cache yang deterministik dan tidak bergantung pada label. Model menerima input 224×224. Saat evaluasi, gambar di-resize ke 256, di-CenterCrop 224, lalu dinormalisasi dengan statistik ImageNet.
 
-\textbf{Leakage check eksplisit.} Audit menemukan dua sifat snapshot yang menentukan
-desain split:
+\textbf{Leakage check eksplisit.} Sebelum membuat split, kami mengaudit snapshot dataset terlebih dahulu. Ada dua temuan yang akhirnya menentukan cara kami membagi data:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  \textbf{Setiap jepretan disimpan sebagai sekitar 4 file hasil rotasi/flip.} Rata-rata
-  4,2 file per detik capture EXIF, maksimum 12 (\texttt{inventory.csv}). pHash biasa tidak
-  mendeteksi pasangan ini (jarak rata-rata 31,4). pHash invarian terhadap 8 transformasi
-  dihedral mendeteksinya. Dari 5.195 pasangan dalam satu detik capture, 5.058 berjarak 0
-  dan 121 berjarak 2--4, sedangkan 16 pasangan berjarak 24--26 dan hanya tertangkap oleh
-  aturan timestamp. Sebaliknya, dari seluruh 441.287 pasangan jepretan berbeda dalam
-  kelas yang sama, persentil ke-5 jaraknya 20, dan hanya 150 pasangan berjarak ≤ 8;
-  pasangan ini ikut digabung oleh aturan pHash (\texttt{near\_\allowbreak{}duplicate\_\allowbreak{}edges.csv}).
+  \textbf{Setiap jepretan disimpan sebagai sekitar 4 file hasil rotasi/flip.} Rata-rata ada 4,2 file per detik capture EXIF, maksimum 12 (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/inventory.csv}{\texttt{inventory.csv}}). pHash biasa tidak bisa mendeteksi pasangan ini (jarak rata-ratanya 31,4), tetapi pHash yang invarian terhadap 8 transformasi dihedral bisa. Dari 5.195 pasangan dalam satu detik capture, 5.058 berjarak 0 dan 121 berjarak 2--4. Sisanya, 16 pasangan berjarak 24--26, hanya tertangkap oleh aturan timestamp. Sebagai perbandingan, dari seluruh 441.287 pasangan jepretan berbeda dalam kelas yang sama, persentil ke-5 jaraknya 20, dan hanya 150 pasangan yang berjarak ≤ 8; pasangan ini ikut digabung oleh aturan pHash (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/near_duplicate_edges.csv}{\texttt{near\_\allowbreak{}duplicate\_\allowbreak{}edges.csv}}).
 \item
-  \textbf{Setiap kelas difoto dalam satu sesi.} Semua foto setiap kelas diambil pada satu
-  tanggal dalam rentang 5,3--18,4 menit (\texttt{datetime\_\allowbreak{}original} di \texttt{inventory.csv}), dan
-  secara visual berasal dari satu lembar kain dengan satu kombinasi warna.
+  \textbf{Setiap kelas difoto dalam satu sesi.} Semua foto untuk satu kelas diambil pada tanggal yang sama dalam rentang 5,3--18,4 menit (\texttt{datetime\_\allowbreak{}original} di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/inventory.csv}{\texttt{inventory.csv}}). Dari pengamatan visual, semuanya juga berasal dari satu lembar kain dengan satu kombinasi warna.
 \end{enumerate}
 
-Berdasarkan dua temuan ini, split dibuat per grup foto sumber. Dua gambar dalam kelas yang sama masuk grup
-yang sama jika memenuhi salah satu syarat berikut:
+Karena dua temuan ini, kami membagi data per grup foto sumber, bukan per gambar. Dua gambar dari kelas yang sama dimasukkan ke grup yang sama kalau memenuhi salah satu syarat berikut:
 
 \begin{itemize}
 \tightlist
@@ -215,15 +202,11 @@ yang sama jika memenuhi salah satu syarat berikut:
   cosine embedding ImageNet yang dipusatkan ≥ 0,95.
 \end{itemize}
 
-Threshold embedding dikalibrasi dengan menjalankan \texttt{build\_\allowbreak{}groups} pada dua nilai. Pada
-0,90 terbentuk 424 grup dengan grup terbesar 156 gambar, karena 2.456 edge yang hanya
-berasal dari embedding membuat grup berantai. Dengan 0,95 terbentuk 668 grup dengan grup
-terbesar 28 gambar, dan hanya 129 edge yang lolos lewat embedding saja.
+Threshold embedding kami kalibrasi dengan menjalankan \texttt{build\_\allowbreak{}groups} pada dua nilai. Dengan 0,90, terbentuk 424 grup dan grup terbesarnya berisi 156 gambar, karena 2.456 edge yang hanya berasal dari embedding membuat grup saling berantai. Dengan 0,95, terbentuk 668 grup dengan grup terbesar 28 gambar, dan hanya 129 edge yang lolos lewat embedding saja.
 
-Grup kemudian dibagi dengan StratifiedGroupKFold (20 fold: 14 train, 3 val, 3 test), sehingga
-train berisi 470 grup, val 101 grup, dan test 97 grup.
+Grup-grup ini lalu dibagi dengan StratifiedGroupKFold (20 fold: 14 untuk train, 3 untuk val, 3 untuk test), sehingga train berisi 470 grup, val 101 grup, dan test 97 grup.
 
-Verifikasi (\texttt{split\_\allowbreak{}meta.json}, \texttt{cross\_\allowbreak{}split\_\allowbreak{}nearest\_\allowbreak{}train.csv}):
+Setelah split jadi, kami memverifikasinya (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/split_meta.json}{\texttt{split\_\allowbreak{}meta.json}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/cross_split_nearest_train.csv}{\texttt{cross\_\allowbreak{}split\_\allowbreak{}nearest\_\allowbreak{}train.csv}}):
 
 \begin{itemize}
 \tightlist
@@ -237,13 +220,9 @@ Verifikasi (\texttt{split\_\allowbreak{}meta.json}, \texttt{cross\_\allowbreak{}
   cosine maksimum ke train adalah 0,949.
 \end{itemize}
 
-Sebagai pembanding, split acak biasa seperti di proposal akan menempatkan salinan
-rotasi dari 98,9\% gambar test (444 dari 449) ke dalam train
-(\texttt{dataset\_\allowbreak{}diagnostics.json}).
+Sebagai pembanding, kalau kami memakai split acak biasa seperti rencana di proposal, 98,9\% gambar test (444 dari 449) akan punya salinan rotasi di data train (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/dataset_diagnostics.json}{\texttt{dataset\_\allowbreak{}diagnostics.json}}).
 
-\textbf{Shortcut warna.} Karena satu kelas sama dengan satu kain, warna dan kecerahan
-saja sudah memisahkan kelas. Tabel berikut menunjukkan baseline non-deep
-(logistic regression; C dipilih pada validation):
+\textbf{Shortcut warna.} Karena satu kelas sama dengan satu kain, warna dan kecerahan saja sudah bisa memisahkan kelas. Baseline non-deep berikut (logistic regression, nilai C dipilih pada validation) memperlihatkannya:
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -270,7 +249,7 @@ Histogram LBP & grayscale + equalization & 96,26\% \\
 \end{longtable}
 }
 
-Untuk menutup shortcut ini, selain protokol RGB dari proposal kami juga menjalankan protokol grayscale + histogram equalization (G1g--G3g). Protokol ini menghilangkan warna dan kecerahan global tanpa menghilangkan tekstur motif. Baseline intensitas jatuh ke 55,74\% pada input ini, sedangkan baseline LBP tetap 96,26\%.
+Supaya perbandingan model tidak hanya menguji kemampuan membaca warna, kami menambahkan protokol grayscale + histogram equalization (G1g--G3g) di samping protokol RGB dari proposal. Protokol ini membuang warna dan kecerahan global, tetapi tekstur motifnya tetap ada. Hal ini terlihat dari baseline intensitas yang jatuh ke 55,74\% pada input ini, sementara baseline LBP tetap 96,26\%.
 
 \section{Baseline dan pendekatan yang diusulkan}\label{baseline-dan-pendekatan-yang-diusulkan}
 
@@ -317,13 +296,13 @@ G5 & EfficientNet-B0: linear probe 5 epoch (lr 1e-3), lalu unfreeze \texttt{feat
 \begin{itemize}
 \tightlist
 \item
-  G1, G2, G1g, dan G2g dilatih from scratch (inisialisasi acak, tanpa bobot pretrained). G3, G3g, dan G4 di-fine-tune penuh dari bobot ImageNet: semua layer ikut dilatih sejak epoch pertama. G5 di-fine-tune dua tahap (hanya head, lalu \texttt{features{[}5:{]}} dan head).
+  G1, G2, G1g, dan G2g dilatih from scratch, artinya mulai dari inisialisasi acak tanpa bobot pretrained. G3, G3g, dan G4 di-fine-tune penuh dari bobot ImageNet; semua layer ikut dilatih sejak epoch pertama. G5 di-fine-tune dua tahap: awalnya hanya head, lalu \texttt{features{[}5:{]}} dan head.
 \item
-  G1 adalah baseline sederhana yang mudah dijelaskan.
+  G1 kami pakai sebagai baseline karena sederhana dan mudah dijelaskan.
 \item
-  G2 memisahkan efek arsitektur dari efek pretraining. Tanpa G2, selisih G1 dan G3 mencampur kedua efek itu.
+  G2 diperlukan untuk memisahkan efek arsitektur dari efek pretraining. Tanpa G2, selisih G1 dan G3 mencampur dua efek itu sekaligus.
 \item
-  G4 hanya berbeda dari G3 pada augmentation; unit test di \texttt{tests/\allowbreak{}test\_\allowbreak{}core.py} memeriksa bahwa konfigurasi lainnya identik.
+  G4 hanya berbeda dari G3 di augmentation. Unit test di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/tests/test_core.py}{\texttt{tests/\allowbreak{}test\_\allowbreak{}core.py}} memastikan konfigurasi lainnya benar-benar identik.
 \end{itemize}
 
 \textbf{Konfigurasi training (identik untuk semua run kecuali G5):}
@@ -363,25 +342,23 @@ G5 & EfficientNet-B0: linear probe 5 epoch (lr 1e-3), lalu unfreeze \texttt{feat
   ColorJitter: brightness, contrast, dan saturation 0,2; hue 0,02.
 \end{itemize}
 
-Inspeksi visual augmentation ada di \texttt{figures/\allowbreak{}augmentation\_\allowbreak{}grid.png}.
+Inspeksi visual augmentation ada di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/figures/augmentation_grid.png}{\texttt{figures/\allowbreak{}augmentation\_\allowbreak{}grid.png}}.
 
 \textbf{Deviasi dari proposal} (lihat juga README):
 
 \begin{itemize}
 \tightlist
 \item
-  Two-stage fine-tuning dipindahkan ke G5 supaya tidak mengacaukan perbandingan
-  efek pretraining.
+  Two-stage fine-tuning kami pindahkan ke G5 supaya tidak mengacaukan perbandingan efek pretraining.
 \item
-  ResNet-50 tidak dijalankan.
+  ResNet-50 tidak kami jalankan.
 \item
-  Threshold keberhasilan diperjelas menjadi +10 \emph{percentage points}.
+  Threshold keberhasilan kami perjelas menjadi +10 \emph{percentage points}.
 \end{itemize}
 
 \section{Hasil}\label{hasil}
 
-Sumber: \texttt{artifacts/\allowbreak{}metrics/\allowbreak{}tables.md} (dihasilkan \texttt{batik\ aggregate}). Semua angka
-adalah Macro F1 pada test split beku (450 gambar), mean ± std dari seed 42/43/44.
+Sumber: \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/tables.md}{\texttt{artifacts/\allowbreak{}metrics/\allowbreak{}tables.md}} (dihasilkan oleh \texttt{batik\ aggregate}). Semua angka adalah Macro F1 pada test split beku (450 gambar), dalam bentuk mean ± std dari seed 42/43/44.
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -426,7 +403,7 @@ G3g & EfficientNet-B0, ImageNet, grayscale-eq & 4.020.358 & 100,00 ± 0,00 & 100
 \end{longtable}
 }
 
-Tabel per run ada di \texttt{tables.md}.
+Tabel per run ada di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/tables.md}{\texttt{tables.md}}.
 
 \begin{figure}[htbp]
 \centering
@@ -434,7 +411,7 @@ Tabel per run ada di \texttt{tables.md}.
 \caption{Confusion matrix test model final (G3 seed 42): seluruh 450 gambar test benar.}
 \end{figure}
 
-\textbf{Protokol RGB mencapai ceiling.} Semua model RGB, termasuk Custom CNN dengan 0,39 M parameter, memperoleh Macro F1 100\% pada ketiga seed, sama dengan logistic regression di atas histogram warna HSV (Bagian 2). Di protokol ini model deep learning tidak lebih baik daripada baseline non-deep, dan skor yang sama-sama sempurna tidak bisa membedakan model.
+\textbf{Protokol RGB mencapai ceiling.} Semua model RGB mendapat Macro F1 100\% di ketiga seed, termasuk Custom CNN yang hanya punya 0,39 M parameter. Angka ini sama dengan logistic regression di atas histogram warna HSV (Bagian 2). Jadi di protokol ini deep learning tidak lebih baik daripada baseline non-deep, dan karena semua skornya sempurna, kami tidak bisa membedakan model mana yang lebih baik.
 
 \textbf{Protokol grayscale membedakan model.}
 
@@ -443,13 +420,10 @@ Tabel per run ada di \texttt{tables.md}.
 \item
   G3g (transfer) tetap 100,00\%, lebih tinggi daripada baseline non-deep terbaik pada input yang sama (LBP + logistic regression, 96,26\%).
 \item
-  G1g (84,41\%) dan G2g (75,66\%) berada di bawah baseline LBP itu. Dengan 2.090 gambar train, kedua model from-scratch tidak mempelajari tekstur motif sebaik fitur LBP rancangan manual.
+  G1g (84,41\%) dan G2g (75,66\%) justru berada di bawah baseline LBP itu. Dengan hanya 2.090 gambar train, kedua model from-scratch belum bisa mempelajari tekstur motif sebaik fitur LBP yang dirancang manual.
 \end{itemize}
 
-\textbf{Kecepatan konvergensi} (\texttt{artifacts/\allowbreak{}runs/\allowbreak{}*/\allowbreak{}history.csv}, epoch pertama dengan val
-Macro F1 ≥ 0,99, ketiga seed): G3 dan G3g pada epoch 1, G4 pada epoch 1--2, G5 pada
-epoch 2, G1 (RGB) pada epoch 2--4, dan G2 pada epoch 6--7. G1g dan G2g tidak pernah
-mencapainya dalam 30 epoch.
+\textbf{Kecepatan konvergensi} (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts/runs}{\texttt{artifacts/\allowbreak{}runs/\allowbreak{}*/\allowbreak{}history.csv}}, epoch pertama dengan val Macro F1 ≥ 0,99 di ketiga seed): G3 dan G3g sudah mencapainya di epoch 1, G4 di epoch 1--2, G5 di epoch 2, G1 (RGB) di epoch 2--4, dan G2 di epoch 6--7. G1g dan G2g tidak pernah mencapainya selama 30 epoch.
 
 \begin{figure}[htbp]
 \centering
@@ -463,7 +437,7 @@ mencapainya dalam 30 epoch.
 \caption{Kurva training semua run: loss (garis penuh = train, putus-putus = validation) dan validation Macro F1 per epoch.}
 \end{figure}
 
-\textbf{Status target proposal} (\texttt{summary.json} → \texttt{headline}):
+\textbf{Status target proposal} (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/summary.json}{\texttt{summary.json}} → \texttt{headline}):
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -488,14 +462,11 @@ Gain yang sama pada protokol grayscale (G3g vs G1g) & +15,59 ± 1,45 pp & Tercap
 \end{longtable}
 }
 
-Karena ceiling effect, hipotesis proposal tidak dapat diuji pada protokol RGB. Hipotesis itu didukung pada protokol grayscale, ketika model harus mengandalkan tekstur motif.
+Karena ceiling effect, hipotesis proposal tidak bisa diuji pada protokol RGB. Hasil ini memang berbeda dari yang kami harapkan di proposal, tetapi kami memilih melaporkannya apa adanya. Pada protokol grayscale, saat model harus mengandalkan tekstur motif, hipotesis itu didukung.
 
 \section{Ablation}\label{ablation}
 
-Sumber: tabel \emph{paired comparisons} di \texttt{tables.md}. Δ = Macro F1 A − B dalam
-percentage points, dipasangkan per seed. CI adalah 95\% paired bootstrap per seed
-(2.000 resample test set). Selisih yang CI-nya mencakup 0 tidak disebut sebagai
-perbedaan.
+Sumber: tabel \emph{paired comparisons} di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/tables.md}{\texttt{tables.md}}. Δ adalah Macro F1 A − B dalam percentage points, dipasangkan per seed. CI-nya 95\% paired bootstrap per seed (2.000 resample test set). Kalau CI suatu selisih mencakup 0, kami tidak menyebutnya sebagai perbedaan.
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -532,13 +503,9 @@ G3 vs G3g & Kontribusi warna untuk model transfer & 0,00 ± 0,00 & {[}0,0; 0,0{]
 \end{longtable}
 }
 
-\textbf{Interpretasi.} Keunggulan G3g atas G1g (+15,6 pp) tidak berasal dari arsitektur, karena dengan inisialisasi acak EfficientNet-B0 justru 8,8 pp di bawah CNN yang lebih kecil. Log training juga menunjukkan gejala overfitting. Di epoch 30, akurasi train G2g 97,8--98,4\% sementara akurasi validation hanya 65,1--72,2\% (G1g: 97,7--98,2\% vs 79,0--80,6\%). Salah satu kemungkinan penyebabnya adalah jumlah parameternya yang mencapai 4,0 M, sementara data train hanya berisi 2.090 gambar; dugaan ini tidak diuji secara terpisah. Selisih terbesar berasal dari bobot pretrained ImageNet, yang menambah 24,3 pp atas G2g.
+\textbf{Interpretasi.} Keunggulan G3g atas G1g (+15,6 pp) tidak datang dari arsitektur. Dengan inisialisasi acak, EfficientNet-B0 malah 8,8 pp di bawah CNN yang jauh lebih kecil. Log training juga menunjukkan gejala overfitting: di epoch 30, akurasi train G2g 97,8--98,4\%, sedangkan akurasi validation-nya hanya 65,1--72,2\% (G1g: 97,7--98,2\% vs 79,0--80,6\%). Dugaan kami, penyebabnya adalah jumlah parameter G2g yang mencapai 4,0 M sementara data train hanya 2.090 gambar, tetapi dugaan ini belum kami uji secara terpisah. Selisih terbesar justru datang dari bobot pretrained ImageNet, yang menambah 24,3 pp atas G2g.
 
-\textbf{Robustness} (\texttt{artifacts/\allowbreak{}metrics/\allowbreak{}robustness.md}; satu run per group, sehingga tanpa CI).
-Setiap kolom memakai run final group tersebut, dipilih oleh \texttt{select\_\allowbreak{}final\_\allowbreak{}run}
-(\texttt{src/\allowbreak{}batik/\allowbreak{}analysis.py}): run dengan validation Macro F1 tertinggi, dan seed terkecil bila
-seri. Hasilnya seed 42 untuk G1, G2, G3, G4, G1g, dan G3g, serta seed 44 untuk G2g. G5 tidak
-diuji robustness. Corruption hanya diterapkan saat evaluasi, dengan 3 tingkat severity:
+\textbf{Robustness} (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/robustness.md}{\texttt{artifacts/\allowbreak{}metrics/\allowbreak{}robustness.md}}; satu run per group, jadi tidak ada CI). Setiap kolom memakai run final dari group tersebut, yang dipilih oleh \texttt{select\_\allowbreak{}final\_\allowbreak{}run} (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/src/batik/analysis.py}{\texttt{src/\allowbreak{}batik/\allowbreak{}analysis.py}}): run dengan validation Macro F1 tertinggi, dan seed terkecil kalau seri. Hasilnya seed 42 untuk G1, G2, G3, G4, G1g, dan G3g, serta seed 44 untuk G2g. G5 tidak kami uji robustness. Corruption hanya diterapkan saat evaluasi, dengan 3 tingkat severity:
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -589,33 +556,25 @@ Temuan robustness:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  \textbf{Ketergantungan warna.} Ketiga model RGB memperoleh 100\% pada test bersih, tetapi pada probe grayscale G1 turun ke 7,3\%, G2 ke 21,9\%, dan G3 ke 67,4\%. Model RGB banyak memakai informasi warna; hanya G3 yang masih mengenali sebagian tekstur.
+  \textbf{Ketergantungan warna.} Ketiga model RGB mendapat 100\% di test bersih, tetapi saat diberi probe grayscale, G1 turun ke 7,3\%, G2 ke 21,9\%, dan G3 ke 67,4\%. Artinya model RGB banyak bergantung pada warna, dan hanya G3 yang masih mengenali sebagian tekstur.
 \item
-  \textbf{Augmentation berpengaruh di bawah gangguan.} G3 dan G4 sama-sama 100\% pada test bersih. Pada occlusion s3, G3 tetap 100,00\% sedangkan G4 turun ke 56,34\%; pada blur s3 hasilnya 98,63\% vs 72,50\%, dan pada contrast s3 100,00\% vs 90,82\%.
+  \textbf{Augmentation baru terasa saat gambar diganggu.} G3 dan G4 sama-sama 100\% di test bersih. Namun pada occlusion s3, G3 tetap 100,00\% sementara G4 turun ke 56,34\%. Pada blur s3 hasilnya 98,63\% vs 72,50\%, dan pada contrast s3 100,00\% vs 90,82\%.
 \item
-  \textbf{Model from-scratch sangat sensitif terhadap blur.} Blur tingkat 1 saja menurunkan G1g dari 85,5\% ke 26,1\% dan G2g dari 78,3\% ke 35,1\%. Dugaan kami, kedua model grayscale from-scratch bergantung pada detail halus yang hilang saat gambar diburamkan.
+  \textbf{Model from-scratch sangat sensitif terhadap blur.} Blur tingkat 1 saja sudah menurunkan G1g dari 85,5\% ke 26,1\% dan G2g dari 78,3\% ke 35,1\%. Dugaan kami, kedua model grayscale from-scratch bergantung pada detail halus yang hilang saat gambar diburamkan.
 \item
-  \textbf{Rotasi, perspektif, dan deformasi elastis} hampir tidak mengubah hasil model RGB, termasuk G4 yang dilatih tanpa augmentation. Hal ini mungkin terjadi karena data train sudah berisi salinan rotasi atau flip dari setiap jepretan (Bagian 2).
+  \textbf{Rotasi, perspektif, dan deformasi elastis} hampir tidak mengubah hasil model RGB, termasuk G4 yang dilatih tanpa augmentation. Kemungkinan penyebabnya, data train sudah berisi salinan rotasi atau flip dari setiap jepretan (Bagian 2).
 \end{enumerate}
 
 \section{Error analysis}\label{error-analysis}
 
-Sumber: \texttt{artifacts/\allowbreak{}error\_\allowbreak{}analysis/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}cases.json} dan
-\texttt{figures/\allowbreak{}errors/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}case\_\allowbreak{}01–10.png}.
+Sumber: \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/error_analysis/G1g_customcnn-scratch_augon_s42/cases.json}{\texttt{artifacts/\allowbreak{}error\_\allowbreak{}analysis/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}cases.json}} dan
+\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures/errors/G1g_customcnn-scratch_augon_s42}{\texttt{figures/\allowbreak{}errors/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}case\_\allowbreak{}01–10.png}}.
 
-\textbf{Pemilihan model.} Model final G3, G3g, dan G1 tidak memiliki satu pun error pada
-test set. Aturan fallback awal (G3 → G3g → G1) karena itu tidak menghasilkan kasus.
-Setelah hasil ini terlihat, aturan diperluas ke G1g lalu G2g. Model yang dipakai
-adalah run final G1g seed 42 (val Macro F1 tertinggi dalam G1g), dengan 64 error
-dari 450 gambar. Sepuluh kasus dipilih bergiliran per pasangan kebingungan (yang
-paling yakin dari setiap pasangan lebih dulu).
+\textbf{Pemilihan model.} Model final G3, G3g, dan G1 tidak membuat satu pun kesalahan pada test set, jadi aturan fallback awal kami (G3 → G3g → G1) tidak menghasilkan kasus untuk dianalisis. Setelah melihat hasil ini, kami memperluas aturannya ke G1g lalu G2g. Model yang akhirnya dipakai adalah run final G1g seed 42 (val Macro F1 tertinggi di G1g), dengan 64 error dari 450 gambar. Sepuluh kasus kami pilih bergiliran per pasangan kebingungan, dimulai dari kasus yang paling yakin di setiap pasangan.
 
-\textbf{Distribusi error.} Error paling sering muncul pada dua pasangan. Asem Warak diprediksi sebagai Kembang Sepatu 23 kali (36\% dari 64 error), dan Gambang Semarangan sebagai Asem Arang 11 kali.
+\textbf{Distribusi error.} Error paling banyak terjadi pada dua pasangan: Asem Warak ditebak sebagai Kembang Sepatu 23 kali (36\% dari 64 error), dan Gambang Semarangan ditebak sebagai Asem Arang 11 kali.
 
-\textbf{Intervensi.} Setiap gambar yang salah diprediksi ulang dengan lima perubahan
-input: \emph{full frame} (seluruh foto di-resize ke 224 tanpa crop), \emph{grayscale},
-\emph{horizontal flip}, \emph{normalisasi brightness} ke rata-rata train, dan \emph{5-crop}.
-Intervensi grayscale tidak berpengaruh pada G1g karena inputnya sudah grayscale.
+\textbf{Intervensi.} Setiap gambar yang salah kami prediksi ulang dengan lima perubahan input: \emph{full frame} (seluruh foto di-resize ke 224 tanpa crop), \emph{grayscale}, \emph{horizontal flip}, \emph{normalisasi brightness} ke rata-rata train, dan \emph{5-crop}. Intervensi grayscale tidak berpengaruh pada G1g karena inputnya sudah grayscale.
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -656,33 +615,21 @@ Sharpness / median kelas
 \end{longtable}
 }
 
-Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus, sehingga pencahayaan tidak didukung sebagai penyebab error.
+Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus, jadi kami tidak menemukan bukti bahwa pencahayaan menjadi penyebab error.
 
-\textbf{Analisis kausal berdasarkan intervensi input dan inspeksi visual Grad-CAM (\texttt{case\_\allowbreak{}01–10.png}):}
+\textbf{Analisis kausal berdasarkan intervensi input dan inspeksi visual Grad-CAM (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures/errors/G1g_customcnn-scratch_augon_s42}{\texttt{case\_\allowbreak{}01–10.png}}):}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
   \textbf{Terpotongnya motif utama akibat \emph{center crop} evaluasi} (kasus 3, 6, 7, 8, 9, 10).
-  Enam dari sepuluh kasus berbalik menjadi prediksi benar saat model diberi foto
-  utuh (\emph{full frame}) atau rata-rata \emph{5-crop}.
+  Enam dari sepuluh kasus berubah menjadi benar saat model diberi foto utuh (\emph{full frame}) atau rata-rata \emph{5-crop}.
 
-  Bukti visual paling jelas ada pada kasus 6 (\texttt{blekok\ (258).JPG}). Di panel \emph{full image},
-  siluet burung blekok berada di tepi kiri-atas dan kanan-bawah kain, sedangkan bagian
-  tengahnya hampir seluruhnya polos. \emph{CenterCrop} 224×224 memotong habis badan burung itu
-  dan hanya menyisakan lipatan kain tengah serta sedikit ujung sayap. Grad-CAM pun aktif
-  pada gurat lipatan, dan model menebak Kembang Sepatu (conf. 0,59). Dengan \emph{full frame},
-  prediksi kembali ke Blekok (\texttt{p\_\allowbreak{}true=0,\allowbreak{}56}).
+  Bukti visual paling jelas ada di kasus 6 (\texttt{blekok\ (258).JPG}). Di panel \emph{full image}, siluet burung blekok ada di tepi kiri-atas dan kanan-bawah kain, sementara bagian tengahnya hampir polos. \emph{CenterCrop} 224×224 memotong habis badan burung itu dan hanya menyisakan lipatan kain di tengah serta sedikit ujung sayap. Akibatnya Grad-CAM aktif pada gurat lipatan, dan model menebak Kembang Sepatu (conf. 0,59). Dengan \emph{full frame}, prediksinya kembali ke Blekok (\texttt{p\_\allowbreak{}true=0,\allowbreak{}56}).
 
-  Kasus 3 (\texttt{Kembang\ Sepatu\ (99).JPG}) menunjukkan pola yang sama. \emph{Center crop}-nya memuat
-  pita gelap lipatan kain di bagian bawah dan membuang sisi kiri-kanan foto yang berisi
-  bunga lain; dengan \emph{full frame}, \texttt{p\_\allowbreak{}true} melonjak dari 0,33 ke 0,99. Di kasus 7
-  (\texttt{Asem\ Sinom\ (149).JPG}), lipatan horizontal tetap ada di \emph{full frame}, tetapi tidak lagi
-  mendominasi bingkai dan lebih banyak buah asam merah ikut terlihat, sehingga \texttt{p\_\allowbreak{}true}
-  naik dari 0,22 ke 0,71.
+  Kasus 3 (\texttt{Kembang\ Sepatu\ (99).JPG}) polanya sama. \emph{Center crop}-nya berisi pita gelap lipatan kain di bagian bawah dan membuang sisi kiri-kanan foto yang berisi bunga lain; dengan \emph{full frame}, \texttt{p\_\allowbreak{}true} naik dari 0,33 ke 0,99. Di kasus 7 (\texttt{Asem\ Sinom\ (149).JPG}), lipatan horizontal masih terlihat di \emph{full frame}, tetapi tidak lagi mendominasi bingkai dan lebih banyak buah asam merah yang ikut masuk, sehingga \texttt{p\_\allowbreak{}true} naik dari 0,22 ke 0,71.
 
-  Jadi kegagalan kelompok ini berasal dari protokol \emph{single center crop} saat inferensi,
-  karena model yang sama memprediksi dengan benar ketika motifnya terlihat.
+  Jadi kegagalan di kelompok ini berasal dari protokol \emph{single center crop} saat inferensi. Model yang sama bisa menebak dengan benar ketika motifnya terlihat.
 \end{enumerate}
 
 \begin{figure}[htbp]
@@ -696,30 +643,17 @@ Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus, sehingga p
 \setcounter{enumi}{1}
 \item
   \textbf{Ambiguitas tekstur \emph{isen-isen} dan elemen pinggiran ketika warna dihilangkan}
-  (kasus 1, 2, 4, 10). Pada kasus 1 (\texttt{asem\ warak\ (61).JPG}, conf. 0,94) dan kasus 2
-  (\texttt{Gambang\ Semarangan\ (123).JPG}, conf. 0,83), tidak satu pun dari lima intervensi
-  mengubah prediksi.
+  (kasus 1, 2, 4, 10). Pada kasus 1 (\texttt{asem\ warak\ (61).JPG}, conf. 0,94) dan kasus 2 (\texttt{Gambang\ Semarangan\ (123).JPG}, conf. 0,83), tidak satu pun dari lima intervensi yang mengubah prediksi.
 
-  Di kasus 2, Grad-CAM dingin (biru) tepat di atas motif utama di tengah, tetapi menyala
-  kuat (merah-kuning) pada taburan \emph{isen-isen} sulur rapat di latar kanan-atas dan bawah.
-  Secara visual, latar itu menyerupai sebaran motif Asem Arang (\texttt{nn\_\allowbreak{}pred} cos 0,96).
+  Di kasus 2, Grad-CAM dingin (biru) tepat di atas motif utama di tengah, tetapi menyala kuat (merah-kuning) pada taburan \emph{isen-isen} sulur yang rapat di latar kanan-atas dan bawah. Kalau dilihat, latar itu memang mirip sebaran motif Asem Arang (\texttt{nn\_\allowbreak{}pred} cos 0,96).
 
-  Di kasus 1, protokol \emph{grayscale-equalized} menghilangkan kontras antara kain oranye dan
-  figur kecil berwarna biru-ungu. Grad-CAM lalu merespons garis lipatan diagonal dan
-  figur-figur kecil itu sebagai pola Kembang Sepatu (\texttt{nn\_\allowbreak{}pred} cos 0,90).
+  Di kasus 1, protokol \emph{grayscale-equalized} menghilangkan kontras antara kain oranye dan figur-figur kecil berwarna biru-ungu. Grad-CAM lalu membaca garis lipatan diagonal dan figur kecil itu sebagai pola Kembang Sepatu (\texttt{nn\_\allowbreak{}pred} cos 0,90).
 
-  Kasus 4 (\texttt{blekok\ (274).JPG}) hanya memuat pita geometris berisi kotak-kotak bermotif
-  bunga, tanpa satu pun figur burung blekok di dalam bingkai. Grad-CAM mengikuti pita
-  diagonal tersebut dan menyamakannya dengan deretan daun Asem Sinom (\texttt{nn\_\allowbreak{}pred} cos 0,93).
+  Kasus 4 (\texttt{blekok\ (274).JPG}) hanya berisi pita geometris dengan kotak-kotak bermotif bunga, tanpa satu pun figur burung blekok di dalam bingkai. Grad-CAM mengikuti pita diagonal itu dan menyamakannya dengan deretan daun Asem Sinom (\texttt{nn\_\allowbreak{}pred} cos 0,93).
 
-  Pada kasus 10 (\texttt{Asem\ Sinom\ (272).JPG}), sudut kanan-atas \emph{crop} didominasi garis-garis
-  paralel pinggiran kain yang mendorong Grad-CAM ke arah Asem Arang. Ketiga \emph{nearest
-  neighbour} Asem Arang di \texttt{nn\_\allowbreak{}pred} juga memiliki pita pinggiran serupa. Berbeda dengan
-  tiga kasus lainnya, kasus ini terkoreksi oleh \emph{full frame}, \emph{hflip}, dan \emph{5-crop}.
+  Pada kasus 10 (\texttt{Asem\ Sinom\ (272).JPG}), sudut kanan-atas \emph{crop} didominasi garis-garis paralel pinggiran kain yang mendorong Grad-CAM ke arah Asem Arang. Ketiga \emph{nearest neighbour} Asem Arang di \texttt{nn\_\allowbreak{}pred} juga punya pita pinggiran serupa. Berbeda dengan tiga kasus lain, kasus ini terkoreksi oleh \emph{full frame}, \emph{hflip}, dan \emph{5-crop}.
 
-  G3g mengklasifikasikan seluruh gambar ini dengan benar, jadi informasinya ada di input
-  grayscale. Yang kurang adalah representasi \emph{from-scratch}: dari 2.090 gambar, G1g belum
-  belajar memisahkan motif utama dari tekstur latar tanpa bantuan warna.
+  G3g menebak semua gambar ini dengan benar, jadi informasinya sebenarnya ada di input grayscale. Yang kurang adalah representasi \emph{from-scratch}: dengan 2.090 gambar, G1g belum belajar memisahkan motif utama dari tekstur latar tanpa bantuan warna.
 \end{enumerate}
 
 \begin{figure}[htbp]
@@ -732,38 +666,15 @@ Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus, sehingga p
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{2}
 \item
-  \textbf{Ketajaman rendah (bukti lemah).} Delapan dari sepuluh kasus memiliki \emph{sharpness}
-  Laplacian di bawah median kelasnya, misalnya kasus 4 (1.761 vs median Blekok 6.130),
-  kasus 6 (1.811 vs 6.130), serta kasus 8 dan 9 (7.091 vs median Tugu Muda 15.874). Hal ini
-  sejalan dengan uji robustness di Bagian 5, ketika \emph{Gaussian blur} tingkat 1 menurunkan
-  G1g dari 85,49\% ke 26,09\%. Namun kasus 4 dan 6 tidak tampak buram. Sebagian besar
-  bingkainya berupa kain hijau polos, dan area polos memang menghasilkan \emph{sharpness}
-  Laplacian rendah. Untuk kedua kasus itu, angka \emph{sharpness} lebih mencerminkan sedikitnya motif di
-  dalam bingkai (mekanisme 1), sehingga ketajaman hanya bukti pendukung.
+  \textbf{Ketajaman rendah (bukti lemah).} Delapan dari sepuluh kasus punya \emph{sharpness} Laplacian di bawah median kelasnya, misalnya kasus 4 (1.761 vs median Blekok 6.130), kasus 6 (1.811 vs 6.130), serta kasus 8 dan 9 (7.091 vs median Tugu Muda 15.874). Ini sejalan dengan uji robustness di Bagian 5, di mana \emph{Gaussian blur} tingkat 1 menurunkan G1g dari 85,49\% ke 26,09\%. Tapi kasus 4 dan 6 sebenarnya tidak terlihat buram. Sebagian besar bingkainya kain hijau polos, dan area polos memang menghasilkan \emph{sharpness} Laplacian yang rendah. Untuk dua kasus itu, angka \emph{sharpness} lebih mencerminkan sedikitnya motif di dalam bingkai (mekanisme 1), jadi ketajaman hanya kami anggap bukti pendukung.
 \item
   \textbf{Ketidakstabilan terhadap orientasi rotasi/refleksi} (kasus 5, 8, 9, 10).
-  Di kasus 5 (\texttt{Asem\ Sinom\ (82).JPG}), kuncup daun asam tersusun miring sejajar
-  lipatan diagonal kain dan mengaktifkan Grad-CAM sebagai deretan bulir Warak Beras
-  Utah (\texttt{nn\_\allowbreak{}pred} cos 0,96); membalik citra secara horizontal (\emph{hflip}) mengembalikan
-  prediksi ke Asem Sinom (\texttt{p\_\allowbreak{}true=0,\allowbreak{}45}).
+  Di kasus 5 (\texttt{Asem\ Sinom\ (82).JPG}), kuncup daun asam tersusun miring sejajar dengan lipatan diagonal kain, dan Grad-CAM membacanya sebagai deretan bulir Warak Beras Utah (\texttt{nn\_\allowbreak{}pred} cos 0,96). Setelah citra dibalik secara horizontal (\emph{hflip}), prediksinya kembali ke Asem Sinom (\texttt{p\_\allowbreak{}true=0,\allowbreak{}45}).
 
-  Bukti terkuat ada pada kasus 8 (\texttt{Tugu\ Muda\ (122).JPG}) dan kasus 9
-  (\texttt{Tugu\ Muda\ (123).JPG}). Keduanya berasal dari jepretan yang sama (nilai \emph{brightness}
-  113,93 dan \emph{sharpness} 7.091 berbeda \textless0,01\%, dengan jarak pHash dihedral 0) yang
-  tersimpan sebagai salinan rotasi 180° di dalam grup split yang sama. Ketika siluet
-  tugu terpotong di tepi \emph{center crop}, rotasi tersebut menggeser fokus Grad-CAM dari
-  latar flora yang tersebar (kasus 8, ditebak Warak Beras Utah, conf. 0,35) ke figur
-  hijau di tengah-kiri (kasus 9, ditebak Semarangan, conf. 0,31). Keduanya menjadi benar
-  ketika \emph{full frame} menampilkan bentuk tugu secara utuh (\texttt{p\_\allowbreak{}true} 0,59 dan 0,40).
+  Bukti terkuat ada di kasus 8 (\texttt{Tugu\ Muda\ (122).JPG}) dan kasus 9 (\texttt{Tugu\ Muda\ (123).JPG}). Keduanya berasal dari jepretan yang sama (nilai \emph{brightness} 113,93 dan \emph{sharpness} 7.091 berbeda \textless0,01\%, dengan jarak pHash dihedral 0) yang tersimpan sebagai salinan rotasi 180° di grup split yang sama. Saat siluet tugu terpotong di tepi \emph{center crop}, rotasi itu menggeser fokus Grad-CAM dari latar flora yang tersebar (kasus 8, ditebak Warak Beras Utah, conf. 0,35) ke figur hijau di tengah-kiri (kasus 9, ditebak Semarangan, conf. 0,31). Keduanya menjadi benar saat \emph{full frame} menampilkan bentuk tugu secara utuh (\texttt{p\_\allowbreak{}true} 0,59 dan 0,40).
 \end{enumerate}
 
-Catatan representasi: pada kesepuluh kasus di atas, \emph{nearest neighbour} data latih di
-ruang \emph{embedding} G1g selalu berasal dari kelas yang benar (cosine 0,957--0,998),
-lebih tinggi daripada kemiripan ke kelas prediksi yang salah (0,860--0,960). Ini mengindikasikan
-bahwa representasi fitur masih memisahkan kelas, dan kesalahan terjadi di \emph{linear classifier head}
-G1g, yang mudah terdorong oleh \emph{crop}, orientasi, dan \emph{isen-isen} latar. Pola ini belum diuji
-dengan k-NN pada seluruh test set, dan kedekatan \emph{embedding} dapat dipengaruhi oleh view lain
-dari lembar kain yang sama.
+Catatan soal representasi: di kesepuluh kasus ini, \emph{nearest neighbour} data latih di ruang \emph{embedding} G1g selalu berasal dari kelas yang benar (cosine 0,957--0,998), dan nilainya lebih tinggi daripada kemiripan ke kelas prediksi yang salah (0,860--0,960). Ini menunjukkan representasi fiturnya masih memisahkan kelas, dan kesalahannya terjadi di \emph{linear classifier head} G1g, yang mudah terdorong oleh \emph{crop}, orientasi, dan \emph{isen-isen} latar. Namun pola ini belum kami uji dengan k-NN pada seluruh test set, dan kedekatan \emph{embedding} bisa saja dipengaruhi oleh view lain dari lembar kain yang sama.
 
 \section{Limitations, failure modes, dan 10× compute}\label{limitations-failure-modes-dan-10-compute}
 
@@ -772,19 +683,19 @@ dari lembar kain yang sama.
 \begin{itemize}
 \tightlist
 \item
-  Setiap kelas hanya diwakili satu kain yang difoto dalam satu sesi. Hasil ini mengukur kemampuan model mengenali sudut pandang lain dari kain yang sama; kemampuan mengenali kain lain dengan motif yang sama belum diuji.
+  Setiap kelas hanya diwakili satu kain yang difoto dalam satu sesi. Jadi yang kami ukur adalah kemampuan model mengenali sudut pandang lain dari kain yang sama; kemampuan mengenali kain lain dengan motif yang sama belum kami uji.
 \item
-  Pada protokol RGB, model dapat mengandalkan warna sebagai shortcut yang sempurna.
+  Pada protokol RGB, model bisa memakai warna sebagai shortcut yang sempurna.
 \item
-  Test set hanya berisi 450 gambar dari 97 grup foto sumber (train 470 grup, val 101 grup). Jumlah ini membatasi ketelitian estimasi.
+  Test set hanya berisi 450 gambar dari 97 grup foto sumber (train 470 grup, val 101 grup), sehingga ketelitian estimasinya terbatas.
 \item
-  \texttt{torch.use\_deterministic\_algorithms(True,\ warn\_only=True)} hanya memberi peringatan untuk operasi CUDA yang tidak memiliki versi deterministik, sehingga determinisme di GPU tidak dijamin penuh.
+  \texttt{torch.use\_deterministic\_algorithms(True,\ warn\_only=True)} hanya memberi peringatan untuk operasi CUDA yang tidak punya versi deterministik, jadi determinisme di GPU tidak sepenuhnya terjamin.
 \item
-  Repository belum berjalan di Windows native: \texttt{import\ resource} di \texttt{src/\allowbreak{}batik/\allowbreak{}train.py} hanya tersedia di Unix, dan \texttt{Makefile} memakai \texttt{.venv/\allowbreak{}bin/\allowbreak{}python}. Temuan ini berasal dari code review; reproduksi dilakukan di Linux, WSL, dan Colab.
+  Repository belum bisa berjalan di Windows native: \texttt{import\ resource} di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/src/batik/train.py}{\texttt{src/\allowbreak{}batik/\allowbreak{}train.py}} hanya ada di Unix, dan \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/Makefile}{\texttt{Makefile}} memakai \texttt{.venv/\allowbreak{}bin/\allowbreak{}python}. Masalah ini kami temukan saat code review; reproduksi dilakukan di Linux, WSL, dan Colab.
 \item
-  Robustness hanya diuji pada satu run final per group, sehingga tabelnya tidak memiliki CI antar seed.
+  Robustness hanya diuji pada satu run final per group, jadi tabelnya tidak punya CI antar seed.
 \item
-  Training dilakukan di Colab menggunakan torch 2.11 / Python 3.13, bukan versi yang dipatok di \texttt{requirements.txt} (lihat Bagian 8).
+  Training dilakukan di Colab dengan torch 2.11 / Python 3.13, bukan versi yang dipatok di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/requirements.txt}{\texttt{requirements.txt}} (lihat Bagian 8).
 \end{itemize}
 
 \textbf{Failure modes:}
@@ -792,15 +703,15 @@ dari lembar kain yang sama.
 \begin{itemize}
 \tightlist
 \item
-  Model RGB bergantung pada warna, sehingga kain dengan motif yang sama tetapi warna berbeda berisiko salah diklasifikasikan. Probe grayscale menurunkan G1 dari 100\% ke 7,3\% dan G3 ke 67,4\%.
+  Model RGB bergantung pada warna, sehingga kain dengan motif sama tetapi warna berbeda berisiko salah ditebak. Probe grayscale menurunkan G1 dari 100\% ke 7,3\% dan G3 ke 67,4\%.
 \item
-  Foto buram menurunkan G1 ke 61,1\% pada blur s3, dan model grayscale from-scratch sudah terdampak pada blur ringan (G1g 26,1\% pada s1).
+  Foto buram menurunkan G1 ke 61,1\% pada blur s3, dan model grayscale from-scratch sudah terdampak oleh blur ringan (G1g 26,1\% pada s1).
 \item
-  Tanpa augmentation, oklusi berat menjatuhkan G4 ke 56,3\% pada occlusion s3, sedangkan G3 tetap 100\%.
+  Tanpa augmentation, oklusi berat menjatuhkan G4 ke 56,3\% pada occlusion s3, sementara G3 tetap 100\%.
 \item
-  Center crop bisa memotong motif. Enam dari sepuluh kesalahan G1g menjadi benar ketika model memakai \emph{full frame} atau 5-crop.
+  Center crop bisa memotong motif: enam dari sepuluh kesalahan G1g menjadi benar saat model memakai \emph{full frame} atau 5-crop.
 \item
-  Saat warna tidak tersedia, pasangan motif yang mirip tertukar, terutama Asem Warak ↔ Kembang Sepatu dan Gambang Semarangan ↔ Asem Arang.
+  Saat warna tidak tersedia, motif yang mirip sering tertukar, terutama Asem Warak ↔ Kembang Sepatu dan Gambang Semarangan ↔ Asem Arang.
 \end{itemize}
 
 \textbf{Dengan 10× compute/data:}
@@ -808,13 +719,13 @@ dari lembar kain yang sama.
 \begin{itemize}
 \tightlist
 \item
-  Kumpulkan beberapa kain untuk setiap motif, termasuk kain dengan warna berbeda dari pengrajin lain, lalu evaluasi dengan \emph{leave-one-cloth-out} sehingga model diuji pada kain yang tidak pernah dilihat saat training. Ini perbaikan terpenting.
+  Mengumpulkan beberapa kain untuk setiap motif, termasuk kain dengan warna berbeda dari pengrajin lain, lalu mengevaluasi dengan \emph{leave-one-cloth-out} supaya model diuji pada kain yang belum pernah dilihat saat training. Menurut kami ini perbaikan yang paling penting.
 \item
-  Jalankan learning curve dengan 10\%, 25\%, 50\%, dan 100\% data train untuk mengukur efisiensi data transfer learning.
+  Membuat learning curve dengan 10\%, 25\%, 50\%, dan 100\% data train untuk mengukur seberapa efisien transfer learning memakai data.
 \item
-  Bandingkan backbone lain (ResNet-50, ConvNeXt-T, ViT-S) dan resolusi yang lebih tinggi (384 px) agar isen-isen yang halus tetap terlihat.
+  Membandingkan backbone lain (ResNet-50, ConvNeXt-T, ViT-S) dan resolusi yang lebih tinggi (384 px) supaya isen-isen yang halus tetap terlihat.
 \item
-  Uji model pada foto kain yang benar-benar dikenakan atau terlipat, bukan hanya corruption sintetis.
+  Menguji model pada foto kain yang benar-benar dipakai atau terlipat, tidak hanya corruption sintetis.
 \end{itemize}
 
 \section{Reproducibility statement}\label{reproducibility-statement}
@@ -834,20 +745,20 @@ Nilai
 \bottomrule\noalign{}
 \endlastfoot
 Seed & Split 42 (beku, checksum); training 42, 43, 44; worker seed diturunkan dari seed training \\
-Environment (pin repo) & Python 3.12, PyTorch 2.5.1, torchvision 0.20.1 (\texttt{requirements.txt}, \texttt{pyproject.toml}) \\
-Environment (training aktual) & Google Colab: Python 3.13.16, PyTorch 2.11.0+cu130, torchvision 0.26.0, CUDA 13.0, AMP fp16; kode commit \texttt{d4f6709} (\texttt{artifacts/\allowbreak{}runs/\allowbreak{}*/\allowbreak{}env.json}) \\
+Environment (pin repo) & Python 3.12, PyTorch 2.5.1, torchvision 0.20.1 (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/requirements.txt}{\texttt{requirements.txt}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/pyproject.toml}{\texttt{pyproject.toml}}) \\
+Environment (training aktual) & Google Colab: Python 3.13.16, PyTorch 2.11.0+cu130, torchvision 0.26.0, CUDA 13.0, AMP fp16; kode commit \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/commit/d4f6709}{\texttt{d4f6709}} (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts/runs}{\texttt{artifacts/\allowbreak{}runs/\allowbreak{}*/\allowbreak{}env.json}}) \\
 Hardware & NVIDIA Tesla T4 16 GB, 2 vCPU, \texttt{num\_\allowbreak{}workers=2}, untuk ke-24 run \\
-Runtime & Total waktu training 5,76 jam untuk 24 run; 9,2--31,0 menit per run. Detik per epoch: EfficientNet-B0 dengan augmentation 25,8--46,2 (umumnya 26--30; G3 seed 43 = 46,2), G4 tanpa augmentation 18,3--18,4, Custom CNN 21,7--26,2. Pengecualian: G1 seed 42 = 31,0 menit karena epoch pertamanya 1.102 detik (diduga akibat cache gambar dibaca dari Google Drive di server Colab baru). Peak memory GPU: ±713 MB (Custom CNN), ±1.500 MB (EfficientNet-B0), ±451 MB (G5) (\texttt{all\_\allowbreak{}runs.csv}, \texttt{history.csv}) \\
-Verifikasi lintas lingkungan & \texttt{batik\ aggregate} yang dijalankan ulang di laptop (CPU, PyTorch 2.5.1) dari run Colab menghasilkan \texttt{tables.md}, \texttt{all\_\allowbreak{}runs.csv}, \texttt{group\_\allowbreak{}summary.csv}, \texttt{summary.json}, dan \texttt{final\_\allowbreak{}model.json} yang identik byte per byte. Diverifikasi dua kali: di laptop Linux (2026-10-28) dan oleh Suci di Windows (2026-10-29, lihat Bagian 9) \\
-Sanity check & \texttt{artifacts/\allowbreak{}sanity/\allowbreak{}sanity\_\allowbreak{}report.json} mencatat semua pemeriksaan lulus (\texttt{all\_passed:\ true}; \texttt{overfit\_\allowbreak{}efficientnet\_\allowbreak{}b0} 0,96875). File ini di-commit pada 2026-10-26 (commit \texttt{d4f6709}), sebelum training di Colab, dari lingkungan pin. Di Colab (output sel \texttt{batik\ sanity} di \texttt{notebooks/\allowbreak{}colab\_\allowbreak{}runner.ipynb}), dua pemeriksaan gagal: \texttt{split\_\allowbreak{}reproducible} (membuat ulang split dengan versi library berbeda memberi hasil berbeda; training tetap memakai \texttt{split.csv} beku yang checksum-nya cocok) dan \texttt{overfit\_\allowbreak{}efficientnet\_\allowbreak{}b0} (akurasi 0,875 \textless{} 0,95 pada 32 gambar; training penuh G2 tetap mencapai 100\%) \\
+Runtime & Total waktu training 5,76 jam untuk 24 run; 9,2--31,0 menit per run. Detik per epoch: EfficientNet-B0 dengan augmentation 25,8--46,2 (umumnya 26--30; G3 seed 43 = 46,2), G4 tanpa augmentation 18,3--18,4, Custom CNN 21,7--26,2. Pengecualian: G1 seed 42 = 31,0 menit karena epoch pertamanya 1.102 detik (diduga akibat cache gambar dibaca dari Google Drive di server Colab baru). Peak memory GPU: ±713 MB (Custom CNN), ±1.500 MB (EfficientNet-B0), ±451 MB (G5) (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/all_runs.csv}{\texttt{all\_\allowbreak{}runs.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts/runs}{\texttt{history.csv}}) \\
+Verifikasi lintas lingkungan & \texttt{batik\ aggregate} yang dijalankan ulang di laptop (CPU, PyTorch 2.5.1) dari run Colab menghasilkan \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/tables.md}{\texttt{tables.md}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/all_runs.csv}{\texttt{all\_\allowbreak{}runs.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/group_summary.csv}{\texttt{group\_\allowbreak{}summary.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/summary.json}{\texttt{summary.json}}, dan \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/final_model.json}{\texttt{final\_\allowbreak{}model.json}} yang identik byte per byte. Diverifikasi dua kali: di laptop Linux (2026-10-28) dan oleh Suci di Windows (2026-10-29, lihat Bagian 9) \\
+Sanity check & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/sanity/sanity_report.json}{\texttt{artifacts/\allowbreak{}sanity/\allowbreak{}sanity\_\allowbreak{}report.json}} mencatat semua pemeriksaan lulus (\texttt{all\_passed:\ true}; \texttt{overfit\_\allowbreak{}efficientnet\_\allowbreak{}b0} 0,96875). File ini di-commit pada 2026-10-26 (commit \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/commit/d4f6709}{\texttt{d4f6709}}), sebelum training di Colab, dari lingkungan pin. Di Colab (output sel \texttt{batik\ sanity} di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/notebooks/colab_runner.ipynb}{\texttt{notebooks/\allowbreak{}colab\_\allowbreak{}runner.ipynb}}), dua pemeriksaan gagal: \texttt{split\_\allowbreak{}reproducible} (membuat ulang split dengan versi library berbeda memberi hasil berbeda; training tetap memakai \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/split.csv}{\texttt{split.csv}} beku yang checksum-nya cocok) dan \texttt{overfit\_\allowbreak{}efficientnet\_\allowbreak{}b0} (akurasi 0,875 \textless{} 0,95 pada 32 gambar; training penuh G2 tetap mencapai 100\%) \\
 Command headline & \texttt{make\ setup\ \&\&\ make\ data\ \&\&\ make\ checkpoints\ \&\&\ make\ reproduce} (evaluasi checkpoint rilis; diuji dari clone bersih: 100,00 ± 0,00\%); \texttt{make\ reproduce-retrain} (training ulang G3 × 3 seed) \\
-Model artefact & \texttt{artifacts/\allowbreak{}release/\allowbreak{}batik\_\allowbreak{}effb0\_\allowbreak{}final.pt} dan 24 \texttt{best.pt} di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0}{GitHub Release v1.0}; diunduh dan diverifikasi SHA-256 oleh \texttt{make\ checkpoints} \\
+Model artefact & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0}{\texttt{artifacts/\allowbreak{}release/\allowbreak{}batik\_\allowbreak{}effb0\_\allowbreak{}final.pt}} dan 24 \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0}{\texttt{best.pt}} di \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/releases/tag/v1.0}{GitHub Release v1.0}; diunduh dan diverifikasi SHA-256 oleh \texttt{make\ checkpoints} \\
 \end{longtable}
 }
 
 \section{Individual contribution statement}\label{individual-contribution-statement}
 
-Sumber: \texttt{reports/\allowbreak{}contribution\_\allowbreak{}statement.md}. Setiap anggota menulis dan menandatangani barisnya sendiri.
+Sumber: \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/contribution_statement.md}{\texttt{reports/\allowbreak{}contribution\_\allowbreak{}statement.md}}. Setiap anggota menulis dan menandatangani barisnya sendiri.
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -875,10 +786,10 @@ Signature
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Tita Noviana & Dataset audit, data card, split, leakage check & \texttt{src/\allowbreak{}batik/\allowbreak{}data/\allowbreak{}\{audit,\allowbreak{}split\}.py}, \texttt{data/\allowbreak{}manifests/\allowbreak{}}, \texttt{DATA\_\allowbreak{}LICENSE.md} & Fajar (\texttt{Makefile}, \texttt{README.md}): found \texttt{PY} hard-coded to \texttt{.venv/\allowbreak{}bin/\allowbreak{}python}, which doesn't match a native-Windows venv layout, so \texttt{make} targets don't run outside WSL/Git Bash/Colab. Suggested a README note on 2026-10-28. & Yes, 2026-10-28 (Google Colab, CPU). Ran \texttt{make\ setup}, \texttt{make\ data}, \texttt{make\ checkpoints}, \texttt{make\ reproduce} (evaluates released G3 checkpoints, no retraining). Result: \texttt{HEADLINE\ G3\ EfficientNet-B0\ test\ Macro\ F1\ =\ 100.00\ ±\ 0.00\ \%} over seeds 42/43/44, matching README line 52. First attempt stalled at \texttt{make\ data} (Colab's inline \texttt{MPLBACKEND} isn't accepted by the project venv); fixed with \texttt{MPLBACKEND=Agg} and resumed. & Tita Noviana \\
-Titanio Yudista & Model architectures, training loop; GPU training runs; repository integration and release & \texttt{src/\allowbreak{}batik/\allowbreak{}\{models,\allowbreak{}train\}.py}, \texttt{configs/\allowbreak{}} (commit \texttt{d4f6709}); all 24 runs in \texttt{artifacts/\allowbreak{}runs/\allowbreak{}} trained on Google Colab (Tesla T4) with \texttt{notebooks/\allowbreak{}colab\_\allowbreak{}runner.ipynb} (commit \texttt{438d8c1}); GitHub Release v1.0 and \texttt{make\ checkpoints}; merged PR \#1--\#4; Hugging Face Space demo \texttt{atsiduy/\allowbreak{}vision-\allowbreak{}classification-\allowbreak{}batik} & Reviewed and approved on GitHub the pull requests of the other three members: PR \#2 by Tita (2026-10-28; \texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md}, \texttt{reports/\allowbreak{}contribution\_\allowbreak{}statement.md}, \texttt{reports/\allowbreak{}ai\_\allowbreak{}use\_\allowbreak{}declaration.md}), PR \#3 by Fajar (2026-10-29; the same three files plus regenerated \texttt{figures/\allowbreak{}class\_\allowbreak{}distribution.png}, \texttt{figures/\allowbreak{}native\_\allowbreak{}sizes.png}, \texttt{figures/\allowbreak{}samples\_\allowbreak{}per\_\allowbreak{}class.png}) and PR \#4 by Suci (2026-10-29; the same three files), then merged them into \texttt{main}. No review comments were left on these PRs. & Yes. 2026-10-26/27: full matrix (24 runs) plus \texttt{aggregate}, \texttt{robustness}, \texttt{errors} and \texttt{release} on Google Colab (Tesla T4). 2026-10-28: \texttt{make\ reproduce} on a Linux laptop (CPU, PyTorch 2.5.1) printed \texttt{HEADLINE\ G3\ EfficientNet-B0\ (ImageNet,\ aug\ ON)\ test\ Macro\ F1\ =\ 100.00\ ±\ 0.00\ \%}; a fresh clone with checkpoints downloaded by \texttt{make\ checkpoints} from Release v1.0 gave the same result. & Titanio Yudista \\
-Suci Fransisca Sisilia R. & Evaluation, ablation, robustness, error analysis & \texttt{src/\allowbreak{}batik/\allowbreak{}\{analysis,\allowbreak{}robustness,\allowbreak{}errors,\allowbreak{}diagnostics\}.py}, \texttt{artifacts/\allowbreak{}metrics/\allowbreak{}}, \texttt{figures/\allowbreak{}errors/\allowbreak{}} & Titanio (\texttt{src/\allowbreak{}batik/\allowbreak{}\{models,\allowbreak{}train\}.py}, \texttt{configs/\allowbreak{}}): verified \texttt{freeze\_\allowbreak{}backbone}, \texttt{unfreeze\_\allowbreak{}from}, and \texttt{set\_\allowbreak{}frozen\_\allowbreak{}bn\_\allowbreak{}eval} for G5 two-stage fine-tuning; found top-level \texttt{import\ resource} in \texttt{src/\allowbreak{}batik/\allowbreak{}train.py} (line 12, used on line 282 for CPU \texttt{ru\_\allowbreak{}maxrss}), which is Unix-only and raises \texttt{ModuleNotFoundError:\ No\ module\ named\ \textquotesingle{}resource\textquotesingle{}} on native Windows when importing \texttt{train.py} (and \texttt{robustness.py} via \texttt{from\ .train\ import\ predict}). & Yes, 2026-10-29 (Windows 11 CPU + Google Colab). Verified \texttt{batik\ verify-split} (SHA-256 \texttt{32a0d9e2…} OK) and \texttt{batik\ aggregate} locally on Windows (re-generated \texttt{tables.md}, \texttt{all\_\allowbreak{}runs.csv}, \texttt{group\_\allowbreak{}summary.csv}, \texttt{summary.json}, and \texttt{final\_\allowbreak{}model.json} byte-identical to repo); also verified \texttt{make\ reproduce} on Colab (\texttt{HEADLINE\ G3\ EfficientNet-B0\ (ImageNet,\ aug\ ON)\ test\ Macro\ F1\ =\ 100.00\ ±\ 0.00\ \%} across seeds 42/43/44). & Suci Fransisca Sisilia R. \\
-Fajar Dwiharjo & Reproducibility, repo integration, demo & \texttt{README.md}, \texttt{Makefile}, \texttt{requirements.txt}, \texttt{notebooks/\allowbreak{}colab\_\allowbreak{}runner.ipynb}, \texttt{demo/\allowbreak{}app.py} & Titanio Yudista (\texttt{src/\allowbreak{}batik/\allowbreak{}models.py}, \texttt{src/\allowbreak{}batik/\allowbreak{}train.py}): checked that the EfficientNet-B0 head is initialised identically for scratch and ImageNet runs, so only the backbone init differs; checkpoint selection is best validation Macro F1 with validation loss as tie-break, and the test set is evaluated once after training; the cosine scheduler steps per batch with T\_max = epochs x steps per epoch. Reviewed on 2026-10-29. & Yes, 2026-10-29 (Windows 11, WSL Ubuntu, CPU, commit tidak dicatat). Fresh clone; dataset and checkpoints set up manually on Windows (native \texttt{make} unavailable). Native Windows reproduction failed at \texttt{import\ resource} in \texttt{src/\allowbreak{}batik/\allowbreak{}train.py}; \texttt{verify-\allowbreak{}split} and \texttt{reproduce} were run under WSL and printed HEADLINE G3 test Macro F1 = 100.00 ± 0.00 \% over seeds 42, 43, 44, matching README. & Fajar Dwiharjo \\
+Tita Noviana & Dataset audit, data card, split, leakage check & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/src/batik/data}{\texttt{src/\allowbreak{}batik/\allowbreak{}data/\allowbreak{}\{audit,\allowbreak{}split\}.py}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/data/manifests}{\texttt{data/\allowbreak{}manifests/\allowbreak{}}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/DATA_LICENSE.md}{\texttt{DATA\_\allowbreak{}LICENSE.md}} & Fajar (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/Makefile}{\texttt{Makefile}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/README.md}{\texttt{README.md}}): found \texttt{PY} hard-coded to \texttt{.venv/\allowbreak{}bin/\allowbreak{}python}, which doesn't match a native-Windows venv layout, so \texttt{make} targets don't run outside WSL/Git Bash/Colab. Suggested a README note on 2026-10-28. & Yes, 2026-10-28 (Google Colab, CPU). Ran \texttt{make\ setup}, \texttt{make\ data}, \texttt{make\ checkpoints}, \texttt{make\ reproduce} (evaluates released G3 checkpoints, no retraining). Result: \texttt{HEADLINE\ G3\ EfficientNet-B0\ test\ Macro\ F1\ =\ 100.00\ ±\ 0.00\ \%} over seeds 42/43/44, matching README line 52. First attempt stalled at \texttt{make\ data} (Colab's inline \texttt{MPLBACKEND} isn't accepted by the project venv); fixed with \texttt{MPLBACKEND=Agg} and resumed. & Tita Noviana \\
+Titanio Yudista & Model architectures, training loop; GPU training runs; repository integration and release & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/src/batik}{\texttt{src/\allowbreak{}batik/\allowbreak{}\{models,\allowbreak{}train\}.py}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/configs}{\texttt{configs/\allowbreak{}}} (commit \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/commit/d4f6709}{\texttt{d4f6709}}); all 24 runs in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts/runs}{\texttt{artifacts/\allowbreak{}runs/\allowbreak{}}} trained on Google Colab (Tesla T4) with \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/notebooks/colab_runner.ipynb}{\texttt{notebooks/\allowbreak{}colab\_\allowbreak{}runner.ipynb}} (commit \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/commit/438d8c1}{\texttt{438d8c1}}); GitHub Release v1.0 and \texttt{make\ checkpoints}; merged PR \#1--\#4; Hugging Face Space demo \texttt{atsiduy/\allowbreak{}vision-\allowbreak{}classification-\allowbreak{}batik} & Reviewed and approved on GitHub the pull requests of the other three members: PR \#2 by Tita (2026-10-28; \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/report_draft.md}{\texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/contribution_statement.md}{\texttt{reports/\allowbreak{}contribution\_\allowbreak{}statement.md}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/ai_use_declaration.md}{\texttt{reports/\allowbreak{}ai\_\allowbreak{}use\_\allowbreak{}declaration.md}}), PR \#3 by Fajar (2026-10-29; the same three files plus regenerated \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/figures/class_distribution.png}{\texttt{figures/\allowbreak{}class\_\allowbreak{}distribution.png}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/figures/native_sizes.png}{\texttt{figures/\allowbreak{}native\_\allowbreak{}sizes.png}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/figures/samples_per_class.png}{\texttt{figures/\allowbreak{}samples\_\allowbreak{}per\_\allowbreak{}class.png}}) and PR \#4 by Suci (2026-10-29; the same three files), then merged them into \texttt{main}. No review comments were left on these PRs. & Yes. 2026-10-26/27: full matrix (24 runs) plus \texttt{aggregate}, \texttt{robustness}, \texttt{errors} and \texttt{release} on Google Colab (Tesla T4). 2026-10-28: \texttt{make\ reproduce} on a Linux laptop (CPU, PyTorch 2.5.1) printed \texttt{HEADLINE\ G3\ EfficientNet-B0\ (ImageNet,\ aug\ ON)\ test\ Macro\ F1\ =\ 100.00\ ±\ 0.00\ \%}; a fresh clone with checkpoints downloaded by \texttt{make\ checkpoints} from Release v1.0 gave the same result. & Titanio Yudista \\
+Suci Fransisca Sisilia R. & Evaluation, ablation, robustness, error analysis & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/src/batik}{\texttt{src/\allowbreak{}batik/\allowbreak{}\{analysis,\allowbreak{}robustness,\allowbreak{}errors,\allowbreak{}diagnostics\}.py}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts/metrics}{\texttt{artifacts/\allowbreak{}metrics/\allowbreak{}}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures/errors}{\texttt{figures/\allowbreak{}errors/\allowbreak{}}} & Titanio (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/src/batik}{\texttt{src/\allowbreak{}batik/\allowbreak{}\{models,\allowbreak{}train\}.py}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/configs}{\texttt{configs/\allowbreak{}}}): verified \texttt{freeze\_\allowbreak{}backbone}, \texttt{unfreeze\_\allowbreak{}from}, and \texttt{set\_\allowbreak{}frozen\_\allowbreak{}bn\_\allowbreak{}eval} for G5 two-stage fine-tuning; found top-level \texttt{import\ resource} in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/src/batik/train.py}{\texttt{src/\allowbreak{}batik/\allowbreak{}train.py}} (line 12, used on line 282 for CPU \texttt{ru\_\allowbreak{}maxrss}), which is Unix-only and raises \texttt{ModuleNotFoundError:\ No\ module\ named\ \textquotesingle{}resource\textquotesingle{}} on native Windows when importing \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/src/batik/train.py}{\texttt{train.py}} (and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/src/batik/robustness.py}{\texttt{robustness.py}} via \texttt{from\ .train\ import\ predict}). & Yes, 2026-10-29 (Windows 11 CPU + Google Colab). Verified \texttt{batik\ verify-split} (SHA-256 \texttt{32a0d9e2…} OK) and \texttt{batik\ aggregate} locally on Windows (re-generated \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/tables.md}{\texttt{tables.md}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/all_runs.csv}{\texttt{all\_\allowbreak{}runs.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/group_summary.csv}{\texttt{group\_\allowbreak{}summary.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/summary.json}{\texttt{summary.json}}, and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/final_model.json}{\texttt{final\_\allowbreak{}model.json}} byte-identical to repo); also verified \texttt{make\ reproduce} on Colab (\texttt{HEADLINE\ G3\ EfficientNet-B0\ (ImageNet,\ aug\ ON)\ test\ Macro\ F1\ =\ 100.00\ ±\ 0.00\ \%} across seeds 42/43/44). & Suci Fransisca Sisilia R. \\
+Fajar Dwiharjo & Reproducibility, repo integration, demo & \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/README.md}{\texttt{README.md}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/Makefile}{\texttt{Makefile}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/requirements.txt}{\texttt{requirements.txt}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/notebooks/colab_runner.ipynb}{\texttt{notebooks/\allowbreak{}colab\_\allowbreak{}runner.ipynb}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/demo/app.py}{\texttt{demo/\allowbreak{}app.py}} & Titanio Yudista (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/src/batik/models.py}{\texttt{src/\allowbreak{}batik/\allowbreak{}models.py}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/src/batik/train.py}{\texttt{src/\allowbreak{}batik/\allowbreak{}train.py}}): checked that the EfficientNet-B0 head is initialised identically for scratch and ImageNet runs, so only the backbone init differs; checkpoint selection is best validation Macro F1 with validation loss as tie-break, and the test set is evaluated once after training; the cosine scheduler steps per batch with T\_max = epochs x steps per epoch. Reviewed on 2026-10-29. & Yes, 2026-10-29 (Windows 11, WSL Ubuntu, CPU, commit tidak dicatat). Fresh clone; dataset and checkpoints set up manually on Windows (native \texttt{make} unavailable). Native Windows reproduction failed at \texttt{import\ resource} in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/src/batik/train.py}{\texttt{src/\allowbreak{}batik/\allowbreak{}train.py}}; \texttt{verify-\allowbreak{}split} and \texttt{reproduce} were run under WSL and printed HEADLINE G3 test Macro F1 = 100.00 ± 0.00 \% over seeds 42, 43, 44, matching README. & Fajar Dwiharjo \\
 \end{longtable}
 }
 
@@ -903,7 +814,7 @@ Fajar Dwiharjo: Fajar Dwiharjo
 
 \section{AI use declaration}\label{ai-use-declaration}
 
-Sumber: \texttt{reports/\allowbreak{}ai\_\allowbreak{}use\_\allowbreak{}declaration.md}. Proposal merencanakan Google Gemini dan GitHub Copilot;
+Sumber: \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/ai_use_declaration.md}{\texttt{reports/\allowbreak{}ai\_\allowbreak{}use\_\allowbreak{}declaration.md}}. Proposal merencanakan Google Gemini dan GitHub Copilot;
 implementasi pipeline juga dibantu Claude Code (Anthropic). Setiap anggota menyatakan tool yang
 benar-benar dipakainya.
 
@@ -913,22 +824,22 @@ Rules kept throughout (proposal Section 7):
 \tightlist
 \item
   No metric is typed by hand or produced by an assistant. Every number traces to a
-  file in \texttt{artifacts/\allowbreak{}} or \texttt{data/\allowbreak{}manifests/\allowbreak{}}.
+  file in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts}{\texttt{artifacts/\allowbreak{}}} or \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/data/manifests}{\texttt{data/\allowbreak{}manifests/\allowbreak{}}}.
 \item
   Causal error explanations in report §6 were rewritten by Suci after visually inspecting the
-  failure evidence in \texttt{figures/\allowbreak{}errors/\allowbreak{}}. Later corrections to individual visual claims (cases 1, 2,
+  failure evidence in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures/errors}{\texttt{figures/\allowbreak{}errors/\allowbreak{}}}. Later corrections to individual visual claims (cases 1, 2,
   3, 4, 7 and 9, and the sharpness caveat) were made with Claude Code at Titanio's request and
-  checked against the same figures and \texttt{cases.json}.
+  checked against the same figures and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/error_analysis/G1g_customcnn-scratch_augon_s42/cases.json}{\texttt{cases.json}}.
 \item
   Every script was run and checked through the single-command, fixed-seed pipeline.
 \end{itemize}
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0917}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1167}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3833}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3833}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4083}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Member
@@ -943,17 +854,18 @@ How the output was verified
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Tita Noviana & Claude Code (Anthropic) & Asked it to check \texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md} §1--8 for traceability to \texttt{artifacts/\allowbreak{}}, and to cross-check §6 error-analysis claims (confidence, top-3, intervention results, sharpness) against \texttt{artifacts/\allowbreak{}error\_\allowbreak{}analysis/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}cases.json} and the 10 case images in \texttt{figures/\allowbreak{}errors/\allowbreak{}}; also used it to draft this AI-use entry and my contribution-statement row & I opened all 10 case images in \texttt{figures/\allowbreak{}errors/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}} myself on 2026-10-28 and confirmed Claude's reading matched what I saw (crops cutting off the motif in cases 3/6/7, cases 8/9 being the same photo with two different wrong guesses, etc.) \\
-Titanio Yudista & Claude Code (Anthropic) & Implementing the pipeline in \texttt{src/\allowbreak{}batik/\allowbreak{}}, \texttt{configs/\allowbreak{}}, \texttt{tests/\allowbreak{}}, \texttt{Makefile}, \texttt{notebooks/\allowbreak{}colab\_\allowbreak{}runner.ipynb} and \texttt{demo/\allowbreak{}app.py}; debugging the Colab runs (DataLoader worker warning, empty error-analysis fallback, stale code without \texttt{git\ pull}); preparing GitHub Release v1.0 and \texttt{make\ checkpoints}; deploying the Hugging Face Space; filling \texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md} §4--8 from \texttt{artifacts/\allowbreak{}}, correcting visual claims in §6 against \texttt{figures/\allowbreak{}errors/\allowbreak{}}, and drafting my contribution row and this entry & \texttt{make\ test} (15 passed); \texttt{make\ reproduce} = 100.00 ± 0.00 \% on my laptop and from a fresh clone with the released checkpoints; re-running \texttt{batik\ aggregate} locally gave byte-identical \texttt{tables.md}, \texttt{all\_\allowbreak{}runs.csv}, \texttt{group\_\allowbreak{}summary.csv}, \texttt{summary.json} and \texttt{final\_\allowbreak{}model.json}; the demo was tested through its API (10 of 10 test photos correct); report numbers checked against \texttt{artifacts/\allowbreak{}metrics/\allowbreak{}*}, \texttt{data/\allowbreak{}manifests/\allowbreak{}*} and \texttt{artifacts/\allowbreak{}runs/\allowbreak{}*/\allowbreak{}history.csv} \\
-Suci Fransisca Sisilia R. & Google Gemini / Antigravity & Assisted in cross-checking evaluation, ablation, and robustness tables (\texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md} §4--7) against \texttt{artifacts/\allowbreak{}metrics/\allowbreak{}\{tables,\allowbreak{}robustness\}.md} and \texttt{summary.json}, reviewing \texttt{src/\allowbreak{}batik/\allowbreak{}\{models,\allowbreak{}train\}.py}, and structuring the rewritten causal error analysis in §6 and my contribution/AI-use rows & Visually inspected all 10 failure figures in \texttt{figures/\allowbreak{}errors/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}case\_\allowbreak{}01–10.png} (Grad-CAM heatmaps, centre crop vs full frame, and nearest training neighbours) alongside \texttt{cases.json}, and ran \texttt{batik\ verify-split} and \texttt{batik\ aggregate} locally on 2026-10-29 to confirm all reported metrics and tables match byte-for-byte \\
-Fajar Dwiharjo & Claude (Anthropic), chat interface & Asked it to check \texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md} against \texttt{artifacts/\allowbreak{}} and \texttt{figures/\allowbreak{}}, list every claim that does not match the files, and produce a corrected draft; also asked it to draft my row in the contribution statement and this entry, using the same findings. I did not ask it to write the causal interpretation in report section 6; that section was rewritten by Suci, the member who owns error analysis. & Claims were checked on 2026-10-29 against the repo: table numbers against \texttt{tables.md} and \texttt{robustness.md}; split and leakage numbers against \texttt{inventory.csv}, \texttt{split\_\allowbreak{}meta.json} and \texttt{near\_\allowbreak{}duplicate\_\allowbreak{}edges.csv}; error-case numbers against \texttt{cases.json}; \texttt{figures/\allowbreak{}confusion\_\allowbreak{}matrix\_\allowbreak{}final.png}, \texttt{case\_\allowbreak{}03.png} and \texttt{case\_\allowbreak{}08.png} viewed. \\
+Tita Noviana & Claude Code (Anthropic) & Asked it to check \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/report_draft.md}{\texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md}} §1--8 for traceability to \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts}{\texttt{artifacts/\allowbreak{}}}, and to cross-check §6 error-analysis claims (confidence, top-3, intervention results, sharpness) against \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/error_analysis/G1g_customcnn-scratch_augon_s42/cases.json}{\texttt{artifacts/\allowbreak{}error\_\allowbreak{}analysis/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}cases.json}} and the 10 case images in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures/errors}{\texttt{figures/\allowbreak{}errors/\allowbreak{}}}; also used it to draft this AI-use entry and my contribution-statement row & I opened all 10 case images in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures/errors/G1g_customcnn-scratch_augon_s42}{\texttt{figures/\allowbreak{}errors/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}}} myself on 2026-10-28 and confirmed Claude's reading matched what I saw (crops cutting off the motif in cases 3/6/7, cases 8/9 being the same photo with two different wrong guesses, etc.) \\
+Titanio Yudista & Claude Code (Anthropic) & Implementing the pipeline in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/src/batik}{\texttt{src/\allowbreak{}batik/\allowbreak{}}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/configs}{\texttt{configs/\allowbreak{}}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/tests}{\texttt{tests/\allowbreak{}}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/Makefile}{\texttt{Makefile}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/notebooks/colab_runner.ipynb}{\texttt{notebooks/\allowbreak{}colab\_\allowbreak{}runner.ipynb}} and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/demo/app.py}{\texttt{demo/\allowbreak{}app.py}}; debugging the Colab runs (DataLoader worker warning, empty error-analysis fallback, stale code without \texttt{git\ pull}); preparing GitHub Release v1.0 and \texttt{make\ checkpoints}; deploying the Hugging Face Space; filling \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/report_draft.md}{\texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md}} §4--8 from \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts}{\texttt{artifacts/\allowbreak{}}}, correcting visual claims in §6 against \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures/errors}{\texttt{figures/\allowbreak{}errors/\allowbreak{}}}, and drafting my contribution row and this entry & \texttt{make\ test} (15 passed); \texttt{make\ reproduce} = 100.00 ± 0.00 \% on my laptop and from a fresh clone with the released checkpoints; re-running \texttt{batik\ aggregate} locally gave byte-identical \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/tables.md}{\texttt{tables.md}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/all_runs.csv}{\texttt{all\_\allowbreak{}runs.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/group_summary.csv}{\texttt{group\_\allowbreak{}summary.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/summary.json}{\texttt{summary.json}} and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/final_model.json}{\texttt{final\_\allowbreak{}model.json}}; the demo was tested through its API (10 of 10 test photos correct); report numbers checked against \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts/metrics}{\texttt{artifacts/\allowbreak{}metrics/\allowbreak{}*}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/data/manifests}{\texttt{data/\allowbreak{}manifests/\allowbreak{}*}} and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts/runs}{\texttt{artifacts/\allowbreak{}runs/\allowbreak{}*/\allowbreak{}history.csv}}; a script compared every number and link in the reworded report against the previous version (none lost or added) \\
+Suci Fransisca Sisilia R. & Google Gemini / Antigravity & Assisted in cross-checking evaluation, ablation, and robustness tables (\href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/report_draft.md}{\texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md}} §4--7) against \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts/metrics}{\texttt{artifacts/\allowbreak{}metrics/\allowbreak{}\{tables,\allowbreak{}robustness\}.md}} and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/summary.json}{\texttt{summary.json}}, reviewing \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/src/batik}{\texttt{src/\allowbreak{}batik/\allowbreak{}\{models,\allowbreak{}train\}.py}}, and structuring the rewritten causal error analysis in §6 and my contribution/AI-use rows & Visually inspected all 10 failure figures in \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures/errors/G1g_customcnn-scratch_augon_s42}{\texttt{figures/\allowbreak{}errors/\allowbreak{}G1g\_\allowbreak{}customcnn-\allowbreak{}scratch\_\allowbreak{}augon\_\allowbreak{}s42/\allowbreak{}case\_\allowbreak{}01–10.png}} (Grad-CAM heatmaps, centre crop vs full frame, and nearest training neighbours) alongside \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/error_analysis/G1g_customcnn-scratch_augon_s42/cases.json}{\texttt{cases.json}}, and ran \texttt{batik\ verify-split} and \texttt{batik\ aggregate} locally on 2026-10-29 to confirm all reported metrics and tables match byte-for-byte \\
+Fajar Dwiharjo & Claude (Anthropic), chat interface & Asked it to check \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/reports/report_draft.md}{\texttt{reports/\allowbreak{}report\_\allowbreak{}draft.md}} against \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/artifacts}{\texttt{artifacts/\allowbreak{}}} and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/tree/main/figures}{\texttt{figures/\allowbreak{}}}, list every claim that does not match the files, and produce a corrected draft; also asked it to draft my row in the contribution statement and this entry, using the same findings. I did not ask it to write the causal interpretation in report section 6; that section was rewritten by Suci, the member who owns error analysis. & Claims were checked on 2026-10-29 against the repo: table numbers against \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/tables.md}{\texttt{tables.md}} and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/metrics/robustness.md}{\texttt{robustness.md}}; split and leakage numbers against \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/inventory.csv}{\texttt{inventory.csv}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/split_meta.json}{\texttt{split\_\allowbreak{}meta.json}} and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/data/manifests/near_duplicate_edges.csv}{\texttt{near\_\allowbreak{}duplicate\_\allowbreak{}edges.csv}}; error-case numbers against \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/artifacts/error_analysis/G1g_customcnn-scratch_augon_s42/cases.json}{\texttt{cases.json}}; \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/figures/confusion_matrix_final.png}{\texttt{figures/\allowbreak{}confusion\_\allowbreak{}matrix\_\allowbreak{}final.png}}, \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/figures/errors/G1g_customcnn-scratch_augon_s42/case_03.png}{\texttt{case\_\allowbreak{}03.png}} and \href{https://github.com/Universitas-Cakrawala/semarang-batik-fine-grained-transfer-learning/blob/main/figures/errors/G1g_customcnn-scratch_augon_s42/case_08.png}{\texttt{case\_\allowbreak{}08.png}} viewed. \\
 \end{longtable}
 }
 
 \section*{Referensi}\label{referensi}
 \addcontentsline{toc}{section}{Referensi}
 
-\begin{itemize}
+{\small
+\begin{itemize}[parsep=0pt,topsep=0pt]
 \tightlist
 \item
   Winarno, E., Septiarini, A., Hadikurniawati, W., \& Hamdani, H. (2024). The Hybrid Features and Supervised Learning for Batik Pattern Classification. \emph{ACM JOCCH} 17(2). https://doi.org/10.1145/3631131
@@ -978,5 +890,6 @@ Fajar Dwiharjo & Claude (Anthropic), chat interface & Asked it to check \texttt{
 \item
   Paszke, A. et al.~(2019). PyTorch: An Imperative Style, High-Performance Deep Learning Library. \emph{NeurIPS}.
 \end{itemize}
+}
 
 \end{document}
