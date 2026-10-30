@@ -607,11 +607,11 @@ Sharpness / median kelas
 3 & \texttt{Kembang\ Sepatu\ (99).JPG} & Kembang Sepatu → Asem Arang (0,67) & AA, KS, Semarangan & full frame (p=0,99), 5-crop & 5.389 / 8.484 \\
 4 & \texttt{blekok\ (274).JPG} & Blekok → Asem Sinom (0,65) & AS, Blekok, AW & --- & 1.761 / 6.130 \\
 5 & \texttt{Asem\ Sinom\ (82).JPG} & Asem Sinom → Warak Beras Utah (0,60) & WBU, AS, Blekok Warak & hflip & 1.319 / 967 \\
-6 & \texttt{blekok\ (258).JPG} & Blekok → Kembang Sepatu (0,59) & KS, AW, Blekok & full frame & 1.811 / 6.130 \\
+6 & \texttt{blekok\ (258).JPG} & Blekok → Kembang Sepatu (0,59) & KS, AW, Blekok & full frame & 1.810 / 6.130 \\
 7 & \texttt{Asem\ Sinom\ (149).JPG} & Asem Sinom → Kembang Sepatu (0,53) & KS, AS, Blekok & full frame (p=0,71), 5-crop & 618 / 967 \\
 8 & \texttt{Tugu\ Muda\ (122).JPG} & Tugu Muda → Warak Beras Utah (0,35) & WBU, TM, Semarangan & full frame & 7.091 / 15.874 \\
 9 & \texttt{Tugu\ Muda\ (123).JPG} & Tugu Muda → Semarangan (0,31) & Semarangan, WBU, TM & full frame & 7.091 / 15.874 \\
-10 & \texttt{Asem\ Sinom\ (272).JPG} & Asem Sinom → Asem Arang (0,48) & AA, AS, WBU & full frame, hflip, 5-crop & 670 / 967 \\
+10 & \texttt{Asem\ Sinom\ (272).JPG} & Asem Sinom → Asem Arang (0,48) & AA, AS, WBU & full frame, hflip, 5-crop & 669 / 967 \\
 \end{longtable}
 }
 
@@ -666,7 +666,7 @@ Normalisasi brightness tidak memperbaiki satu pun dari sepuluh kasus, jadi kami 
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{2}
 \item
-  \textbf{Ketajaman rendah (bukti lemah).} Delapan dari sepuluh kasus punya \emph{sharpness} Laplacian di bawah median kelasnya, misalnya kasus 4 (1.761 vs median Blekok 6.130), kasus 6 (1.811 vs 6.130), serta kasus 8 dan 9 (7.091 vs median Tugu Muda 15.874). Ini sejalan dengan uji robustness di Bagian 5, di mana \emph{Gaussian blur} tingkat 1 menurunkan G1g dari 85,49\% ke 26,09\%. Tapi kasus 4 dan 6 sebenarnya tidak terlihat buram. Sebagian besar bingkainya kain hijau polos, dan area polos memang menghasilkan \emph{sharpness} Laplacian yang rendah. Untuk dua kasus itu, angka \emph{sharpness} lebih mencerminkan sedikitnya motif di dalam bingkai (mekanisme 1), jadi ketajaman hanya kami anggap bukti pendukung.
+  \textbf{Ketajaman rendah (bukti lemah).} Delapan dari sepuluh kasus punya \emph{sharpness} Laplacian di bawah median kelasnya, misalnya kasus 4 (1.761 vs median Blekok 6.130), kasus 6 (1.810 vs 6.130), serta kasus 8 dan 9 (7.091 vs median Tugu Muda 15.874). Ini sejalan dengan uji robustness di Bagian 5, di mana \emph{Gaussian blur} tingkat 1 menurunkan G1g dari 85,49\% ke 26,09\%. Tapi kasus 4 dan 6 sebenarnya tidak terlihat buram. Sebagian besar bingkainya kain hijau polos, dan area polos memang menghasilkan \emph{sharpness} Laplacian yang rendah. Untuk dua kasus itu, angka \emph{sharpness} lebih mencerminkan sedikitnya motif di dalam bingkai (mekanisme 1), jadi ketajaman hanya kami anggap bukti pendukung.
 \item
   \textbf{Ketidakstabilan terhadap orientasi rotasi/refleksi} (kasus 5, 8, 9, 10).
   Di kasus 5 (\texttt{Asem\ Sinom\ (82).JPG}), kuncup daun asam tersusun miring sejajar dengan lipatan diagonal kain, dan Grad-CAM membacanya sebagai deretan bulir Warak Beras Utah (\texttt{nn\_\allowbreak{}pred} cos 0,96). Setelah citra dibalik secara horizontal (\emph{hflip}), prediksinya kembali ke Asem Sinom (\texttt{p\_\allowbreak{}true=0,\allowbreak{}45}).
@@ -868,27 +868,27 @@ Fajar Dwiharjo & Claude (Anthropic), chat interface & Asked it to check \href{ht
 \begin{itemize}[parsep=0pt,topsep=0pt]
 \tightlist
 \item
-  Winarno, E., Septiarini, A., Hadikurniawati, W., \& Hamdani, H. (2024). The Hybrid Features and Supervised Learning for Batik Pattern Classification. \emph{ACM JOCCH} 17(2). https://doi.org/10.1145/3631131
+  Winarno, E., Septiarini, A., Hadikurniawati, W., \& Hamdani, H. (2024). The Hybrid Features and Supervised Learning for Batik Pattern Classification. \emph{ACM JOCCH} 17(2). \url{https://doi.org/10.1145/3631131}
 \item
-  Tan, M., \& Le, Q. (2019). EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks. \emph{ICML}.
+  Tan, M., \& Le, Q. (2019). \href{https://proceedings.mlr.press/v97/tan19a.html}{EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks}. \emph{ICML}.
 \item
-  He, K. et al.~(2016). Deep Residual Learning for Image Recognition. \emph{CVPR}.
+  He, K. et al.~(2016). \href{https://doi.org/10.1109/CVPR.2016.90}{Deep Residual Learning for Image Recognition}. \emph{CVPR}.
 \item
-  Chollet, F. (2021). \emph{Deep Learning with Python}, 2nd ed.~Manning.
+  Chollet, F. (2021). \href{https://www.manning.com/books/deep-learning-with-python-second-edition}{\emph{Deep Learning with Python}}, 2nd ed.~Manning.
 \item
-  Géron, A. (2022). \emph{Hands-On Machine Learning}, 3rd ed.~O'Reilly.
+  Géron, A. (2022). \href{https://openlibrary.org/isbn/9781098125974}{\emph{Hands-On Machine Learning}}, 3rd ed.~O'Reilly.
 \item
-  Selvaraju, R. R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., \& Batra, D. (2017). Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization. \emph{ICCV}.
+  Selvaraju, R. R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., \& Batra, D. (2017). \href{https://doi.org/10.1109/ICCV.2017.74}{Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization}. \emph{ICCV}.
 \item
-  Loshchilov, I., \& Hutter, F. (2019). Decoupled Weight Decay Regularization. \emph{ICLR}.
+  Loshchilov, I., \& Hutter, F. (2019). \href{https://arxiv.org/abs/1711.05101}{Decoupled Weight Decay Regularization}. \emph{ICLR}.
 \item
-  Deng, J., Dong, W., Socher, R., Li, L.-J., Li, K., \& Fei-Fei, L. (2009). ImageNet: A Large-Scale Hierarchical Image Database. \emph{CVPR}.
+  Deng, J., Dong, W., Socher, R., Li, L.-J., Li, K., \& Fei-Fei, L. (2009). \href{https://doi.org/10.1109/CVPR.2009.5206848}{ImageNet: A Large-Scale Hierarchical Image Database}. \emph{CVPR}.
 \item
-  Ojala, T., Pietikäinen, M., \& Mäenpää, T. (2002). Multiresolution Gray-Scale and Rotation Invariant Texture Classification with Local Binary Patterns. \emph{IEEE TPAMI} 24(7).
+  Ojala, T., Pietikäinen, M., \& Mäenpää, T. (2002). \href{https://doi.org/10.1109/TPAMI.2002.1017623}{Multiresolution Gray-Scale and Rotation Invariant Texture Classification with Local Binary Patterns}. \emph{IEEE TPAMI} 24(7).
 \item
-  Pedregosa, F. et al.~(2011). Scikit-learn: Machine Learning in Python. \emph{JMLR} 12.
+  Pedregosa, F. et al.~(2011). \href{https://jmlr.org/papers/v12/pedregosa11a.html}{Scikit-learn: Machine Learning in Python}. \emph{JMLR} 12.
 \item
-  Paszke, A. et al.~(2019). PyTorch: An Imperative Style, High-Performance Deep Learning Library. \emph{NeurIPS}.
+  Paszke, A. et al.~(2019). \href{https://proceedings.neurips.cc/paper/2019/hash/bdbca288fee7f92f2bfa9f7012727740-Abstract.html}{PyTorch: An Imperative Style, High-Performance Deep Learning Library}. \emph{NeurIPS}.
 \end{itemize}
 }
 
