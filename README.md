@@ -1,7 +1,17 @@
 # Semarang Batik: From-Scratch CNN vs Transfer Learning
 
 UAS Deep Learning, **Kelompok 5, Track A** (Vision classification with transfer learning).
-Members: Tita Noviana, Titanio Yudista, Suci Fransisca Sisilia R., Fajar Dwiharjo.
+
+| Member | NIM |
+|---|---|
+| Tita Noviana (Ketua) | 24120500011 |
+| Suci Fransisca Sisilia R. | 24120500008 |
+| Titanio Yudista | 24120500031 |
+| Fajar Dwiharjo | 24130500010 |
+
+Final report: [`reports/laporan_akhir_uas_deep_learning_kelompok5.pdf`](reports/laporan_akhir_uas_deep_learning_kelompok5.pdf) ·
+Slides: <https://batik-vision-deck.netlify.app/s/semarang-batik-results> ·
+Demo: [Hugging Face Space](https://huggingface.co/spaces/atsiduy/vision-classification-batik)
 
 This project compares a from-scratch Custom CNN, EfficientNet-B0 trained from
 random initialisation, and EfficientNet-B0 initialised from ImageNet on 10 Semarang
@@ -26,6 +36,15 @@ Deviations from the approved proposal are listed in
 | The Kaggle snapshot stores each capture as ~4 rotated/flipped copies | Same-second captures have rotation-invariant pHash distance 0–4. Ordinary pHash gives ~30 | A plain random split (as in the proposal) puts a rotated copy of **98.9%** of test images into train. We split by **source photo** groups instead |
 | Each class is one cloth with its own colourway | HSV colour histogram + logistic regression: **100%** test Macro F1 | RGB results hit the ceiling. We added a grayscale + histogram-equalisation protocol (intensity-histogram shortcut falls to 55.7%, LBP texture stays 96.3%) |
 | All photos per class come from one session and one cloth | EXIF timestamps (5–18 min per class) | Results measure generalisation to new views of the *same* cloth, not to other cloths with the same motif |
+
+## Requirements
+
+- Linux, macOS, WSL, or Google Colab. Native Windows is **not** supported
+  (`src/batik/train.py` imports the Unix-only `resource` module and the Makefile uses
+  `.venv/bin/python`); on Windows, run everything inside WSL.
+- `make`, `curl`, `tar`, and [`uv`](https://docs.astral.sh/uv/)
+  (`curl -LsSf https://astral.sh/uv/install.sh | sh`), or use the plain `pip` line below.
+- About 25 GB of free disk for the dataset (`make data` downloads ~13 GB and extracts it).
 
 ## Setup
 
@@ -188,7 +207,8 @@ data/raw|processed/ dataset and resized cache (not committed)
 artifacts/          runs/<run_id>/ (config, env, history, metrics, predictions, robustness), metrics/, sanity/,
                     error_analysis/, release/release.json (checkpoints: GitHub Release v1.0)
 figures/            EDA, augmentation grid, curves, confusion matrix, error cases
-reports/            report, contribution statement, AI-use declaration
+reports/            laporan_akhir_uas_deep_learning_kelompok5.{pdf,tex} (final report), report_draft.md
+                    (its source), contribution_statement.md, ai_use_declaration.md
 demo/app.py         Gradio demo
 ```
 
